@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Jar files ###
+.mvn/wrapper/*.jar
