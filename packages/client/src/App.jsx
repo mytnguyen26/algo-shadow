@@ -1,3 +1,5 @@
+// src/App.jsx
+import './styles.css';
 import { Paths } from "./constants/Paths.js";
 import { Home } from "./pages/Home/home.jsx";
 import { Layout } from "./pages/Home/layout.jsx";
