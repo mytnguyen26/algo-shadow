@@ -1,17 +1,50 @@
-// src/components/Navbar.jsx
+import * as React from "react";
+import Box from "@mui/material/Box";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import { SideList } from "./SideList.jsx";
+import { Stack, Typography } from "@mui/material";
+import { DropdownMenu } from "../../Algorithm/AlgComponent/DropdownMenu";
+import { useLocation } from 'react-router-dom';
 
 export const Navbar = () => {
-    return (
-      <div style={{ backgroundColor: "grey", padding: "10px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div className="team-name" style={{ fontSize: "24px", fontWeight: "bold", color: "white" }}>
-          Algo-Shadow
-        </div>
-        <nav>
-          <a href="#" style={{ marginLeft: "20px", color: "white", textDecoration: "none" }}>Home</a>
-          <a href="#" style={{ marginLeft: "20px", color: "white", textDecoration: "none" }}>About</a>
-          <a href="#" style={{ marginLeft: "20px", color: "white", textDecoration: "none" }}>Contact</a>
-        </nav>
-      </div>
-    );
-  };
-  
+  const location = useLocation();
+
+  return (
+    <Box>
+      {/* Grey navbar section */}
+      <Box sx={{ bgcolor: "grey.200", paddingX: 2 }}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          sx={{ width: "100%" }}
+          alignItems="center"
+        >
+          <Typography variant="h5">Algo-Shadow</Typography>
+          
+          <SideList sx={{ display: "flex", direction: "row" }}>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary="About" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemText primary="Contact" />
+              </ListItemButton>
+            </ListItem>
+          </SideList>
+        </Stack>
+      </Box>
+      
+      {/* Conditionally render DropdownMenu */}
+      {location.pathname !== '/' && <DropdownMenu />}
+    </Box>
+  );
+};

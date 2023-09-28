@@ -1,13 +1,13 @@
-// src/pages/Home/home.jsx
-
-import { AlgorithmSpace } from "./component/AlgorithmSpace";
-import { ControlArea } from "./component/ControlArea";
+import { DisplayCard } from "./component/displayCard.jsx";
+import { AlgoList } from "./component/algoList";
+import { Stack } from "@mui/material";
 
 export const Home = () => {
   return (
-    <div>
-      <AlgorithmSpace />
-      <ControlArea />
-    </div>
+    <Stack>
+      <DisplayCard />
+      <AlgoList />
+    </Stack>
   );
 };
+export default Home;
