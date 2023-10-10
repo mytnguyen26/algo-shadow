@@ -1,7 +1,6 @@
 import { Container, Box } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/AlgorithmSpace";
 import { ControlArea } from "./AlgComponent/ControlArea.jsx";
-import { DropdownMenu } from "./AlgComponent/DropdownMenu.jsx";
 
 const Algorithm = () => {
   return (

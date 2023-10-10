@@ -92,6 +92,25 @@ export const DropdownMenu = () => {
         >
           Bellman Ford
         </MenuItem>
+        {/* Added Heap MenuItem */}
+        <MenuItem 
+          className="dropdown-item" 
+          onClick={handleClose}
+          sx={{
+            backgroundColor: 'black',
+            color: 'white',
+            margin: '5px 0',
+            padding: '10px 20px',
+            borderRadius: '4px',
+            textAlign: 'center',
+            transition: 'background-color 0.3s',
+            '&:hover': {
+              backgroundColor: '#333',
+            }
+          }}
+        >
+          Heap
+        </MenuItem>
       </Menu>
     </div>
   );
