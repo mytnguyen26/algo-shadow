@@ -1,117 +1,76 @@
 import { useState } from 'react';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import {Menu} from "@mui/material";
+import {Paths} from "../../../constants/Paths.js";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
+
+const dropDownData = [
+    {
+        id: 0,
+        name: 'Hash',
+        path: Paths.HASH
+    },
+    {
+        id: 1,
+        name: 'Dijkstra',
+        path: Paths.DIJKSTRA
+    },
+    {
+        id: 2,
+        name: 'BST',
+        path: Paths.DIJKSTRA
+    },
+    {
+        id: 3,
+        name: 'Bellman Ford',
+        path: Paths.DIJKSTRA
+    },
+    {
+        id: 4,
+        name: 'Heap',
+        path: Paths.HEAP
+    }
+]
 
 export const DropdownMenu = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <Button 
-        onClick={handleClick} 
-        variant="contained"
-        sx={{
-          backgroundColor: 'black',
-          color: 'white',
-          padding: '10px 20px',
-          borderRadius: '4px',
-          transition: 'background-color 0.3s',
-          '&:hover': {
-            backgroundColor: '#333',
-          }
-        }}
-      >
-        More Algorithms
-      </Button>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem 
-          className="dropdown-item" 
-          onClick={handleClose}
-          sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            margin: '5px 0',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            textAlign: 'center',
-            transition: 'background-color 0.3s',
-            '&:hover': {
-              backgroundColor: '#333',
-            }
-          }}
-        >
-          Dijkstra
-        </MenuItem>
-        <MenuItem 
-          className="dropdown-item" 
-          onClick={handleClose}
-          sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            margin: '5px 0',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            textAlign: 'center',
-            transition: 'background-color 0.3s',
-            '&:hover': {
-              backgroundColor: '#333',
-            }
-          }}
-        >
-          BST
-        </MenuItem>
-        <MenuItem 
-          className="dropdown-item" 
-          onClick={handleClose}
-          sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            margin: '5px 0',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            textAlign: 'center',
-            transition: 'background-color 0.3s',
-            '&:hover': {
-              backgroundColor: '#333',
-            }
-          }}
-        >
-          Bellman Ford
-        </MenuItem>
-        {/* Added Heap MenuItem */}
-        <MenuItem 
-          className="dropdown-item" 
-          onClick={handleClose}
-          sx={{
-            backgroundColor: 'black',
-            color: 'white',
-            margin: '5px 0',
-            padding: '10px 20px',
-            borderRadius: '4px',
-            textAlign: 'center',
-            transition: 'background-color 0.3s',
-            '&:hover': {
-              backgroundColor: '#333',
-            }
-          }}
-        >
-          Heap
-        </MenuItem>
-      </Menu>
-    </div>
-  );
+    return (
+        <div>
+            <Button
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                Algorithm
+            </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+            >
+                {
+                    dropDownData.map((data) => {
+                        return (
+                            <MenuItem value={data.id} onClick={() => navigate(data.path)}>
+                                {data.name}</MenuItem>
+                        )
+                    })
+                }
+            </Menu>
+        </div>
+    );
 };
