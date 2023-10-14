@@ -1,6 +1,6 @@
 import { DisplayCard } from "./component/displayCard.jsx";
-import { Stack } from "@mui/material";
 import { AlgoList } from "./component/algoList";
+import { Stack } from "@mui/material";
 
 export const Home = () => {
   return (
@@ -10,3 +10,4 @@ export const Home = () => {
     </Stack>
   );
 };
+export default Home;

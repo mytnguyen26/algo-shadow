@@ -1,6 +1,7 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import { Link } from "react-router-dom";
 
 export const AlgoList = () => {
   return (
@@ -9,14 +10,35 @@ export const AlgoList = () => {
       cols={5}
       rowHeight={164}
     >
-      {itemData.map((item) => (
+      {itemData.map((item, index) => (
         <ImageListItem key={item.img}>
-          <img
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            alt={item.title}
-            loading="lazy"
-          />
+          {index === 0 ? (
+            <Link
+              to="/algorithm"
+              style={{
+                textDecoration: "none",
+                display: "inline-block",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <img
+                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                alt={item.title}
+                loading="lazy"
+                style={{ width: "100%", height: "150%" }}
+              />
+            </Link>
+          ) : (
+            <img
+              srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+              src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+              alt={item.title}
+              loading="lazy"
+              style={{ width: "100%", height: "150%" }}
+            />
+          )}
         </ImageListItem>
       ))}
     </ImageList>
