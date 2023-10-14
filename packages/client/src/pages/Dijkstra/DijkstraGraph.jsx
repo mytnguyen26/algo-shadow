@@ -3,9 +3,6 @@ import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
 import Graph from "./algorithm.js";
 
-const START_NODE = "A";
-const FINISH_NODE = "B";
-
 export const DijkstraGraph = () => {
   const [nodes, setNodes] = useState([
     {
@@ -280,15 +277,4 @@ export const DijkstraGraph = () => {
       ></svg>
     </Stack>
   );
-};
-
-const getInitialNodes = (nodes) => {
-  nodes.forEach((node) => {
-    node.distance = node.id === START_NODE ? 0 : Infinity;
-    node.isStart = node.id === START_NODE;
-    node.isFinish = node.id === FINISH_NODE;
-    node.previousNode = null;
-  });
-
-  return nodes;
 };
