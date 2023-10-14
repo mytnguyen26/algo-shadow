@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useRef} from "react";
 import HeapComponent from "./HeapComponent/HeapComponent";
+import Animation from "./HeapComponent/animate";
 
 
 function HeapPage() {
   const [data, setData] = useState([18, 4, 10, 13, 7, 9, 3, 2, 8, 1]);
-  const [dataset, setDataset] = useState(datatran(data));
+  const [dataset, setDataset] = useState(dataTran(data));
   const [record, setRecord] = useState([]);
 
   useEffect(() => {
     createHeap();
   }, [record]);
 
-  function datatran(data) {
+  function dataTran(data) {
     return data.map((value, index) => ({ index: index + 1, value: Number(value) }));
   }
 
@@ -25,12 +26,12 @@ function HeapPage() {
   }
 
   function createHeap() {
-    setDataset(datatran(data));
+    setDataset(dataTran(data));
   }
 
 
   function reset() {
-    setDataset(datatran(record));
+    setDataset(dataTran(data));
   }
 
   return (
@@ -47,9 +48,9 @@ function HeapPage() {
       <button id="csubmit" onClick={() => {
         let tdata = document.getElementById("create").value.split(",");
         if (validdata(tdata)) {
-          setData(tdata.map(Number));
-          setRecord(tdata);
-          console.log(record);
+          setData(tdata.map(item => Number(item.trim())));
+          setRecord([]);
+          setDataset(dataTran(data))
         } else {
           alert("Only numbers and commas can be entered");
         }
