@@ -19,49 +19,51 @@ function HeapComponent({ dataset, data, record, setData, setRecord}) {
       Animation.createTree(dataset,svgRef);
       buildmaxheap();
     }
-}, [dataset, isAnimating]);
+  },[]);
 
-const maxheap = (localDataset, i, localRecord) => {
-  const n = localDataset.length;
-  const left = 2 * i;
-  const right = 2 * i + 1;
-  let largest = i;
-  if (left <= n && localDataset[left - 1].value > localDataset[largest - 1].value) {
-    largest = left;
-  }
-  if (right <= n && localDataset[right - 1].value > localDataset[largest - 1].value) {
-    largest = right;
-  }
-  if (largest !== i) {
-    localRecord.push({ 
-      e1: {index: localDataset[i - 1].index }, 
-      e2: {index: localDataset[largest - 1].index }
-    });
-     // Swap
-     let temp = localDataset[i - 1];
-     localDataset[i - 1] = localDataset[largest - 1];
-     localDataset[largest - 1] = temp;
-    maxheap(localDataset, largest, localRecord)
+  const maxheap = (localDataset, i, localRecord) => {
+    const n = localDataset.length;
+    const left = 2 * i;
+    const right = (2 * i) + 1;
+    let largest = 0;
+    if (left <= n && localDataset[left - 1].value > localDataset[i - 1].value) {
+      largest = left;
+    }
+    else
+    {
+      largest = i
+    }
 
-    // Recursively heapify the affected subtree
-  }
-  //console.log(localRecord);
-  return { dataset: localDataset, record: localRecord };
+    if (right <= n && localDataset[right - 1].value > localDataset[largest - 1].value) {
+      largest = right;
+    }
+    
+    if (largest !== i) {
+      localRecord.push({ 
+        e1:localDataset[i - 1].index, 
+        e2:localDataset[largest - 1].index
+      });
+      // Swap
+      let temp = localDataset[i - 1];
+      localDataset[i - 1] = localDataset[largest - 1];
+      localDataset[largest - 1] = temp;
+      maxheap(localDataset, largest, localRecord)
+
+      // Recursively heapify the affected subtree
+    }
+    return { dataset: localDataset, record: localRecord };
   };
 
 const [currentIndex, setCurrentIndex] = useState(Math.floor(data.length / 2));
 
 
 const buildmaxheap = () => {
-
   let result = 0;
   for(var i = Math.floor(dataset.length/2) ;i>0;i--)
   {
-    result = maxheap(dataset,i,record)
+    maxheap(dataset,i,record)
   }
   console.log("Heapification completed!");
-  let tempDataset = result.dataset;
-  let tempRecord = result.record; // Create a temporary record
 };
 
 function insertheap(newValue) {
@@ -137,38 +139,16 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   animateElementY.beginElement();
 };
 
-
-const animateSwap = (swapRecord) => {
-  setIsAnimating(true);
-  // Assuming swapRecord.e1 and swapRecord.e2 contains the data of the two nodes to be swapped
-
-  // Get the elements by their ID using D3
-  const node1 = d3.select(`#t${swapRecord.e1.index}`);
-  const node2 = d3.select(`#t${swapRecord.e2.index}`);
-  console.log(node1)
-  // Animate the swap using your exchangetext function
-  if (node1.node() && node2.node()) {
-    animateExchange(node1.node(), node2.node());
-  }
-
-  // Assuming your animation duration is 3 seconds as in your previous code
-  const animationDuration = 3; // Duration in seconds
-  setTimeout(() => {
-    setIsAnimating(false);
-  }, animationDuration * 1000);
-}
-
 const nextStep = () => {
   if(step>=record.length)
     alert("The heap is end")
   else
   {
-    
-    const text1 = document.getElementById("t" + record[0].e1);
-    const text2 = document.getElementById("t" + record[0].e2);
-    animateSwap(record[0]);
+    const text1 = document.getElementById("t" + record[step].e1);
+    const text2 = document.getElementById("t" + record[step].e2);
+    animateExchange(text1,text2);
   }
-  return step+1
+  setStep(step+1)
 }
 
 return (
