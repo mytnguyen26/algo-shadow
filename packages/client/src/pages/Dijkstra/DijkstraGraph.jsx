@@ -121,7 +121,7 @@ export const DijkstraGraph = () => {
     const svg = d3.select(svgRef.current);
 
     // Draw links
-    const linkSelection = svg
+    svg
       .selectAll(".link")
       .data(links)
       .enter()
