@@ -11,6 +11,49 @@ const getx = (c)=>{
   const index = c - distance;
   return (width / (distance + 1)) * (index + 1);
 }
+
+const animateExchange = (c1, c2) => {
+  let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
+  let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
+  let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
+  let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
+  const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
+  const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
+
+  addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
+  addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
+
+  c1.setAttribute("dx", x2);
+  c1.setAttribute("dy", y2);
+  c2.setAttribute("dx", x1);
+  c2.setAttribute("dy", y1);
+};
+
+const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
+  // Animation for X-axis
+  const animateElementX = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+  animateElementX.setAttribute("attributeName", attributeNameX);
+  animateElementX.setAttribute("from", x1);
+  animateElementX.setAttribute("to", x2);
+  animateElementX.setAttribute("begin", "0s");
+  animateElementX.setAttribute("dur", "3s");
+  animateElementX.setAttribute("fill", "freeze");
+  c1.appendChild(animateElementX);
+  animateElementX.beginElement();
+
+  // Animation for Y-axis
+  const animateElementY = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+  animateElementY.setAttribute("attributeName", attributeNameY);
+  animateElementY.setAttribute("from", y1);
+  animateElementY.setAttribute("to", y2);
+  animateElementY.setAttribute("begin", "0s");
+  animateElementY.setAttribute("dur", "3s");
+  animateElementY.setAttribute("fill", "freeze");
+  c1.appendChild(animateElementY);
+  animateElementY.beginElement();
+};
+
+
 const Animation = {
   createTree:(dataSetToUse,svgRef) => {    
     const svg = d3.select(svgRef.current);
@@ -56,7 +99,25 @@ const Animation = {
           .attr("dx", (c) => getx(c.index))
           .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
           .text((t) => t.value);
+    },
+  animateExchange:(c1, c2) => {
+      let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
+      let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
+      let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
+      let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
+      const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
+      const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
+    
+      addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
+      addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
+    
+      c1.setAttribute("dx", x2);
+      c1.setAttribute("dy", y2);
+      c2.setAttribute("dx", x1);
+      c2.setAttribute("dy", y1);
     }
 }
+
+
 
 export default Animation;

@@ -7,64 +7,56 @@ const height = 300;
 //data: original data
 //dataset: indexed data after heap
 
-function HeapComponent({ dataset, data, record, setData, setRecord}) {
-  const [step, setStep] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-
-  const svgRef = useRef(null);
-
-  useEffect(() => {
-    if (svgRef.current && !isAnimating) {
-      Animation.createTree(dataset,svgRef);
-      buildmaxheap();
-    }
-  },[]);
-
-  const maxheap = (localDataset, i, localRecord) => {
-    const n = localDataset.length;
-    const left = 2 * i;
-    const right = (2 * i) + 1;
-    let largest = 0;
-    if (left <= n && localDataset[left - 1].value > localDataset[i - 1].value) {
-      largest = left;
-    }
-    else
-    {
-      largest = i
-    }
-
-    if (right <= n && localDataset[right - 1].value > localDataset[largest - 1].value) {
-      largest = right;
-    }
-    
-    if (largest !== i) {
-      localRecord.push({ 
-        e1:localDataset[i - 1].index, 
-        e2:localDataset[largest - 1].index
-      });
-      // Swap
-      let temp = localDataset[i - 1];
-      localDataset[i - 1] = localDataset[largest - 1];
-      localDataset[largest - 1] = temp;
-      maxheap(localDataset, largest, localRecord)
-
-      // Recursively heapify the affected subtree
-    }
-    return { dataset: localDataset, record: localRecord };
-  };
-
-const [currentIndex, setCurrentIndex] = useState(Math.floor(data.length / 2));
-
-
-const buildmaxheap = () => {
-  let result = 0;
+const buildmaxheap = (dataset,record) => {
   for(var i = Math.floor(dataset.length/2) ;i>0;i--)
   {
     maxheap(dataset,i,record)
   }
   console.log("Heapification completed!");
+}
+
+const maxheap = (localDataset, i, localRecord) => {
+  const n = localDataset.length;
+  const left = 2 * i;
+  const right = (2 * i) + 1;
+  let largest = 0;
+  if (left <= n && localDataset[left - 1].value > localDataset[i - 1].value) {
+    largest = left;
+  }
+  else
+  {
+    largest = i
+  }
+
+  if (right <= n && localDataset[right - 1].value > localDataset[largest - 1].value) {
+    largest = right;
+  }
+  
+  if (largest !== i) {
+    localRecord.push({ 
+      e1:localDataset[i - 1].index, 
+      e2:localDataset[largest - 1].index
+    });
+    // Swap
+    let temp = localDataset[i - 1];
+    localDataset[i - 1] = localDataset[largest - 1];
+    localDataset[largest - 1] = temp;
+    maxheap(localDataset, largest, localRecord)
+
+    // Recursively heapify the affected subtree
+  }
+  return { dataset: localDataset, record: localRecord };
 };
+
+function HeapComponent({ dataset, data, record, setData, setRecord}) {
+  const [step, setStep] = useState(0);
+  const svgRef = useRef(null);
+
+  useEffect(() => {
+    Animation.createTree(dataset,svgRef);
+    buildmaxheap(dataset,record);
+  },[data]);
+
 
 function insertheap(newValue) {
   const newData = [...data, Number(newValue)];
@@ -97,56 +89,16 @@ function insertheap(newValue) {
   }
 }
 
-
-const animateExchange = (c1, c2) => {
-  let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
-  let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
-  let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
-  let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
-  const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
-  const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
-
-  addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-  addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
-
-  c1.setAttribute("dx", x2);
-  c1.setAttribute("dy", y2);
-  c2.setAttribute("dx", x1);
-  c2.setAttribute("dy", y1);
-};
-
-const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
-  // Animation for X-axis
-  const animateElementX = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-  animateElementX.setAttribute("attributeName", attributeNameX);
-  animateElementX.setAttribute("from", x1);
-  animateElementX.setAttribute("to", x2);
-  animateElementX.setAttribute("begin", "0s");
-  animateElementX.setAttribute("dur", "3s");
-  animateElementX.setAttribute("fill", "freeze");
-  c1.appendChild(animateElementX);
-  animateElementX.beginElement();
-
-  // Animation for Y-axis
-  const animateElementY = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-  animateElementY.setAttribute("attributeName", attributeNameY);
-  animateElementY.setAttribute("from", y1);
-  animateElementY.setAttribute("to", y2);
-  animateElementY.setAttribute("begin", "0s");
-  animateElementY.setAttribute("dur", "3s");
-  animateElementY.setAttribute("fill", "freeze");
-  c1.appendChild(animateElementY);
-  animateElementY.beginElement();
-};
-
 const nextStep = () => {
   if(step>=record.length)
-    alert("The heap is end")
+  {
+    alert("Heap is end!")
+  }
   else
   {
     const text1 = document.getElementById("t" + record[step].e1);
     const text2 = document.getElementById("t" + record[step].e2);
-    animateExchange(text1,text2);
+    Animation.animateExchange(text1,text2);
   }
   setStep(step+1)
 }
@@ -155,7 +107,7 @@ return (
     <div>
         <svg ref={svgRef} width={width} height={height}></svg>
         {/* <button onClick={initializeMaxHeap}>Build Max Heap</button> */}
-        <button onClick={nextStep}>Next Step</button>
+        <button onClick={()=>{nextStep()}}>Next Step</button>
     </div>
 );
 }
