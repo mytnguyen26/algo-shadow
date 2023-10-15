@@ -47,9 +47,10 @@ function HeapPage() {
       <button id="csubmit" onClick={() => {
         let tdata = document.getElementById("create").value.split(",");
         if (validdata(tdata)) {
-          setData(tdata.map(Number));
-          setRecord(tdata);
-          console.log(record);
+          let newData = tdata.map(item => Number(item.trim()));
+          setData(newData);
+          setRecord([]);
+          setDataset(dataTran(newData)); 
         } else {
           alert("Only numbers and commas can be entered");
         }
