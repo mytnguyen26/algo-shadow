@@ -1,33 +1,14 @@
 import * as d3 from "d3";
-const width = 700;
-const height = 300;
 const getdepth = (c)=>{
   return Math.ceil(Math.log2(c + 1)) - 1;
 }
 
-const getx = (c)=>{
+const getx = (c,width)=>{
   const depth = getdepth(c);
   const distance = 2 ** depth;
   const index = c - distance;
   return (width / (distance + 1)) * (index + 1);
 }
-
-const animateExchange = (c1, c2) => {
-  let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
-  let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
-  let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
-  let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
-  const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
-  const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
-
-  addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-  addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
-
-  c1.setAttribute("dx", x2);
-  c1.setAttribute("dy", y2);
-  c2.setAttribute("dx", x1);
-  c2.setAttribute("dy", y1);
-};
 
 const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
@@ -56,9 +37,10 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
 
 const Animation = {
   createTree:(dataSetToUse,svgRef) => {    
+    const width = svgRef.current.clientWidth;
+    //console.log(dataSetToUse)
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
-    
     const my = 60;
     const p = svg
           .append("g")
@@ -69,9 +51,9 @@ const Animation = {
           .enter()
           .append("line")
           .attr("id", (c) => "l" + c.index)
-          .attr("x1", (c) => (c.index === 1 ? null : getx(c.index)))
+          .attr("x1", (c) => (c.index === 1 ? null : getx(c.index,width)))
           .attr("y1", (c) => (c.index === 1 ? null : my * (getdepth(c.index) + 1)))
-          .attr("x2", (c) => (c.index === 1 ? null : getx(Math.floor(c.index / 2))))
+          .attr("x2", (c) => (c.index === 1 ? null : getx(Math.floor(c.index / 2),width)))
           .attr("y2", (c) => (c.index === 1 ? null : my * (getdepth(c.index))));
     const c = svg
           .append("g")
@@ -83,7 +65,7 @@ const Animation = {
           .enter()
           .append("circle")
           .attr("id", (c) => "c" + c.index)
-          .attr("cx", (c) => getx(c.index))
+          .attr("cx", (c) => getx(c.index,width))
           .attr("cy", (c) => my * (getdepth(c.index) + 1))
           .attr("r", 20);
     const t = svg
@@ -96,28 +78,27 @@ const Animation = {
           .enter()
           .append("text")
           .attr("id", (c) => "t" + c.index)
-          .attr("dx", (c) => getx(c.index))
+          .attr("dx", (c) => getx(c.index,width))
           .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
           .text((t) => t.value);
-    },
+  },
+
   animateExchange:(c1, c2) => {
-      let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
-      let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
-      let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
-      let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
-      const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
-      const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
+    let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
+    let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
+    let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
+    let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
+    const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
+    const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
     
-      addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-      addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
+    addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
+    addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
     
-      c1.setAttribute("dx", x2);
-      c1.setAttribute("dy", y2);
-      c2.setAttribute("dx", x1);
-      c2.setAttribute("dy", y1);
-    }
+    c1.setAttribute("dx", x2);
+    c1.setAttribute("dy", y2);
+    c2.setAttribute("dx", x1);
+    c2.setAttribute("dy", y1);
+  }
 }
-
-
 
 export default Animation;
