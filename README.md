@@ -1,5 +1,6 @@
 # algo-shadow
-https://github.com/mytnguyen26/algo-shadow/actions/workflows/node.js.yml/badge.svg?branch=dev
+
+<img src="https://github.com/mytnguyen26/algo-shadow/actions/workflows/node.js.yml/badge.svg"/>
 
 Algo-shadow is an algorithm visualizer web application. With this application users can do the following:
 + Select an algorithm from our list of algorithms to visualize. Then the user can instantiate the data structure and initial state of the algorithm selected by providing inputs. As users step thru each step, the graph represents the state of the data structure of the algorithm changes
