@@ -3,14 +3,12 @@ import Animation from "./HeapComponent/animate";
 import Heapification from "./HeapComponent/heapmethod";
 const width = 600;
 const height = 300;
-let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
-let dataset = []
-let record = []
-
+var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
+var dataset = []
+var record = []
+var step = 0
 function HeapPage() {
   const svgRef = useRef(null);
-  //const [record, setRecord] = useState([]);
-  const [step, setStep] = useState(0);
   const [resetkey,setResetkey] = useState(0);
 
   useEffect(() => {
@@ -40,26 +38,40 @@ function HeapPage() {
       const text1 = document.getElementById("t" + record[step].e1);
       const text2 = document.getElementById("t" + record[step].e2);
       Animation.animateExchange(text1,text2);
+      step++
     }
-    setStep(step+1)
   }
 
   function reset() {
-    setStep(0)
+    step = 0
     Animation.createTree(dataset,svgRef);
+    let result = Heapification.buildmaxheap(dataset,record);
+    record = result.record
+    dataset = result.dataset
+  }
+
+  function back() {
+    if(step<1)
+    {
+      alert("This is the first step!")
+    }
+    else
+    {
+      step--
+      console.log(record)
+      console.log(step)
+      const text1 = document.getElementById("t" + record[step].e1);
+      const text2 = document.getElementById("t" + record[step].e2);
+      Animation.animateExchange(text1,text2);
+    }
   }
 
   function createHeap(){
     dataset = dataTran(data)
-    console.log(data)
     record = []
-    setStep(0)
+    step = 0
     Animation.createTree(dataset,svgRef);
-    let result = Heapification.buildmaxheap(dataset,record);
-    record = result.record
-  }
-
-  function insertHeap(newValue) {
+    Heapification.buildmaxheap(dataset,record);
   }
 
   return (
@@ -75,24 +87,32 @@ function HeapPage() {
         if (validdata(tdata)) {
           data = tdata.map(item => Number(item.trim()))
           createHeap()
-
-          setResetkey(~resetkey)
         } else {
           alert("Only numbers and commas can be entered");
         }
         }}>Create Heap</button>
-    
+
+      <button id="final" onClick={() => {
+          console.log("final")
+          Animation.fianlTree(dataset,svgRef);
+        }}>fianl heap</button>
+
       <input id="insert" placeholder="Insert a number" />
       <button id="isubmit" onClick={() => {
-        let tdata = document.getElementById("insert").value.split(",");
-        if (validdata(tdata) && tdata.length === 1) {
-
-        } else {
-          alert(tdata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
-        }
-      }}>Insert</button>
+          let tdata = document.getElementById("insert").value.split(",");
+          if (validdata(tdata) && tdata.length === 1) {
+            data.push(Number(tdata[0]))
+            dataset.push({index:data.length,value:Number(tdata[0])})
+            step = record.length-1
+            Animation.fianlTree(dataset,svgRef);
+            Heapification.insertheap(dataset,record)
+          } else {
+            alert(tdata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
+          }
+        }}>Insert</button>
 
       <button id="reset" onClick={reset}>Reset</button>
+      <button id="reset" onClick={back}>back</button>
     </div>
   );
 }

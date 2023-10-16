@@ -1,5 +1,3 @@
-
-
 const maxheap = (localDataset, i, localRecord) => {
     const n = localDataset.length;
     const left = 2 * i;
@@ -42,8 +40,35 @@ const Heapification = {
         }
         console.log("Heapification completed!")
         return result
-    }
-    
+    },
+    insertheap: (localDataset, localRecord) => {
+      const n = localDataset.length;
+      let i = n;
+      while (i > 1) {
+        const parentIndex = Math.floor(i / 2);
+        if (localDataset[i - 1].value > localDataset[parentIndex - 1].value) {
+          // Swap the element with its parent
+          let temp = localDataset[i - 1];
+          localDataset[i - 1] = localDataset[parentIndex - 1];
+          localDataset[parentIndex - 1] = temp;
+  
+          localRecord.push({
+            e1: localDataset[i - 1].index,
+            e2: localDataset[parentIndex - 1].index,
+          });
+  
+          i = parentIndex;
+        } else {
+          // The max-heap property is maintained
+          break;
+        }
+      }
+  
+      return { dataset: localDataset, record: localRecord };
+    },
+    deleteheap:()=>{
+
+    },
 }
 
 export default Heapification;
