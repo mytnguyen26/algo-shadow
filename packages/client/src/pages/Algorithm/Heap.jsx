@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from "react";
-import HeapComponent from "./HeapComponent/HeapComponent";
-
+import React, { useState, useEffect , useRef} from "react";
+import Animation from "./HeapComponent/animate";
+import Heapification from "./HeapComponent/heapmethod";
+const width = 600;
+const height = 300;
+let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
+let dataset = []
+let record = []
 
 function HeapPage() {
-  const [data, setData] = useState([18, 4, 10, 13, 7, 9, 3, 2, 8, 1]);
-  const [dataset, setDataset] = useState(datatran(data));
-  const [record, setRecord] = useState([]);
+  const svgRef = useRef(null);
+  //const [record, setRecord] = useState([]);
+  const [step, setStep] = useState(0);
+  const [resetkey,setResetkey] = useState(0);
 
   useEffect(() => {
-    createHeap();
-  }, [record]);
+    createHeap()
+  },[resetkey]);
 
-  function datatran(data) {
+  function dataTran(data) {
     return data.map((value, index) => ({ index: index + 1, value: Number(value) }));
   }
 
@@ -24,44 +30,63 @@ function HeapPage() {
     return true;
   }
 
-  function createHeap() {
-    setDataset(datatran(data));
+  const nextStep = () => {
+    if(step>=record.length)
+    {
+      alert("Heap is end!")
+    }
+    else
+    {
+      const text1 = document.getElementById("t" + record[step].e1);
+      const text2 = document.getElementById("t" + record[step].e2);
+      Animation.animateExchange(text1,text2);
+    }
+    setStep(step+1)
   }
 
-
   function reset() {
-    setDataset(datatran(record));
+    setStep(0)
+    Animation.createTree(dataset,svgRef);
+  }
+
+  function createHeap(){
+    dataset = dataTran(data)
+    console.log(data)
+    record = []
+    setStep(0)
+    Animation.createTree(dataset,svgRef);
+    let result = Heapification.buildmaxheap(dataset,record);
+    record = result.record
+  }
+
+  function insertHeap(newValue) {
   }
 
   return (
     <div>
-      <HeapComponent 
-        dataset={dataset} 
-        data={data} 
-        record={record} 
-        setData={setData} 
-        setRecord={setRecord}
-      />
-  
+      <div>
+      <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
+      {/* <button onClick={initializeMaxHeap}>Build Max Heap</button> */}
+      </div>
+      <button onClick={()=>{nextStep()}}>Next Step</button>
       <input id="create" placeholder="Enter comma separated numbers" />
       <button id="csubmit" onClick={() => {
         let tdata = document.getElementById("create").value.split(",");
         if (validdata(tdata)) {
-          setData(tdata.map(Number));
-          setRecord(tdata);
-          console.log(record);
+          data = tdata.map(item => Number(item.trim()))
+          createHeap()
+
+          setResetkey(~resetkey)
         } else {
           alert("Only numbers and commas can be entered");
         }
-        
-      }}>Create Heap</button>
+        }}>Create Heap</button>
     
       <input id="insert" placeholder="Insert a number" />
       <button id="isubmit" onClick={() => {
         let tdata = document.getElementById("insert").value.split(",");
         if (validdata(tdata) && tdata.length === 1) {
-          // TODO: Define or import HeapComponent.insertheap
-          // HeapComponent.insertheap(tdata[0], data, setData, record, setRecord);
+
         } else {
           alert(tdata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
         }
