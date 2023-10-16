@@ -82,6 +82,60 @@ const Animation = {
           .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
           .text((t) => t.value);
   },
+  fianlTree:(dataSetToUse,svgRef) => {    
+    const width = svgRef.current.clientWidth;
+    const svg = d3.select(svgRef.current);
+    //console.log(dataSetToUse)
+    svg.selectAll('*').remove();
+    const my = 60;
+    let i = 0;
+    let j = 0;
+    const p = svg
+          .append("g")
+          .attr("stroke", "black")
+          .attr("stroke-width", "1")
+          .selectAll("line")
+          .data(dataSetToUse)
+          .enter()
+          .append("line")
+          .attr("id", (c) => "l" + c.index)
+          .attr("x1", (c) => (c.index === 1 ? null : getx(c.index,width)))
+          .attr("y1", (c) => (c.index === 1 ? null : my * (getdepth(c.index) + 1)))
+          .attr("x2", (c) => (c.index === 1 ? null : getx(Math.floor(c.index / 2),width)))
+          .attr("y2", (c) => (c.index === 1 ? null : my * (getdepth(c.index))));
+    const c = svg
+          .append("g")
+          .attr("stroke", "black")
+          .attr("fill", "white")
+          .attr("stroke-width", "1")
+          .selectAll("circle")
+          .data(dataSetToUse)
+          .enter()
+          .append("circle")
+          .attr("id", (c) => "c" + c.index)
+          .attr("cx", (c) => getx(c.index,width))
+          .attr("cy", (c) => my * (getdepth(c.index) + 1))
+          .attr("r", 20);
+    const t = svg
+          .append("g")
+          .attr("stroke", "black")
+          .attr("text-anchor", "middle")
+          .attr("text-size", "10px")
+          .selectAll("text")
+          .data(dataSetToUse)
+          .enter()
+          .append("text")
+          .attr("id", (c) => {
+            return "t" + c.index})
+          .attr("dx", (c) =>{
+            i++;
+            return getx(i,width)} )
+          .attr("dy", (c) =>{
+            j++;
+            return my * (getdepth(j) + 1) + 5
+          } )
+          .text((t) => t.value);
+  },
 
   animateExchange:(c1, c2) => {
     let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
