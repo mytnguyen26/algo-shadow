@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "generate-docs": "jsdoc ./src/pages/Home/component/algoList.jsx -d docs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prettier": "prettier -l \"src/**/*.js(x)\"",
@@ -28,6 +29,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "jsdoc": "^4.0.2",
     "prettier": "3.0.3",
     "vite": "^4.4.5"
   }

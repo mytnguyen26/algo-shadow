@@ -2,6 +2,14 @@ import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 
+/**
+ * Test.
+ * @async
+ * @method
+ * @param {String} email - User email
+ * @returns {User} User object
+ * @throws {NotFoundError} When the user is not found.
+ */
 export const AlgoList = () => {
   return (
     <ImageList
