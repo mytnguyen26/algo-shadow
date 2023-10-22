@@ -88,8 +88,6 @@ const Animation = {
     //console.log(dataSetToUse)
     svg.selectAll('*').remove();
     const my = 60;
-    let i = 0;
-    let j = 0;
     const p = svg
           .append("g")
           .attr("stroke", "black")
@@ -99,10 +97,10 @@ const Animation = {
           .enter()
           .append("line")
           .attr("id", (c) => "l" + c.index)
-          .attr("x1", (c) => (c.index === 1 ? null : getx(c.index,width)))
-          .attr("y1", (c) => (c.index === 1 ? null : my * (getdepth(c.index) + 1)))
-          .attr("x2", (c) => (c.index === 1 ? null : getx(Math.floor(c.index / 2),width)))
-          .attr("y2", (c) => (c.index === 1 ? null : my * (getdepth(c.index))));
+          .attr("x1", (c,i) => (i === 0 ? null : getx(i+1,width)))
+          .attr("y1", (c,i) => (i === 0 ? null : my * (getdepth(i+1) + 1)))
+          .attr("x2", (c,i) => (i === 0 ? null : getx(Math.floor((i+1)/ 2),width)))
+          .attr("y2", (c,i) => (i === 0 ? null : my * (getdepth(i+1))));
     const c = svg
           .append("g")
           .attr("stroke", "black")
@@ -113,8 +111,8 @@ const Animation = {
           .enter()
           .append("circle")
           .attr("id", (c) => "c" + c.index)
-          .attr("cx", (c) => getx(c.index,width))
-          .attr("cy", (c) => my * (getdepth(c.index) + 1))
+          .attr("cx", (c,i) =>getx(i+1,width) )
+          .attr("cy", (c,i) => my * (getdepth(i+1) + 1))
           .attr("r", 20);
     const t = svg
           .append("g")
@@ -127,13 +125,8 @@ const Animation = {
           .append("text")
           .attr("id", (c) => {
             return "t" + c.index})
-          .attr("dx", (c) =>{
-            i++;
-            return getx(i,width)} )
-          .attr("dy", (c) =>{
-            j++;
-            return my * (getdepth(j) + 1) + 5
-          } )
+          .attr("dx", (c,i) =>getx(i+1,width))
+          .attr("dy", (c,i) =>my * (getdepth(i+1) + 1) + 5)
           .text((t) => t.value);
   },
 
@@ -152,6 +145,19 @@ const Animation = {
     c1.setAttribute("dy", y2);
     c2.setAttribute("dx", x1);
     c2.setAttribute("dy", y1);
+  },
+
+  deleteelement:(e,size)=>{
+    document.getElementById("t"+e).style.display = 'none';
+    document.getElementById("c"+size).style.display = 'none';
+    document.getElementById("l"+size).style.display = 'none';
+  },
+
+  showelement:(e,size)=>{
+    console.log(document.getElementById("t"+e))
+    document.getElementById("t"+e).style.display = 'block';
+    document.getElementById("c"+size).style.display = 'block';
+    document.getElementById("l"+size).style.display = 'block';
   }
 }
 
