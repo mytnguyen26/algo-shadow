@@ -14,7 +14,7 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
   const animateElementX = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "animate"
+    "animate",
   );
   animateElementX.setAttribute("attributeName", attributeNameX);
   animateElementX.setAttribute("from", x1);
@@ -28,7 +28,7 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for Y-axis
   const animateElementY = document.createElementNS(
     "http://www.w3.org/2000/svg",
-    "animate"
+    "animate",
   );
   animateElementY.setAttribute("attributeName", attributeNameY);
   animateElementY.setAttribute("from", y1);
@@ -59,7 +59,7 @@ const Animation = {
       .attr("x1", (c) => (c.index === 1 ? null : getx(c.index, width)))
       .attr("y1", (c) => (c.index === 1 ? null : my * (getdepth(c.index) + 1)))
       .attr("x2", (c) =>
-        c.index === 1 ? null : getx(Math.floor(c.index / 2), width)
+        c.index === 1 ? null : getx(Math.floor(c.index / 2), width),
       )
       .attr("y2", (c) => (c.index === 1 ? null : my * getdepth(c.index)));
     const c = svg
@@ -107,7 +107,7 @@ const Animation = {
       .attr("x1", (c, i) => (i === 0 ? null : getx(i + 1, width)))
       .attr("y1", (c, i) => (i === 0 ? null : my * (getdepth(i + 1) + 1)))
       .attr("x2", (c, i) =>
-        i === 0 ? null : getx(Math.floor((i + 1) / 2), width)
+        i === 0 ? null : getx(Math.floor((i + 1) / 2), width),
       )
       .attr("y2", (c, i) => (i === 0 ? null : my * getdepth(i + 1)));
     const c = svg
