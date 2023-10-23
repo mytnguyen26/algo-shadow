@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
+import Box from "@mui/material/Box";
 
 export const ControlArea = () => {
   const [isRunning, setIsRunning] = useState(false);
 
   return (
-    <div sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
       <Button
         onClick={() => setIsRunning(!isRunning)}
         variant="contained"
@@ -49,6 +50,6 @@ export const ControlArea = () => {
         valueLabelDisplay="auto"
         sx={{ width: "100px" }}
       />
-    </div>
+    </Box>
   );
 };
