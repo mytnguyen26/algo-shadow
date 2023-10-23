@@ -1,10 +1,10 @@
-import { Container, Box } from '@mui/material';
-import { AlgorithmSpace } from "./AlgComponent/AlgorithmSpace";
-import { ControlArea } from "./AlgComponent/ControlArea.jsx";
+import { Container, Box } from "@mui/material";
+import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
+import { ControlArea } from "./AlgComponent/controlArea.jsx";
 
 const Algorithm = () => {
   return (
-    <Container maxWidth="md"> 
+    <Container maxWidth="md">
       <Box mt={4} className="middle-container">
         <AlgorithmSpace />
         <Box mt={2}>
