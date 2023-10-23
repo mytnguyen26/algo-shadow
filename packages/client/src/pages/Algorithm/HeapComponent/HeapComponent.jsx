@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Animation from "./animate";
 import Heapification from "./heapmethod";
 const width = 600;
