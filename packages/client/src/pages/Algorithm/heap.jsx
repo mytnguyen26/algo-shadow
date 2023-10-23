@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from "react";
-import HeapComponent from "./HeapComponent/HeapComponent";
-
+import React, { useState, useEffect, useRef } from "react";
+import Animation from "./HeapComponent/animate";
+import Heapification from "./HeapComponent/heapmethod";
+const width = 600;
+const height = 300;
+var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+var dataset = [];
+var tdataset = [];
+var record = [];
+var step = 0;
+var deleteindex = -1;
 function HeapPage() {
-  const [data, setData] = useState([18, 4, 10, 13, 7, 9, 3, 2, 8, 1]);
-  const [dataset, setDataset] = useState(datatran(data));
-  const [record, setRecord] = useState([]);
+  const svgRef = useRef(null);
+  const [resetkey, setResetkey] = useState(0);
+  const [state, setState] = useState(0);
+  //const [step, setStep] = useState(0);
 
   useEffect(() => {
     createHeap();
-  }, [record]);
+  }, [resetkey]);
 
-  function datatran(data) {
-    return data.map((value, index) => ({
-      index: index + 1,
-      value: Number(value),
-    }));
-  }
-
-  function validdata(tdata) {
-    for (const ele of tdata) {
+  function validdata(xdata) {
+    for (const ele of xdata) {
       if (isNaN(ele)) {
         return false;
       }
@@ -26,33 +28,113 @@ function HeapPage() {
     return true;
   }
 
-  function createHeap() {
-    setDataset(datatran(data));
-  }
+  const nextStep = () => {
+    if (step >= record.length) {
+      alert("Heap is end!");
+    } else {
+      if (record[step].e1 == 0) {
+        Animation.deleteelement(deleteindex + 1, dataset.length + 1);
+      } else {
+        const text1 = document.getElementById("t" + record[step].e1);
+        const text2 = document.getElementById("t" + record[step].e2);
+        Animation.animateExchange(text1, text2);
+      }
+      step++;
+    }
+  };
 
   function reset() {
-    setDataset(datatran(record));
+    step = 0;
+    if (state == 0) Animation.createTree(dataset, svgRef);
+    else Animation.fianlTree(tdataset, svgRef);
+  }
+
+  function back() {
+    if (step < 1) {
+      alert("This is the first step!");
+    } else {
+      step--;
+      if (record[step].e1 == 0) {
+        Animation.showelement(deleteindex + 1, dataset.length + 1);
+      } else {
+        const text1 = document.getElementById("t" + record[step].e1);
+        const text2 = document.getElementById("t" + record[step].e2);
+        Animation.animateExchange(text1, text2);
+      }
+    }
+  }
+
+  function empty() {
+    record = [];
+    step = 0;
+  }
+
+  function createHeap() {
+    dataset = data.map((value, index) => ({
+      index: index + 1,
+      value: Number(value),
+    }));
+    empty();
+    Animation.createTree(dataset, svgRef);
+    Heapification.buildmaxheap(dataset, record);
+  }
+
+  function insertheap(idata) {
+    empty();
+    setState(1);
+    data.push(Number(idata[0]));
+    dataset.push({ index: data.length, value: Number(idata[0]) });
+    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
+    Animation.fianlTree(dataset, svgRef);
+    Heapification.insertheap(dataset, record);
+  }
+
+  function deleteheap(i) {
+    empty();
+    setState(1);
+    Animation.fianlTree(dataset, svgRef);
+    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
+    Heapification.deleteheap(i + 1, dataset, record);
+    record.push({
+      e1: 0,
+      e2: dataset.length + 1,
+    });
+    deleteindex = i;
+    console.log(dataset);
+    data.splice(dataset[i].index - 1, 1);
   }
 
   return (
     <div>
-      <HeapComponent
-        dataset={dataset}
-        data={data}
-        record={record}
-        setData={setData}
-        setRecord={setRecord}
-      />
+      <div>
+        <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
+        {/* <button onClick={initializeMaxHeap}>Build Max Heap</button> */}
+      </div>
+      <div>
+        <button onClick={nextStep}>Next Step</button>
+        <button onClick={back}>back</button>
+
+        <button onClick={reset}>Reset</button>
+        <button
+          onClick={() => {
+            Animation.fianlTree(dataset, svgRef);
+            step = record.length;
+          }}
+        >
+          fianl heap
+        </button>
+        <button>extra heap</button>
+      </div>
 
       <input id="create" placeholder="Enter comma separated numbers" />
       <button
         id="csubmit"
         onClick={() => {
-          let tdata = document.getElementById("create").value.split(",");
-          if (validdata(tdata)) {
-            setData(tdata.map(Number));
-            setRecord(tdata);
-            console.log(record);
+          let cdata = document.getElementById("create").value.split(",");
+          if (validdata(cdata)) {
+            data = cdata.map((item) => Number(item.trim()));
+            createHeap();
+            setState(0);
           } else {
             alert("Only numbers and commas can be entered");
           }
@@ -65,24 +147,45 @@ function HeapPage() {
       <button
         id="isubmit"
         onClick={() => {
-          let tdata = document.getElementById("insert").value.split(",");
-          if (validdata(tdata) && tdata.length === 1) {
-            // TODO: Define or import HeapComponent.insertheap
-            // HeapComponent.insertheap(tdata[0], data, setData, record, setRecord);
+          let idata = document.getElementById("insert").value.split(",");
+          if (validdata(idata) && idata.length === 1) {
+            insertheap(idata);
           } else {
             alert(
-              tdata.length !== 1
+              idata.length !== 1
                 ? "Only insert one number"
-                : "Only numbers and commas can be entered",
+                : "Only numbers and commas can be entered"
             );
           }
         }}
       >
         Insert
       </button>
-
-      <button id="reset" onClick={reset}>
-        Reset
+      <input id="delete" placeholder="delete a number" />
+      <button
+        id="dsubmit"
+        onClick={() => {
+          let ddata = document.getElementById("delete").value.split(",");
+          let t = 0;
+          if (validdata(ddata) && ddata.length === 1) {
+            for (var i = 0; i < dataset.length; i++) {
+              if (dataset[i].value == ddata[0]) {
+                deleteheap(i);
+                t = 1;
+                break;
+              }
+            }
+            if (t == 0) alert(ddata[0] + " is not in heap");
+          } else {
+            alert(
+              ddata.length !== 1
+                ? "Only delete one number"
+                : "Only numbers and commas can be entered"
+            );
+          }
+        }}
+      >
+        delete
       </button>
     </div>
   );
