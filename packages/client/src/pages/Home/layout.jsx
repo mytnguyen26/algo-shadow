@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { Navbar } from "./component/navbar.jsx";
-import { SplitScreen } from "./component/splitScreen.jsx";
+import { Navbar } from "./component/navbar";
+import { SplitScreen } from "./component/SplitScreen.jsx";
 
 export const Layout = () => {
   return (
