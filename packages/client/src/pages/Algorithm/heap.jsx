@@ -4,7 +4,7 @@ import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 
 
-const width = 600;
+const width = 900;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
 var dataset = []
@@ -115,7 +115,6 @@ function HeapPage() {
 
   return (
     <div style={{ display: 'flex' }}>
-      {/* Left side - Create Heap, Insert, and Delete fields */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <input id="create" placeholder="Enter comma separated numbers" />
           <button id="csubmit" onClick={() => {
@@ -160,14 +159,12 @@ function HeapPage() {
           }}>Delete</button>
       </div>
 
-      {/* Center - SVG visualization */}
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
             <div style={{ flexGrow: 1 }}>
                 <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
             </div>
 
-      {/* Right side - Next Step, Back, Reset, Final Heap, and Extra Heap buttons */}
-      <div style={{ display: 'flex', justifyContent: 'left', gap: '10px', marginTop: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={nextStep}>Next Step</button>
           <button onClick={back}>Back</button>
           <button onClick={reset}>Reset</button>

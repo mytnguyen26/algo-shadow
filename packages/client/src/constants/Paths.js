@@ -4,4 +4,5 @@ export const Paths = {
   HEAP: "/algorithm/heap",
   DIJKSTRA: "/algorithm/dijkstra",
   HASH: "/algorithm/hash",
+  BST: "/algorithm/bst",
 };
