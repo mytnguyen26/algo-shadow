@@ -1,6 +1,9 @@
 import React, { useState, useEffect , useRef} from "react";
 import Animation from "./HeapComponent/animate";
 import Heapification from "./HeapComponent/heapmethod";
+import { Button, TextField } from '@mui/material';
+
+
 const width = 600;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
@@ -13,7 +16,6 @@ function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
   const [state, setState] = useState(0);
-  //const [step, setStep] = useState(0);
 
   useEffect(() => {
     createHeap()
@@ -112,69 +114,72 @@ function HeapPage() {
   }
 
   return (
-    <div>
-      <div>
-      <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
-      {/* <button onClick={initializeMaxHeap}>Build Max Heap</button> */}
-      </div>
-      <div>
-      <button onClick={nextStep}>Next Step</button>
-      <button onClick={back}>back</button>
-
-      <button onClick={reset}>Reset</button>     
-      <button onClick={() => {
-          Animation.fianlTree(dataset,svgRef);
-          step = record.length
-        }}>fianl heap</button>
-      <button>extra heap</button>
-      </div>
-      
-
-      <input id="create" placeholder="Enter comma separated numbers" />
-      <button id="csubmit" onClick={() => {
-        let cdata = document.getElementById("create").value.split(",");
-        if (validdata(cdata)) {
-          data = cdata.map(item => Number(item.trim()))
-          createHeap()
-          setState(0)
-        } else {
-          alert("Only numbers and commas can be entered");
-        }
-        }}>Create Heap</button>
-
-      <input id="insert" placeholder="Insert a number" />
-      <button id="isubmit" onClick={() => {
-        let idata = document.getElementById("insert").value.split(",");
-        if (validdata(idata) && idata.length === 1) {  
-          insertheap(idata)
-        } else {
-            alert(idata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
-          }
-        }}>Insert</button>
-      <input id="delete" placeholder="delete a number" />
-      <button id="dsubmit" onClick={() => {
-          let ddata = document.getElementById("delete").value.split(",");
-          let t = 0;
-          if (validdata(ddata) && ddata.length === 1) {
-            for(var i = 0;i<dataset.length;i++)
-            {
-              if(dataset[i].value==ddata[0])
-              {
-                deleteheap(i)
-                t= 1;
-                break;
+    <div style={{ display: 'flex' }}>
+      {/* Left side - Create Heap, Insert, and Delete fields */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <input id="create" placeholder="Enter comma separated numbers" />
+          <button id="csubmit" onClick={() => {
+              let cdata = document.getElementById("create").value.split(",");
+              if (validdata(cdata)) {
+                  data = cdata.map(item => Number(item.trim()))
+                  createHeap();
+                  setState(0);
+              } else {
+                  alert("Only numbers and commas can be entered");
               }
-            }
-            if(t==0)
-              alert(ddata[0]+" is not in heap")
-          } else {
-            alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
-          }
-        }}>delete</button>
+          }}>Create Heap</button>
 
-      
-    </div>
-  );
+          <input id="insert" placeholder="Insert a number" />
+          <button id="isubmit" onClick={() => {
+              let idata = document.getElementById("insert").value.split(",");
+              if (validdata(idata) && idata.length === 1) {
+                  insertheap(idata);
+              } else {
+                  alert(idata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
+              }
+          }}>Insert</button>
+
+          <input id="delete" placeholder="Delete a number" />
+          <button id="dsubmit" onClick={() => {
+              let ddata = document.getElementById("delete").value.split(",");
+              let t = 0;
+              if (validdata(ddata) && ddata.length === 1) {
+                  for (var i = 0; i < dataset.length; i++) {
+                      if (dataset[i].value == ddata[0]) {
+                          deleteheap(i);
+                          t = 1;
+                          break;
+                      }
+                  }
+                  if (t == 0) {
+                      alert(ddata[0] + " is not in heap");
+                  }
+              } else {
+                  alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
+              }
+          }}>Delete</button>
+      </div>
+
+      {/* Center - SVG visualization */}
+      <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+            <div style={{ flexGrow: 1 }}>
+                <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
+            </div>
+
+      {/* Right side - Next Step, Back, Reset, Final Heap, and Extra Heap buttons */}
+      <div style={{ display: 'flex', justifyContent: 'left', gap: '10px', marginTop: '10px' }}>
+          <button onClick={nextStep}>Next Step</button>
+          <button onClick={back}>Back</button>
+          <button onClick={reset}>Reset</button>
+          <button onClick={() => {
+              Animation.fianlTree(dataset, svgRef);
+              step = record.length;
+          }}>Final Heap</button>
+          <button>Extra Heap</button>
+      </div>
+      </div>
+  </div>
+);
 }
 
 export default HeapPage;
