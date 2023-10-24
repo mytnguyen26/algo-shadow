@@ -1,4 +1,7 @@
 export const Paths = {
   HOME: "/",
-  DIJKSTRA: "/Dijkstra",
+  ALGORITHM: "/algorithm",
+  HEAP: "/algorithm/heap",
+  DIJKSTRA: "/algorithm/dijkstra",
+  HASH: "/algorithm/hash",
 };
