@@ -57,7 +57,6 @@ const increasekey = (i, key, localDataset, localRecord) => {
     i > 1 &&
     localDataset[getparent(i) - 1].value < localDataset[i - 1].value
   ) {
-    console.log("exchange:" + i + "," + getparent(i));
     exchanegdata(getparent(i), i, localDataset, localRecord);
     i = getparent(i);
   }

@@ -19,7 +19,7 @@ const dropDownData = [
   {
     id: 2,
     name: "BST",
-    path: Paths.DIJKSTRA,
+    path: Paths.BST,
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ export const DropdownMenu = () => {
       >
         {dropDownData.map((data) => {
           return (
-            <MenuItem value={data.id} onClick={() => navigate(data.path)}>
+            <MenuItem key = {data.id} value={data.id} onClick={() => navigate(data.path)}>
               {data.name}
             </MenuItem>
           );

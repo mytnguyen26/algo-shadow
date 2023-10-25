@@ -11,75 +11,77 @@ var dataset = []
 var tdataset = []
 var record = []
 var step = 0
-var deleteindex = -1;
+var deletetest = -1;
+var deletegraph=  -1;
+
+
+function validdata(xdata) {
+  for (const ele of xdata) {
+    if (isNaN(ele)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+const nextStep = () => {
+  if(step>=record.length)
+  {
+    alert("Heap is end!")
+  }
+  else
+  {
+    if(record[step].e1==0){
+      Animation.deleteelement(deletetest+1,deletegraph)
+    }
+    else{
+      const text1 = document.getElementById("t" + record[step].e1);
+      const text2 = document.getElementById("t" + record[step].e2);
+      Animation.animateExchange(text1,text2);
+    }
+    step++
+  }
+}
+
+function reset() {
+  step = 0
+  if(state==0)
+    Animation.createTree(dataset,svgRef)
+  else
+    Animation.fianlTree(tdataset,svgRef)
+}
+
+function back() {
+  if(step<1)
+  {
+    alert("This is the first step!")
+  }
+  else
+  {
+    step--
+    if(record[step].e1==0){
+      Animation.showelement(deletetest+1,deletegraph)
+    }
+    else{
+    const text1 = document.getElementById("t" + record[step].e1);
+    const text2 = document.getElementById("t" + record[step].e2);
+    Animation.animateExchange(text1,text2);
+    }
+  }
+}
+
+function empty(){
+  record = []
+  step = 0
+}
+
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
-  const [state, setState] = useState(0);
 
   useEffect(() => {
     createHeap()
   },[resetkey]);
-
-  function validdata(xdata) {
-    for (const ele of xdata) {
-      if (isNaN(ele)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  const nextStep = () => {
-    if(step>=record.length)
-    {
-      alert("Heap is end!")
-    }
-    else
-    {
-      if(record[step].e1==0){
-        Animation.deleteelement(deleteindex+1,dataset.length+1)
-      }
-      else{
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1,text2);
-      }
-      step++
-    }
-  }
-
-  function reset() {
-    step = 0
-    if(state==0)
-      Animation.createTree(dataset,svgRef)
-    else
-      Animation.fianlTree(tdataset,svgRef)
-  }
-
-  function back() {
-    if(step<1)
-    {
-      alert("This is the first step!")
-    }
-    else
-    {
-      step--
-      if(record[step].e1==0){
-        Animation.showelement(deleteindex+1,dataset.length+1)
-      }
-      else{
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      Animation.animateExchange(text1,text2);
-      }
-    }
-  }
-
-  function empty(){
-    record = []
-    step = 0
-  }
 
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
@@ -87,29 +89,28 @@ function HeapPage() {
     Animation.createTree(dataset,svgRef);
     Heapification.buildmaxheap(dataset,record);
   }
-
+  
   function insertheap(idata){
     empty() 
-    setState(1)
     data.push(Number(idata[0]))
     dataset.push({index:data.length,value:Number(idata[0])})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     Animation.fianlTree(dataset,svgRef);
     Heapification.insertheap(dataset,record)
   }
-
+  
   function deleteheap(i){
     empty()
-    setState(1)
     Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    console.log(tdataset[tdataset.length-1].index)
+    deletetest = i
+    deletegraph = tdataset[tdataset.length-1].index
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
       e2: dataset.length+1
     })
-    deleteindex = i
-    console.log(dataset)
     data.splice(dataset[i].index-1, 1); 
   }
 
@@ -122,7 +123,6 @@ function HeapPage() {
               if (validdata(cdata)) {
                   data = cdata.map(item => Number(item.trim()))
                   createHeap();
-                  setState(0);
               } else {
                   alert("Only numbers and commas can be entered");
               }
@@ -172,7 +172,6 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-          <button>Extra Heap</button>
       </div>
       </div>
   </div>
