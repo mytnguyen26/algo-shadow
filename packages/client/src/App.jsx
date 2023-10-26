@@ -5,6 +5,7 @@ import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import Heap from "./pages/Algorithm/heap.jsx";
 import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
+import { Dijkstra } from "./pages/Dijkstra/Dijkstra.jsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
             <Route index element={<Algorithm />} />
             <Route path={Paths.HEAP} element={<Heap />} />
+            <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
           </Route>
         </Route>
       </Routes>

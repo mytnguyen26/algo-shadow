@@ -5,6 +5,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
+import { Paths } from "../../../constants/Paths.js";
+import { Link } from "@mui/material";
 
 export const Navbar = () => {
   return (
@@ -22,6 +24,16 @@ export const Navbar = () => {
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <Link
+                  to={Paths.ALGORITHM}
+                  sx={{ textDecoration: "none", color: "black" }}
+                >
+                  <ListItemText primary="Algorithm" />
+                </Link>
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
