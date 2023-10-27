@@ -64,7 +64,11 @@ export const DropdownMenu = () => {
       >
         {dropDownData.map((data) => {
           return (
-            <MenuItem value={data.id} onClick={() => navigate(data.path)}>
+            <MenuItem
+              key={data.id}
+              value={data.id}
+              onClick={() => navigate(data.path)}
+            >
               {data.name}
             </MenuItem>
           );

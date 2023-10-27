@@ -29,7 +29,7 @@ export const Navbar = () => {
             <ListItem disablePadding>
               <ListItemButton>
                 <Link
-                  to={Paths.ALGORITHM}
+                  href={Paths.ALGORITHM}
                   sx={{ textDecoration: "none", color: "black" }}
                 >
                   <ListItemText primary="Algorithm" />
