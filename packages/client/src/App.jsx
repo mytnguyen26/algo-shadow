@@ -5,6 +5,7 @@ import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import Heap from "./pages/Algorithm/heap.jsx";
 import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
+import HashTableVisualization from './pages/Hash/HashTableVisualization';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
             <Route index element={<Algorithm />} />
             <Route path={Paths.HEAP} element={<Heap />} />
+            <Route path={Paths.HASH} element={<HashTableVisualization />} />
           </Route>
         </Route>
       </Routes>
