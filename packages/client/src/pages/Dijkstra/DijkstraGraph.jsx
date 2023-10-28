@@ -103,6 +103,8 @@ export const DijkstraGraph = () => {
   const [orderedVisitedPath, setOrderedVisitedPath] = useState([]);
   const svgRef = React.createRef();
   const [nodeColors, setNodeColors] = useState({});
+  const [step, setStep] = useState(-1);
+  const [isAuto, setIsAuto] = useState(true);
 
   // Example usage:
   const graph = new Graph();
@@ -183,58 +185,75 @@ export const DijkstraGraph = () => {
       .text((d) => `${d.id}`);
   }, [nodes, links, shortestPath, nodeColors]);
 
-  const animatePath = () => {
-    const svg = d3.select(svgRef.current);
+  useEffect(() => {
+    if (orderedVisitedPath.length > 0) {
+      const svg = d3.select(svgRef.current);
 
-    svg.selectAll("g").remove(); // Clear previous circles and text groups
+      svg.selectAll("g").remove(); // Clear previous circles and text groups
 
-    const data = orderedVisitedPath.map((node) => {
-      const isFind = nodes.find((n) => n.id.includes(node));
-      if (isFind) {
-        return isFind;
+      const data = orderedVisitedPath.map((node) => {
+        const isFind = nodes.find((n) => n.id.includes(node));
+        if (isFind) {
+          return isFind;
+        }
+      });
+
+      const results = [
+        ...data,
+        ...nodes.filter((node) => !orderedVisitedPath.includes(node.id)),
+      ];
+
+      const circles = svg
+        .selectAll("g")
+        .data(results)
+        .enter()
+        .append("g")
+        .attr("transform", (d) => `translate(${d.x},${d.y})`);
+
+      // Append circles to the group
+      if (isAuto) {
+        console.log("isAuto");
+        circles
+          .append("circle")
+          .attr("r", 20)
+          .style("fill", "blue")
+          .transition()
+          .duration(1000)
+          .delay((d, i) => i * 500)
+          .attr("r", 20)
+          .style("fill", (d) => nodeColors[d.id] || "blue")
+          .transition()
+          .duration(1000)
+          .delay((d, i) => (i + 4) * 400) // Adjust the delay as needed
+
+          .filter((d) => shortestPath.includes(d.id))
+          .style("fill", "green");
+      } else {
+        circles
+          .append("circle")
+          .attr("r", 20)
+          .style("fill", (d, i) => (i <= step ? nodeColors[d.id] : "blue"))
+          .transition()
+          .duration(500)
+          .delay((d, i) => (i + 4) * 400) // Adjust the delay as needed
+          .filter((d) => shortestPath.includes(d.id))
+          .style(
+            "fill",
+            () => step === orderedVisitedPath.length - 1 && "green"
+          );
       }
-    });
 
-    const results = [
-      ...data,
-      ...nodes.filter((node) => !orderedVisitedPath.includes(node.id)),
-    ];
-
-    const circles = svg
-      .selectAll("g")
-      .data(results)
-      .enter()
-      .append("g")
-      .attr("transform", (d) => `translate(${d.x},${d.y})`);
-
-    // Append circles to the group
-    circles
-      .append("circle")
-      .attr("r", 20)
-      .style("fill", "blue")
-      .transition()
-      .duration(1000)
-      .delay((d, i) => i * 500)
-      .attr("r", 20)
-      .style("fill", (d) => nodeColors[d.id] || "blue")
-      .transition()
-      .duration(1000)
-      .delay((d, i) => (i + 4) * 400) // Adjust the delay as needed
-      .filter((d) => shortestPath.includes(d.id))
-      .style("fill", "green");
-
-    // Append text to the group
-    circles
-      .append("text")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("text-anchor", "middle")
-      .attr("dy", "0.35em") // Adjust vertical alignment
-      .attr("stroke", "white")
-      .text((d) => `${d.id}`);
-
-    // Update the color of nodes in the shortest path
-  };
+      // Append text to the group
+      circles
+        .append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.35em") // Adjust vertical alignment
+        .attr("stroke", "white")
+        .text((d) => `${d.id}`);
+    }
+  }, [step, orderedVisitedPath]);
 
   const findShortestPath = () => {
     const {
@@ -242,10 +261,6 @@ export const DijkstraGraph = () => {
       distances,
       orderedVisitedNodes: path,
     } = graph.dijkstra(startNode, endNode);
-
-    console.log("shortedPath", shortestPath);
-    console.log("orderedVisitedNodes", path);
-    console.log("distances", distances);
 
     // Set the color of nodes in the shortest path to red
     const coloredNodes = {};
@@ -256,25 +271,37 @@ export const DijkstraGraph = () => {
 
     setNodeColors(coloredNodes);
     setShortestPath(shortestPath);
-
     setOrderedVisitedPath(path);
+    setStep((prevStep) => Math.min(prevStep + 1, path.length - 1));
   };
 
-  useEffect(() => {
-    if (orderedVisitedPath.length > 0) {
-      animatePath();
-    }
-  }, [orderedVisitedPath]);
+  const runNextStep = () => {
+    setIsAuto(false);
+    findShortestPath();
+  };
+
+  const runAutoStep = () => {
+    setIsAuto(true);
+    findShortestPath();
+    setStep(-1);
+  };
 
   return (
     <Stack>
-      <Button onClick={findShortestPath}>Start</Button>
       <svg
         ref={svgRef}
         width={1000}
         height={500}
         viewBox="-50 -200 550 550" // Adjust viewBox dimensions
       ></svg>
+      <Stack direction="row" gap={5}>
+        <Button onClick={runNextStep} variant="contained">
+          Next Step
+        </Button>
+        <Button onClick={runAutoStep} variant="contained">
+          Auto Start
+        </Button>
+      </Stack>
     </Stack>
   );
 };
