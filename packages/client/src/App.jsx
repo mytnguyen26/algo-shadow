@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Layout } from "./pages/Home/layout.jsx";
+import { Paths } from "./constants/Paths.js";
 import Home from "./pages/Home/home";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
-import Heap from "./pages/Algorithm/heap.jsx";
-import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
-import { Dijkstra } from "./pages/Dijkstra/Dijkstra.jsx";
+import Heap from "./components/HeapComponent/heap.jsx"
+import { Dijkstra } from "./components/dijkstra/Dijkstra.jsx";
 
 function App() {
   return (
