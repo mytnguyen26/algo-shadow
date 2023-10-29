@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./animate";
-import Heapification from "./heapmethod";
+import Animation from "../../../components/animate";
+import Heapification from "../../../components/solver/heapmethod";
 const width = 600;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
@@ -9,6 +9,7 @@ var tdataset = [];
 var record = [];
 var step = 0;
 var deleteindex = -1;
+
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey, setResetkey] = useState(0);
@@ -46,7 +47,7 @@ function HeapPage() {
   function reset() {
     step = 0;
     if (state == 0) Animation.createTree(dataset, svgRef);
-    else Animation.fianlTree(tdataset, svgRef);
+    else Animation.finalTree(tdataset, svgRef);
   }
 
   function back() {
@@ -85,14 +86,14 @@ function HeapPage() {
     data.push(Number(idata[0]));
     dataset.push({ index: data.length, value: Number(idata[0]) });
     tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
-    Animation.fianlTree(dataset, svgRef);
+    Animation.finalTree(dataset, svgRef);
     Heapification.insertheap(dataset, record);
   }
 
   function deleteheap(i) {
     empty();
     setState(1);
-    Animation.fianlTree(dataset, svgRef);
+    Animation.finalTree(dataset, svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
     Heapification.deleteheap(i + 1, dataset, record);
     record.push({
@@ -117,7 +118,7 @@ function HeapPage() {
         <button onClick={reset}>Reset</button>
         <button
           onClick={() => {
-            Animation.fianlTree(dataset, svgRef);
+            Animation.finalTree(dataset, svgRef);
             step = record.length;
           }}
         >

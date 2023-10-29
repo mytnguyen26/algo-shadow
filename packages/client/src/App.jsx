@@ -4,8 +4,8 @@ import { Paths } from "./constants/Paths.js";
 import Home from "./pages/Home/home";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
-import Heap from "./components/HeapComponent/heap.jsx"
-import { Dijkstra } from "./components/dijkstra/Dijkstra.jsx";
+import Heap from "./pages/Algorithm/HeapComponent/HeapGraph.jsx"
+import { Dijkstra } from "./pages/Algorithm/DijkstraComponent/Dijkstra.jsx";
 
 function App() {
   return (
