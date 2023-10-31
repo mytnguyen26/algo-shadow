@@ -32,54 +32,9 @@ function datatran(data){
 
 function reset(){
   step = 0
-  dataset.forEach(element => {
-    //console.log(element.position)
-    Animation.Pathdisappear(element.position)
+  record.forEach(element => {
+    Animation.Pathdisappear(dataset[element-1].position)
   })
-}
-
-function nextStep(){
-  if(step>=record.length)
-    {
-      alert("animation end")
-    }
-    else{
-      if(record[step]=='i'){//insert
-
-      }
-      else{
-        Animation.Pathdisplay(dataset[record[step]-1].position) 
-        step++ 
-      }
-        
-    }
-}
-
-function back(){
-  if(step<1)
-  {
-    alert("This is the first step!")
-  }
-  else
-  {
-    step--
-    Animation.Pathdisappear(dataset[record[step]-1].position) 
-  }
-}
-
-function Inorder(){
-  reset()
-  record = tree.inOrderTraverse()
-}
-
-function Preorder(){
-  reset()
-  record = tree.preOrderTraverse()
-}
-
-function Postorder(){
-  reset()
-  record = tree.postOrderTraverse()
 }
 
 const BST = () => {
@@ -110,8 +65,7 @@ const BST = () => {
 
   return (
     <Container maxWidth="md">
-      <Box className="canvas">
-      <div style={{ display: 'flex' }}>
+      <Box className="canvas"><div style={{ display: 'flex' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
