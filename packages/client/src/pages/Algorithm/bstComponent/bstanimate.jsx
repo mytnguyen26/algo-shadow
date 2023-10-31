@@ -103,9 +103,22 @@ const Animation = {
   },
   
   Pathdisplay(index){
-  //console.log("c"+index)
   const c1 = document.getElementById("c"+index)
   c1.setAttribute("stroke","blue")
+  if(index!=1){
+    document.getElementById("l"+index).setAttribute("stroke","blue")
+  }
+  },
+
+  Pathdisappear(index){
+    document.getElementById("c"+index).setAttribute("stroke","black")
+    if(index!=1){
+      document.getElementById("l"+index).setAttribute("stroke","black")
+    }
+    }
+
+}
+function addGradients(c1){
   const animateElementC = document.createElementNS(
     "http://www.w3.org/2000/svg",
     "animate",
@@ -118,17 +131,6 @@ const Animation = {
   animateElementC.setAttribute("fill", "freeze");
   c1.appendChild(animateElementC);
   animateElementC.beginElement();
-  if(index!=1){
-    document.getElementById("l"+index).setAttribute("stroke","blue")
-    
-  }
-  },
-
-  Pathdisappear(index){
-    //console.log("c"+index)
-    document.getElementById("c"+index).setAttribute("stroke","black")
-    }
-
 }
 
 export default Animation;

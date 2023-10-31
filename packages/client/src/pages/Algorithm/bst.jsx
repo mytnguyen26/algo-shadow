@@ -37,9 +37,45 @@ function reset(){
   })
 }
 
+function Inorder(){
+  reset()
+  record = tree.inOrderTraverse()
+}
+
+function Preorder(){
+  reset()
+  record = tree.preOrderTraverse()  
+}
+
+function Postorder(){
+  reset()
+  record = tree.postOrderTraverse()
+}
+
+function nextStep(){
+  if(step>=record.length)
+  {
+    alert("Animation is end!")
+  }
+  else
+  {
+    Animation.Pathdisplay(dataset[record[step]-1].position);
+    step++
+  }
+}
+function back(){
+  if(step<1)
+  {
+    alert("This is the first step!")
+  }
+  else
+  {
+    step--
+    Animation.Pathdisappear(dataset[record[step]-1].position);
+  }
+}
 const BST = () => {
   const svgRef = useRef(null);
-
   useEffect(() => {
     createbst();
   },[]);
@@ -98,7 +134,6 @@ const BST = () => {
           <button onClick={nextStep}>Next Step</button>
           <button onClick={back}>Back</button>
           <button onClick={reset}>Reset</button>
-          <button onClick={reset}>Final Bst</button>
           </div>
         </div>
 
