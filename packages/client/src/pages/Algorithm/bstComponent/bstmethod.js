@@ -19,7 +19,7 @@ class BinarySearchTree{
           if (newNode.data < node.data) { // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
               if (node.left === null) {                    
                   node.left = newNode
-                  record.push(newNode.index)
+                  record.push(node.index)
                   data.position = position * 2
               }else {
                   record.push(node.index)
@@ -28,7 +28,7 @@ class BinarySearchTree{
           }else {
               if (node.right === null) {
                   node.right = newNode;
-                 record.push(newNode.index)
+                 record.push(node.index)
                  data.position = position * 2+1
               } else {
                   record.push(node.index)
@@ -142,18 +142,6 @@ class BinarySearchTree{
       };
       return removeNode(this.root,data)
   }
-}
-
-function treeindex(root, position) {
-  // Base case: Stop recursion when the current node is null
-  if (root === null) {
-    return;
-  }
-  // Process the current node
-  datatree.push({value:root.data,index:position,})
-  // Recursively traverse the left and right subtrees
-  treeindex(root.left, position * 2);
-  treeindex(root.right, position * 2 + 1);
 }
 
 export default BinarySearchTree;

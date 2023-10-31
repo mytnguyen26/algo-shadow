@@ -23,7 +23,7 @@ const Animation = {
     var my = 60
     var p = svg.append("g")
             .attr("stroke","black")
-            .attr("stroke-width","1")
+            .attr("stroke-width","2")
             .selectAll("line")
             .data(dataset)
             .enter()
@@ -104,8 +104,26 @@ const Animation = {
   
   Pathdisplay(index){
   //console.log("c"+index)
-  document.getElementById("c"+index).setAttribute("stroke","blue")
+  const c1 = document.getElementById("c"+index)
+  c1.setAttribute("stroke","blue")
+  const animateElementC = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "animate",
+  );
+  animateElementC.setAttribute("attributeName", attributeNameX);
+  animateElementC.setAttribute("from", x1);
+  animateElementC.setAttribute("to", x2);
+  animateElementC.setAttribute("begin", "0s");
+  animateElementC.setAttribute("dur", "3s");
+  animateElementC.setAttribute("fill", "freeze");
+  c1.appendChild(animateElementC);
+  animateElementC.beginElement();
+  if(index!=1){
+    document.getElementById("l"+index).setAttribute("stroke","blue")
+    
+  }
   },
+
   Pathdisappear(index){
     //console.log("c"+index)
     document.getElementById("c"+index).setAttribute("stroke","black")
