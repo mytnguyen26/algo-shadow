@@ -5,8 +5,8 @@ export const AlgorithmSpace = ({ svgRef, width, height, resetkey }) => {
     <Paper
       elevation={3}
       sx={{
-        width: "850px",
-        height: "400px",
+        width: "width",
+        height: "height",
         backgroundColor: "#fff",
         border: "1px solid #ddd",
         marginTop: (theme) =>
