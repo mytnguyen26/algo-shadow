@@ -1,5 +1,6 @@
 export const Paths = {
   HOME: "/",
+  ABOUT: "/about",
   ALGORITHM: "/algorithm",
   HEAP: "/algorithm/heap",
   DIJKSTRA: "/algorithm/dijkstra",
