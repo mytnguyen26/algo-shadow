@@ -6,17 +6,22 @@ export const sendDataToServer = (algorithm, input, output, runtime) => {
     // console.log('Runtime:', runtime, 'ms');
   };
   
+
   export const analyzeRuntime = (algorithm, input, func, ...args) => {
-    const startTime = performance.now();
-    
-    const output = func(...args);
-    
-    const endTime = performance.now();
-    const runtime = endTime - startTime;
-    
-    // Log the data to the console instead of sending it to a server
-    sendDataToServer(algorithm, input, output, runtime);
+    let totalTime = 0;
+    const iterations = 1000; // Repeat the operation 1000 times
+    let output;
   
-    // Return the result of the function call
-    return { input, output, runtime };
+    for (let i = 0; i < iterations; i++) {
+      const startTime = performance.now();
+      output = func(...args); // Execute the function being tested
+      const endTime = performance.now();
+      totalTime += endTime - startTime;
+    }
+  
+    const averageTime = totalTime / iterations;
+    sendDataToServer(algorithm, input, output, averageTime);
+  
+    return { input, output, runtime: averageTime };
   };
+  
