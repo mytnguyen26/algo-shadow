@@ -13,7 +13,7 @@ function getx(c,width)
     return (width/(distance+1))*(index+1)
 }
 
-const Animation = {
+const AnimationB = {
     createbst(dataset, svgRef){
     const width = svgRef.current.clientWidth;
     console.log(width)
@@ -133,4 +133,4 @@ function addGradients(c1){
   animateElementC.beginElement();
 }
 
-export default Animation;
+export default AnimationB;

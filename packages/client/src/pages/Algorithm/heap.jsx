@@ -13,7 +13,7 @@ var record = []
 var step = 0
 var deletetest = -1;
 var deletegraph=  -1;
-
+var totallen = data.length;
 
 function validdata(xdata) {
   for (const ele of xdata) {
@@ -92,8 +92,9 @@ function HeapPage() {
   
   function insertheap(idata){
     empty() 
+    totallen++
     data.push(Number(idata[0]))
-    dataset.push({index:data.length,value:Number(idata[0])})
+    dataset.push({index:totallen,value:Number(idata[0])})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     Animation.fianlTree(dataset,svgRef);
     Heapification.insertheap(dataset,record)
@@ -103,7 +104,7 @@ function HeapPage() {
     empty()
     Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    console.log(tdataset[tdataset.length-1].index)
+    //console.log(tdataset[tdataset.length-1].index)
     deletetest = i
     deletegraph = tdataset[tdataset.length-1].index
     Heapification.deleteheap(i+1,dataset,record);
@@ -157,6 +158,7 @@ function HeapPage() {
                   alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
               }
           }}>Delete</button>
+          <button onClick={reset}>increase key</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -172,6 +174,7 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
+          <button onClick={reset}>extra heap</button>
       </div>
       </div>
   </div>

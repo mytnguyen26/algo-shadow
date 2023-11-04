@@ -119,28 +119,31 @@ class BinarySearchTree{
       return searchNode(this.root, data)
   }
   //从树中移除某个键
-  remove(data) { // 删除节点复杂之处在于每次删除节点时候二叉树要根据不同情况改变结构 同样也需要递归
-      const removeNode = (node,data) => {
+  delete(dData,localRecord) { // 删除节点复杂之处在于每次删除节点时候二叉树要根据不同情况改变结构 同样也需要递归
+      const removeNode = (node,dData) => {
           if(node === null) return null;
-          if(node.data === data){
+          if(node.data === dData){
               if(node.left === null && node.right === null) return null;
               if(node.left === null) return node.right; 
               if(node.right === null) return node.left;
               if(node.left !==null && node.right !==null){
-              let _node = this.min(node.right);
-              node.data = _node.data;
-              node.right = removeNode(node.right,data);
-              return node
+                let _node = this.min(node.right);
+                node.data = _node.data;
+                localRecord.push(node.index)
+                node.right = removeNode(node.right,dData);
+                return node
               }
-          } else if(data < node.data){
-              node.left=removeNode(node.left,data);
+          } else if(dData < node.data){
+            localRecord.push(node.index)
+              node.left=removeNode(node.left,dData);
               return node
           } else {
-              node.right=removeNode(node.right,data);
+            localRecord.push(node.index)
+              node.right=removeNode(node.right,dData);
               return node
           }
       };
-      return removeNode(this.root,data)
+      return removeNode(this.root,dData)
   }
 }
 
