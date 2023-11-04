@@ -14,4 +14,3 @@ const Algorithm = () => {
 };
 
 export default Algorithm;
-

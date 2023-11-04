@@ -188,7 +188,7 @@ const BST = () => {
           }}>delete</button>
         </div>
         <div style={{ flexGrow: 1 }}>
-          <svg ref={svgRef} width={width} height={height}></svg>
+          <AlgorithmSpace svgRef={svgRef} width={width} height={height} />
           <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={Inorder}>Inorder</button>
           <button onClick={Preorder}>Preorder</button>

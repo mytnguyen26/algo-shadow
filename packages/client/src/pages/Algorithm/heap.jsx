@@ -2,6 +2,10 @@ import React, { useState, useEffect , useRef} from "react";
 import Animation from "./HeapComponent/animate";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
+import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
+import { analyzeRuntime } from './AlgComponent/RuntimeAnalysis';
+
+
 
 
 const width = 900;
@@ -43,13 +47,6 @@ const nextStep = () => {
   }
 }
 
-function reset() {
-  step = 0
-  if(state==0)
-    Animation.createTree(dataset,svgRef)
-  else
-    Animation.fianlTree(tdataset,svgRef)
-}
 
 function back() {
   if(step<1)
@@ -78,16 +75,24 @@ function empty(){
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
+  const [state, setState] = useState(0);
+  const [heapResult, setHeapResult] = useState(null);
 
   useEffect(() => {
     createHeap()
+    
   },[resetkey]);
 
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
     empty()
+    // console.log(data)
     Animation.createTree(dataset,svgRef);
-    Heapification.buildmaxheap(dataset,record);
+    const result = analyzeRuntime('createHeap', data, () => {
+      Heapification.buildmaxheap(dataset, record);
+      return dataset;
+    });
+    setHeapResult(result);
   }
   
   function insertheap(idata){
@@ -97,7 +102,11 @@ function HeapPage() {
     dataset.push({index:totallen,value:Number(idata[0])})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     Animation.fianlTree(dataset,svgRef);
-    Heapification.insertheap(dataset,record)
+    const result = analyzeRuntime('insertheap', data, () => {
+      Heapification.insertheap(dataset,record)
+      return dataset;
+    });
+    setHeapResult(result);
   }
   
   function deleteheap(i){
@@ -107,12 +116,25 @@ function HeapPage() {
     //console.log(tdataset[tdataset.length-1].index)
     deletetest = i
     deletegraph = tdataset[tdataset.length-1].index
+    // const result = analyzeRuntime('deleteheap', data, () => {
+    //   Heapification.deleteheap(i+1,dataset,record);
+    //   return dataset;
+    // });
+    // setHeapResult(result);
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
       e2: dataset.length+1
     })
     data.splice(dataset[i].index-1, 1); 
+  }
+
+  function reset() {
+    step = 0
+    if(state==0)
+      Animation.createTree(dataset,svgRef)
+    else
+      Animation.fianlTree(tdataset,svgRef)
   }
 
   return (
@@ -162,9 +184,24 @@ function HeapPage() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-            <div style={{ flexGrow: 1 }}>
-                <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
-            </div>
+      <AlgorithmSpace svgRef={svgRef} width={width} height={height} resetkey={resetkey}> 
+        {/* the graph will be rendered inside the AlgorithmSpace component */}
+      </AlgorithmSpace>
+          
+      {heapResult && (
+        <div>
+          <h3>Heap Result:</h3>
+          <div>
+            <strong>Input:</strong> [{heapResult.input.join(", ")}]
+          </div>
+          <div>
+            <strong>Output:</strong> [{heapResult.output.map((item) => item.value).join(", ")}]
+          </div>
+          <div>
+            <strong>Runtime:</strong> {heapResult.runtime} ms
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={nextStep}>Next Step</button>
