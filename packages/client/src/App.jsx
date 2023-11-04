@@ -6,20 +6,30 @@ import Heap from "./pages/Algorithm/heap.jsx";
 import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
 import { Dijkstra } from "./pages/Dijkstra/Dijkstra.jsx";
+import { Callback } from "./pages/Auth/callback.jsx";
+import { AuthProvider } from "./context/auth.context.jsx";
+import { Logout } from "./pages/Auth/logout.jsx";
+import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path={Paths.HOME} element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
-            <Route index element={<Algorithm />} />
-            <Route path={Paths.HEAP} element={<Heap />} />
-            <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
+      <AuthProvider>
+        <Routes>
+          <Route path={Paths.HOME} element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route element={<AuthGuard />}>
+              <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
+                <Route index element={<Algorithm />} />
+                <Route path={Paths.HEAP} element={<Heap />} />
+                <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
+              </Route>
+            </Route>
+            <Route path={Paths.LOGOUT} element={<Logout />} />
+            <Route path={Paths.CALLBACK} element={<Callback />} />
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
