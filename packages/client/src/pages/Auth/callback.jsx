@@ -8,7 +8,7 @@ export const Callback = () => {
   const { token, setToken } = useAuth();
   const navigate = useNavigate();
 
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
 
   useEffect(() => {
     const token = searchParams.get("token");

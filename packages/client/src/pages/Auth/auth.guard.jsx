@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "@context/auth.context";
 import { Paths } from "@constants/paths";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export const AuthGuard = () => {
   const { token, decoded_token, initialized } = useAuth();
@@ -11,7 +11,7 @@ export const AuthGuard = () => {
       const loginUrl = `${import.meta.env.VITE_AUTH_CLIENT}?projectId=${
         import.meta.env.VITE_PROJECT_ID
       }&redirectUrl=${encodeURIComponent(
-        window.location.origin + Paths.CALLBACK,
+        window.location.origin + Paths.CALLBACK
       )}`;
       window.location.replace(loginUrl);
     }
