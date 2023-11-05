@@ -6,9 +6,29 @@ import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
 import { Paths } from "../../../constants/Paths.js";
-import { Link } from "@mui/material";
+import { useAuth } from "../../../context/auth.context.jsx";
 
 export const Navbar = () => {
+  const { token } = useAuth();
+  const configs = [
+    {
+      name: "Home",
+      path: Paths.HOME,
+    },
+    {
+      name: "Algorithm",
+      path: Paths.ALGORITHM,
+    },
+    {
+      name: "About",
+      path: Paths.ABOUT,
+    },
+    {
+      name: "Contact",
+      path: Paths.CONTACT,
+    },
+  ];
+
   return (
     <Box>
       {/* Grey navbar section */}
@@ -20,33 +40,32 @@ export const Navbar = () => {
         >
           <Typography variant="h5">Algo-Shadow</Typography>
 
-          <SideList sx={{ display: "flex", direction: "row" }}>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Home" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <Link
-                  href={Paths.ALGORITHM}
-                  sx={{ textDecoration: "none", color: "black" }}
-                >
-                  <ListItemText primary="Algorithm" />
-                </Link>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary="About" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemText primary="Contact" />
-              </ListItemButton>
-            </ListItem>
-          </SideList>
+          <Stack direction="row">
+            <SideList sx={{ display: "flex", direction: "row" }}>
+              {configs.map((config) => (
+                <ListItem disablePadding key={config.name}>
+                  <ListItemButton href={config.path}>
+                    <ListItemText primary={config.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </SideList>
+            <SideList sx={{ display: "flex", direction: "row" }}>
+              {token ? (
+                <ListItem disablePadding>
+                  <ListItemButton href={Paths.LOGOUT}>
+                    <ListItemText primary="Logout" />
+                  </ListItemButton>
+                </ListItem>
+              ) : (
+                <ListItem disablePadding>
+                  <ListItemButton href={Paths.LOGIN}>
+                    <ListItemText primary="Login" />
+                  </ListItemButton>
+                </ListItem>
+              )}
+            </SideList>
+          </Stack>
         </Stack>
       </Box>
     </Box>

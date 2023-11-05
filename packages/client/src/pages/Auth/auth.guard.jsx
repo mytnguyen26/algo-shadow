@@ -5,7 +5,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 export const AuthGuard = () => {
   const { token, decoded_token, initialized } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (initialized && !token) {

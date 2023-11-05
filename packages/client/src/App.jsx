@@ -27,6 +27,7 @@ function App() {
             </Route>
             <Route path={Paths.LOGOUT} element={<Logout />} />
             <Route path={Paths.CALLBACK} element={<Callback />} />
+            <Route path={Paths.LOGIN} element={<AuthGuard />} />
           </Route>
         </Routes>
       </AuthProvider>

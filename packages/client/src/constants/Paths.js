@@ -8,4 +8,5 @@ export const Paths = {
   CALLBACK: "/Auth/callback",
   ABOUT: "/about",
   CONTACT: "/contact",
+  LOGIN: "/login",
 };
