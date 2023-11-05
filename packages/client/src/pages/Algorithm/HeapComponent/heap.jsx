@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./animate";
-import Heapification from "./heapmethod";
+import Animation from "./animate.jsx";
+import Heapification from "./heapmethod.jsx";
 const width = 600;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
@@ -154,7 +154,7 @@ function HeapPage() {
             alert(
               idata.length !== 1
                 ? "Only insert one number"
-                : "Only numbers and commas can be entered",
+                : "Only numbers and commas can be entered"
             );
           }
         }}
@@ -180,7 +180,7 @@ function HeapPage() {
             alert(
               ddata.length !== 1
                 ? "Only delete one number"
-                : "Only numbers and commas can be entered",
+                : "Only numbers and commas can be entered"
             );
           }
         }}
