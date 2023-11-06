@@ -1,17 +1,25 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Layout } from "./pages/Home/layout.jsx";
-import Home from "./pages/Home/home"; // Adjust path if necessary
-import Algorithm from "./pages/Algorithm/Algorithm.jsx";
-import Heap from "./pages/Algorithm/Heap.jsx"; // Adjust path based on where you place it
+import Home from "./pages/Home/home";
+import About from "./pages/Home/about.jsx";
+import Algorithm from "./pages/Algorithm/algorithm.jsx";
+import Heap from "./pages/Algorithm/heap.jsx";
+import BST from "./pages/Algorithm/bst.jsx";
+import { Paths } from "./constants/Paths.js";
+import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path={Paths.HOME} element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/algorithm" element={<Algorithm />} />
-          <Route path="/heap" element={<Heap />} /> {/* Added Heap route */}
+          <Route path={Paths.ABOUT} element={<About />} />
+          <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
+            <Route index element={<Algorithm />} />
+            <Route path={Paths.HEAP} element={<Heap />} />
+            <Route path={Paths.BST} element={<BST />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
