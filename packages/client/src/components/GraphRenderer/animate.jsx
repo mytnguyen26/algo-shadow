@@ -3,6 +3,12 @@ const getdepth = (c) => {
   return Math.ceil(Math.log2(c + 1)) - 1;
 };
 
+/**
+ * Helper function
+ * @param {*} c 
+ * @param {*} width 
+ * @returns 
+ */
 const getx = (c, width) => {
   const depth = getdepth(c);
   const distance = 2 ** depth;
@@ -10,6 +16,16 @@ const getx = (c, width) => {
   return (width / (distance + 1)) * (index + 1);
 };
 
+/**
+ * Helper function for animateExchange
+ * @param {*} c1 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} y1 
+ * @param {*} y2 
+ * @param {*} attributeNameX 
+ * @param {*} attributeNameY 
+ */
 const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
   const animateElementX = document.createElementNS(

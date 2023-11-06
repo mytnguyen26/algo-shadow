@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "../../../components/animate";
+import Animation from "../../../components/GraphRenderer/animate";
 import Heapification from "../../../components/solver/heapmethod";
 const width = 600;
 const height = 300;
