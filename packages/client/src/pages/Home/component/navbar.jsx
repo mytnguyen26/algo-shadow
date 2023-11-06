@@ -5,10 +5,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import { Paths } from "../../../constants/Paths.js";
-import Contact from '../contact';
-
+import { Link } from "@mui/material";
 
 export const Navbar = () => {
   const [openContact, setOpenContact] = React.useState(false);
@@ -39,7 +37,17 @@ export const Navbar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to={Paths.ABOUT}>
+              <ListItemButton>
+                <Link
+                  href={Paths.ALGORITHM}
+                  sx={{ textDecoration: "none", color: "black" }}
+                >
+                  <ListItemText primary="Algorithm" />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
                 <ListItemText primary="About" />
               </ListItemButton>
             </ListItem>
