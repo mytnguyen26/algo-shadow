@@ -3,8 +3,10 @@ import Animation from "./HeapComponent/animate";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime, sendDataToServer } from './AlgComponent/runtimeAnalysis';
-// import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
+import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import { InputHistory } from "./AlgComponent/inputHistory";
+
 
 
 
@@ -79,11 +81,15 @@ function HeapPage() {
   const [resetkey,setResetkey] = useState(0);
   const [state, setState] = useState(0);
   const [heapResult, setHeapResult] = useState(null);
+  
 
   useEffect(() => {
     createHeap()
-    
   },[resetkey]);
+
+  useEffect(() => {
+    SaveInputToLocalStorage
+  },[]);
 
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
@@ -96,32 +102,6 @@ function HeapPage() {
     });
     setHeapResult(result);
   }
-    
-  // const handleSendData = () => {
-  //   if (!heapResult) {
-  //     alert("No heap result available to send.");
-  //     return;
-  //   }
-
-  //   // Replace 'userId' with the actual ID of the user "red" if you have it,
-  //   // or another way to reference the user if needed.
-  //   const username = 'blue'; 
-  //   console.log("UserId before sending to server:", heapResult.input);
-  //   const arrayValue = heapResult.input
-  //   console.log(typeof arrayValue); // "object" (Arrays are technically objects in JavaScript)
-
-  //   sendDataToServer(
-  //     'BST',
-  //     heapResult.input,
-  //     heapResult.output.map(item => item.value),
-  //     heapResult.runtime,
-  //     username
-  //   ).then(() => {
-  //     alert("Heap created and result successfully sent to the server.");
-  //   }).catch(error => {
-  //     alert("Failed to send heap result to the server. Error: " + error);
-  //   });
-  // };
   
   function insertheap(idata){
     empty() 
@@ -163,6 +143,12 @@ function HeapPage() {
     else
       Animation.fianlTree(tdataset,svgRef)
   }
+
+  const useInput = (input) => {
+    // Assuming `createHeap` is a function that takes an input array to create a heap
+    data = input
+    createHeap();
+  };
 
   return (
     <div style={{ display: 'flex' }}>
@@ -237,12 +223,11 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-
-          {/* <button onClick={handleSendData}>Send Data to Server</button> */}
-
+          
       </div>
-      {/* <SaveInputToLocalStorage algorithm="heap" inputData={data} /> */}
-      </div>
+    </div>
+    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} />
+    </div>
   </div>
 );
 }
