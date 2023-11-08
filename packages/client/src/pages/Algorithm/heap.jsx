@@ -3,7 +3,12 @@ import Animation from "./HeapComponent/animate";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { analyzeRuntime } from './AlgComponent/RuntimeAnalysis';
+import { AnalyzeRuntime, sendDataToServer } from './AlgComponent/runtimeAnalysis';
+// import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+
+
+
+
 
 const width = 900;
 const height = 300;
@@ -14,7 +19,7 @@ var record = []
 var step = 0
 var deletetest = -1;
 var deletegraph=  -1;
-var totallen = data.length;
+
 
 function validdata(xdata) {
   for (const ele of xdata) {
@@ -67,7 +72,6 @@ function back() {
 function empty(){
   record = []
   step = 0
-  tdataset = []
 }
 
 function HeapPage() {
@@ -84,24 +88,48 @@ function HeapPage() {
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
     empty()
-    setState(0)
+    // console.log(data)
     Animation.createTree(dataset,svgRef);
-    const result = analyzeRuntime('createHeap', data, () => {
+    const result = AnalyzeRuntime('createHeap', data, () => {
       Heapification.buildmaxheap(dataset, record);
       return dataset;
     });
     setHeapResult(result);
   }
+    
+  // const handleSendData = () => {
+  //   if (!heapResult) {
+  //     alert("No heap result available to send.");
+  //     return;
+  //   }
+
+  //   // Replace 'userId' with the actual ID of the user "red" if you have it,
+  //   // or another way to reference the user if needed.
+  //   const username = 'blue'; 
+  //   console.log("UserId before sending to server:", heapResult.input);
+  //   const arrayValue = heapResult.input
+  //   console.log(typeof arrayValue); // "object" (Arrays are technically objects in JavaScript)
+
+  //   sendDataToServer(
+  //     'BST',
+  //     heapResult.input,
+  //     heapResult.output.map(item => item.value),
+  //     heapResult.runtime,
+  //     username
+  //   ).then(() => {
+  //     alert("Heap created and result successfully sent to the server.");
+  //   }).catch(error => {
+  //     alert("Failed to send heap result to the server. Error: " + error);
+  //   });
+  // };
   
   function insertheap(idata){
     empty() 
-    setState(1)
-    totallen++
     data.push(Number(idata[0]))
-    dataset.push({index:totallen,value:Number(idata[0])})
+    dataset.push({index:data.length,value:Number(idata[0])})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     Animation.fianlTree(dataset,svgRef);
-    const result = analyzeRuntime('insertheap', data, () => {
+    const result = AnalyzeRuntime('insertheap', data, () => {
       Heapification.insertheap(dataset,record)
       return dataset;
     });
@@ -110,12 +138,16 @@ function HeapPage() {
   
   function deleteheap(i){
     empty()
-    setState(1)
     Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    console.log(tdataset[tdataset.length-1].index)
     deletetest = i
     deletegraph = tdataset[tdataset.length-1].index
-
+    // const result = analyzeRuntime('deleteheap', data, () => {
+    //   Heapification.deleteheap(i+1,dataset,record);
+    //   return dataset;
+    // });
+    // setHeapResult(result);
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
@@ -130,20 +162,6 @@ function HeapPage() {
       Animation.createTree(dataset,svgRef)
     else
       Animation.fianlTree(tdataset,svgRef)
-  }
-
-  function increasekey(i,kdata){
-    empty()
-    if (kdata < dataset[i].value) {
-      alert("new value is smaller than before");
-    }
-    setState(1)
-    dataset[i].value = kdata;
-    Animation.fianlTree(dataset,svgRef);
-    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    console.log(tdataset)
-    Heapification.increasekey(i+1,kdata,dataset,record)
-    console.log(dataset)
   }
 
   return (
@@ -177,9 +195,9 @@ function HeapPage() {
               if (validdata(ddata) && ddata.length === 1) {
                   for (var i = 0; i < dataset.length; i++) {
                       if (dataset[i].value == ddata[0]) {
-                        deleteheap(i);
-                        t = 1;
-                        break;
+                          deleteheap(i);
+                          t = 1;
+                          break;
                       }
                   }
                   if (t == 0) {
@@ -189,30 +207,6 @@ function HeapPage() {
                   alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
               }
           }}>Delete</button>
-
-          <input id="select" placeholder="select a number" />
-          <input id="increase" placeholder="increase it to" />
-          <button onClick={()=>{
-            let sdata = document.getElementById("select").value.split(",");
-            let kdata = document.getElementById("increase").value.split(",");
-              let t = 0;
-              if (validdata(sdata) && validdata(kdata) &&sdata.length === 1 &&kdata.length === 1) {
-                  for (var i = 0; i < dataset.length; i++) {
-                      if (dataset[i].value == sdata[0]) {
-                          increasekey(i,kdata[0]);
-                          t = 1;
-                          break;
-                      }
-                  }
-                  if (t == 0) {
-                      alert(sdata[0] + " is not in heap");
-                  }
-              } else {
-                  alert(sdata.length !== 1 ? "Only select one number" : "Only numbers and commas can be entered");
-              }
-          }}>increase key</button>
-          
-
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -243,8 +237,11 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-          <button onClick={reset}>extra heap</button>
+
+          {/* <button onClick={handleSendData}>Send Data to Server</button> */}
+
       </div>
+      {/* <SaveInputToLocalStorage algorithm="heap" inputData={data} /> */}
       </div>
   </div>
 );

@@ -7,9 +7,9 @@ export const sendDataToServer = (algorithm, input, output, runtime) => {
   };
   
 
-  export const analyzeRuntime = (algorithm, input, func, ...args) => {
+  export const AnalyzeRuntime = (algorithm, input, func, ...args) => {
     let totalTime = 0;
-    const iterations = 1000; // Repeat the operation 1000 times
+    const iterations = 10; // Repeat the operation 1000 times
     let output;
   
     for (let i = 0; i < iterations; i++) {
@@ -20,7 +20,6 @@ export const sendDataToServer = (algorithm, input, output, runtime) => {
     }
   
     const averageTime = totalTime / iterations;
-    sendDataToServer(algorithm, input, output, averageTime);
   
     return { input, output, runtime: averageTime };
   };
