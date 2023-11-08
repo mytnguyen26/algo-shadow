@@ -5,9 +5,6 @@ import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { analyzeRuntime } from './AlgComponent/RuntimeAnalysis';
 
-
-
-
 const width = 900;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
@@ -70,6 +67,7 @@ function back() {
 function empty(){
   record = []
   step = 0
+  tdataset = []
 }
 
 function HeapPage() {
@@ -86,7 +84,7 @@ function HeapPage() {
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
     empty()
-    // console.log(data)
+    setState(0)
     Animation.createTree(dataset,svgRef);
     const result = analyzeRuntime('createHeap', data, () => {
       Heapification.buildmaxheap(dataset, record);
@@ -97,6 +95,7 @@ function HeapPage() {
   
   function insertheap(idata){
     empty() 
+    setState(1)
     totallen++
     data.push(Number(idata[0]))
     dataset.push({index:totallen,value:Number(idata[0])})
@@ -111,16 +110,12 @@ function HeapPage() {
   
   function deleteheap(i){
     empty()
+    setState(1)
     Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    //console.log(tdataset[tdataset.length-1].index)
     deletetest = i
     deletegraph = tdataset[tdataset.length-1].index
-    // const result = analyzeRuntime('deleteheap', data, () => {
-    //   Heapification.deleteheap(i+1,dataset,record);
-    //   return dataset;
-    // });
-    // setHeapResult(result);
+
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
@@ -135,6 +130,20 @@ function HeapPage() {
       Animation.createTree(dataset,svgRef)
     else
       Animation.fianlTree(tdataset,svgRef)
+  }
+
+  function increasekey(i,kdata){
+    empty()
+    if (kdata < dataset[i].value) {
+      alert("new value is smaller than before");
+    }
+    setState(1)
+    dataset[i].value = kdata;
+    Animation.fianlTree(dataset,svgRef);
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    console.log(tdataset)
+    Heapification.increasekey(i+1,kdata,dataset,record)
+    console.log(dataset)
   }
 
   return (
@@ -168,9 +177,9 @@ function HeapPage() {
               if (validdata(ddata) && ddata.length === 1) {
                   for (var i = 0; i < dataset.length; i++) {
                       if (dataset[i].value == ddata[0]) {
-                          deleteheap(i);
-                          t = 1;
-                          break;
+                        deleteheap(i);
+                        t = 1;
+                        break;
                       }
                   }
                   if (t == 0) {
@@ -180,7 +189,30 @@ function HeapPage() {
                   alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
               }
           }}>Delete</button>
-          <button onClick={reset}>increase key</button>
+
+          <input id="select" placeholder="select a number" />
+          <input id="increase" placeholder="increase it to" />
+          <button onClick={()=>{
+            let sdata = document.getElementById("select").value.split(",");
+            let kdata = document.getElementById("increase").value.split(",");
+              let t = 0;
+              if (validdata(sdata) && validdata(kdata) &&sdata.length === 1 &&kdata.length === 1) {
+                  for (var i = 0; i < dataset.length; i++) {
+                      if (dataset[i].value == sdata[0]) {
+                          increasekey(i,kdata[0]);
+                          t = 1;
+                          break;
+                      }
+                  }
+                  if (t == 0) {
+                      alert(sdata[0] + " is not in heap");
+                  }
+              } else {
+                  alert(sdata.length !== 1 ? "Only select one number" : "Only numbers and commas can be entered");
+              }
+          }}>increase key</button>
+          
+
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>

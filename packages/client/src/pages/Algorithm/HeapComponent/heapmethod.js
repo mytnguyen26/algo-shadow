@@ -34,7 +34,6 @@ const exchanegdata = (index1, index2, localDataset, localRecord) => {
 };
 
 
-
 const getparent = (i) => {
   return Math.floor(i / 2);
 };
@@ -77,15 +76,12 @@ const Heapification = {
 
   deleteheap: (index, localDataset, localRecord) => {
     let max = localDataset[0].value + 1;
-    increasekey(index, max, localDataset, localRecord);
-    extraheap(localDataset, localRecord);
+    Heapification.increasekey(index, max, localDataset, localRecord);
+    Heapification.extraheap(localDataset, localRecord);
   },
 
   increasekey:(i, key, localDataset, localRecord)=>{
-    if (key < localDataset[i - 1].value) {
-      throw new Error("new value is smaller than before");
-    }
-    localDataset[i - 1].value = key;
+    
     while (
       i > 1 &&
       localDataset[getparent(i) - 1].value < localDataset[i - 1].value
