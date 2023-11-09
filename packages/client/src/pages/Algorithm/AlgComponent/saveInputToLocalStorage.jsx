@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'; // Ensure you have this icon imported
+import {
+    Box, Button, TextField, Paper, List, ListItem,
+    ClickAwayListener, InputAdornment
+  } from '@mui/material';
 
 
-export const SaveInputToLocalStorage = ({ algorithm, inputData }) => {
+export const SaveInputToLocalStorage = ({ algorithm, inputData, useInput }) => {
   const storageKey = `${algorithm}_recentInputs`;
 
   const [inputValue, setInputValue] = useState('');
   const [recentInputs, setRecentInputs] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [selectedInput, setSelectedInput] = useState('');
+
 
   const saveInput = () => {
     // Retrieve existing inputs or initialize to an empty array
@@ -39,8 +36,25 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData }) => {
     setShowHistory(false);
   };
 
+  const handleListItemClick = (input) => {
+    const inputString = input.join(','); // Assuming 'input' is an array of numbers
+    setInputValue(inputString);
+    setSelectedInput(inputString); // Save the selected input as a string
+  };
+  
+  // Handler when "Use This" is clicked
+  const handleUseInput = () => {
+    if (typeof selectedInput === 'string') {
+      useInput(selectedInput.split(',').map(Number)); // Convert string to array of numbers
+      setShowHistory(false); // Optionally close the history dropdown
+    } else {
+      // Handle the error or initialize selectedInput as a string to prevent this
+      console.error('Selected input is not a string:', selectedInput);
+    }
+  };
+
   return (
-    <ClickAwayListener onClickAway={handleClickAway}>
+    <ClickAwayListener onClickAway={() => setShowHistory(false)}>
       <Box sx={{ position: 'relative', width: '300px' }}>
         <Button variant="contained" onClick={saveInput} sx={{ mb: 1 }}>
           Save Input
@@ -51,7 +65,18 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setShowHistory(true)}
-          placeholder="history..."
+          placeholder="Enter numbers..."
+          InputProps={{
+            endAdornment: (
+              selectedInput && (
+                <InputAdornment position="end">
+                  <Button onClick={handleUseInput}>
+                    Use This
+                  </Button>
+                </InputAdornment>
+              )
+            ),
+          }}
         />
         {showHistory && (
           <Paper sx={{ position: 'absolute', width: '100%', maxHeight: '300px', overflow: 'auto', zIndex: 2, mt: 1 }}>
@@ -59,10 +84,7 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData }) => {
               {recentInputs.map((input, index) => (
                 <ListItem
                   key={index}
-                  onClick={() => {
-                    setInputValue(input);
-                    setShowHistory(false);
-                  }}
+                  onClick={() => handleListItemClick(input)}
                 >
                   {input.join(',')}
                 </ListItem>

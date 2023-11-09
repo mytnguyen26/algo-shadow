@@ -226,7 +226,8 @@ function HeapPage() {
           
       </div>
     </div>
-    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} />
+    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} useInput={useInput}/>
+          
     </div>
   </div>
 );
