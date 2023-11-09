@@ -5,7 +5,6 @@ import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import { InputHistory } from "./AlgComponent/inputHistory";
 
 
 

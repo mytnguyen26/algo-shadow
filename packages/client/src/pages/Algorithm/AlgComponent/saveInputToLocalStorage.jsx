@@ -65,7 +65,7 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData, useInput }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setShowHistory(true)}
-          placeholder="Enter numbers..."
+          placeholder="Use saved input..."
           InputProps={{
             endAdornment: (
               selectedInput && (
