@@ -81,7 +81,10 @@ const Heapification = {
   },
 
   increasekey:(i, key, localDataset, localRecord)=>{
-    
+    if (key < localDataset[i - 1].value) {
+      throw new Error("new value is smaller than before");
+    }
+    localDataset[i - 1].value = key;
     while (
       i > 1 &&
       localDataset[getparent(i) - 1].value < localDataset[i - 1].value

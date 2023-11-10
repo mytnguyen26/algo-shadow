@@ -25,6 +25,15 @@ function validdata(xdata) {
   return true;
 }
 
+function validonedata(xdata){
+  if (validdata(xdata) && xdata.length === 1) {
+    return true
+  } else {
+      alert(xdata.length !== 1 ? "Only select one number" : "Only numbers and commas can be entered");
+  }
+
+}
+
 const nextStep = () => {
   if(step>=record.length)
   {
@@ -119,7 +128,7 @@ function HeapPage() {
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
-      e2: dataset.length+1
+      e2: totallen+1
     })
     data.splice(dataset[i].index-1, 1); 
   }
@@ -141,9 +150,24 @@ function HeapPage() {
     dataset[i].value = kdata;
     Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    console.log(tdataset)
+
     Heapification.increasekey(i+1,kdata,dataset,record)
-    console.log(dataset)
+  }
+
+  function extraheap(){
+    empty()
+    setState(1)
+    Animation.fianlTree(dataset,svgRef);
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    console.log(tdataset)
+    deletetest = tdataset[0].index-1
+    deletegraph = tdataset[tdataset.length-1].index
+    Heapification.extraheap(dataset, record)
+    record.push({
+      e1: 0,
+      e2: totallen+1
+    })
+    console.log(record)
   }
 
   return (
@@ -174,7 +198,7 @@ function HeapPage() {
           <button id="dsubmit" onClick={() => {
               let ddata = document.getElementById("delete").value.split(",");
               let t = 0;
-              if (validdata(ddata) && ddata.length === 1) {
+              if (validonedata(ddata)) {
                   for (var i = 0; i < dataset.length; i++) {
                       if (dataset[i].value == ddata[0]) {
                         deleteheap(i);
@@ -185,8 +209,6 @@ function HeapPage() {
                   if (t == 0) {
                       alert(ddata[0] + " is not in heap");
                   }
-              } else {
-                  alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
               }
           }}>Delete</button>
 
@@ -243,7 +265,7 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-          <button onClick={reset}>extra heap</button>
+          <button onClick={extraheap}>extra heap</button>
       </div>
       </div>
   </div>

@@ -164,7 +164,6 @@ const Animation = {
   },
 
   showelement: (e, size) => {
-    console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
