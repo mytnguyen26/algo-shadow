@@ -16,6 +16,7 @@ var step = 0
 var deletetest = -1;
 var deletegraph=  -1;
 var totallen = dataset.length
+var state = 0
 
 function validdata(xdata) {
   for (const ele of xdata) {
@@ -33,6 +34,15 @@ function validonedata(xdata){
       alert(xdata.length !== 1 ? "Only select one number" : "Only numbers and commas can be entered");
   }
 
+}
+
+function findinheap(xdata) {
+  for (var i = 0; i < dataset.length; i++) {
+    if (dataset[i].value == xdata) {
+      return i;
+    }
+  }
+  throw new Error(xdata + " is not in heap");
 }
 
 const nextStep = () => {
@@ -54,7 +64,6 @@ const nextStep = () => {
   }
 }
 
-
 function back() {
   if(step<1)
   {
@@ -74,69 +83,21 @@ function back() {
   }
 }
 
-function empty(){
-  record = []
-  step = 0
-}
+
 
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
-  const [state, setState] = useState(0);
   const [heapResult, setHeapResult] = useState(null);
-  
 
-  useEffect(() => {
-    createHeap()
-  },[resetkey]);
-
-  useEffect(() => {
-    SaveInputToLocalStorage
-  },[]);
-
-  function createHeap(){
-    dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
-    empty()
-    // console.log(data)
-    Animation.createTree(dataset,svgRef);
-    const result = AnalyzeRuntime('createHeap', data, () => {
-      Heapification.buildmaxheap(dataset, record);
-      return dataset;
-    });
-    setHeapResult(result);
-  }
-  
-  function insertheap(idata){
-    empty() 
-    data.push(Number(idata[0]))
-    dataset.push({index:data.length,value:Number(idata[0])})
-    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    Animation.fianlTree(dataset,svgRef);
-    const result = AnalyzeRuntime('insertheap', data, () => {
-      Heapification.insertheap(dataset,record)
-      return dataset;
-    });
-    setHeapResult(result);
-  }
-  
-  function deleteheap(i){
-    empty()
-    Animation.fianlTree(dataset,svgRef);
-    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    console.log(tdataset[tdataset.length-1].index)
-    deletetest = i
-    deletegraph = tdataset[tdataset.length-1].index
-    // const result = analyzeRuntime('deleteheap', data, () => {
-    //   Heapification.deleteheap(i+1,dataset,record);
-    //   return dataset;
-    // });
-    // setHeapResult(result);
-    Heapification.deleteheap(i+1,dataset,record);
-    record.push({
-      e1: 0,
-      e2: totallen+1
-    })
-    data.splice(dataset[i].index-1, 1); 
+  function empty(){
+    record = []
+    step = 0
+    console.log(state)
+    if(state==1)
+      Animation.fianlTree(tdataset,svgRef)
+    else
+      Animation.createTree(dataset,svgRef);
   }
 
   function reset() {
@@ -147,33 +108,74 @@ function HeapPage() {
       Animation.fianlTree(tdataset,svgRef)
   }
 
-  function increasekey(i,kdata){
+  useEffect(() => {
+    createHeap()
+  },[]);
+
+  useEffect(() => {
+    SaveInputToLocalStorage
+  },[]);
+
+  function createHeap(){
+    dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
+    state = 0
     empty()
+    const result = AnalyzeRuntime('createHeap', data, () => {
+      Heapification.buildmaxheap(dataset, record);
+      return dataset;
+    });
+    setHeapResult(result);
+  }
+  
+  function insertheap(idata){
+    state = 1
+    data.push(Number(idata[0]))
+    dataset.push({index:data.length,value:Number(idata[0])})
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    empty()
+    const result = AnalyzeRuntime('insertheap', data, () => {
+      Heapification.insertheap(dataset,record)
+      return dataset;
+    });
+    setHeapResult(result);
+  }
+  
+  function deleteheap(i){
+    state = 1
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    empty()
+    deletetest = i
+    deletegraph = tdataset[tdataset.length-1].index
+    Heapification.deleteheap(i+1,dataset,record);
+    record.push({
+      e1: 0,
+      e2: totallen+1
+    })
+    data.splice(dataset[i].index-1, 1); 
+  }
+
+  function increasekey(i,kdata){
     if (kdata < dataset[i].value) {
       alert("new value is smaller than before");
     }
-    setState(1)
+    state = 1
     dataset[i].value = kdata;
-    Animation.fianlTree(dataset,svgRef);
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-
+    empty()
     Heapification.increasekey(i+1,kdata,dataset,record)
   }
 
   function extraheap(){
-    empty()
-    setState(1)
-    Animation.fianlTree(dataset,svgRef);
+    state =1
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    console.log(tdataset)
     deletetest = tdataset[0].index-1
     deletegraph = tdataset[tdataset.length-1].index
+    empty()
     Heapification.extraheap(dataset, record)
     record.push({
       e1: 0,
       e2: totallen+1
     })
-    console.log(record)
   }
   const useInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
@@ -198,28 +200,21 @@ function HeapPage() {
           <input id="insert" placeholder="Insert a number" />
           <button id="isubmit" onClick={() => {
               let idata = document.getElementById("insert").value.split(",");
-              if (validdata(idata) && idata.length === 1) {
+              if (validonedata(idata)) {
                   insertheap(idata);
-              } else {
-                  alert(idata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
-              }
+              } 
           }}>Insert</button>
 
           <input id="delete" placeholder="Delete a number" />
           <button id="dsubmit" onClick={() => {
               let ddata = document.getElementById("delete").value.split(",");
-              let t = 0;
               if (validonedata(ddata)) {
-                  for (var i = 0; i < dataset.length; i++) {
-                      if (dataset[i].value == ddata[0]) {
-                          deleteheap(i);
-                          t = 1;
-                          break;
-                      }
-                  }
-                  if (t == 0) {
-                      alert(ddata[0] + " is not in heap");
-                  }
+                try {
+                  const index = findinheap(ddata[0]);
+                  deleteheap(index);
+                } catch (error) {
+                  alert(error.message);
+                }
               }
           }}>Delete</button>
 
@@ -230,16 +225,12 @@ function HeapPage() {
               let idata = document.getElementById("increase").value.split(",");
               let t = 0;
               if (validonedata(sdata)&&validonedata(idata)) {
-                  for (var i = 0; i < dataset.length; i++) {
-                      if (dataset[i].value == sdata[0]) {
-                          increasekey(i,idata[0]);
-                          t = 1;
-                          break;
-                      }
-                  }
-                  if (t == 0) {
-                      alert(sdata[0] + " is not in heap");
-                  }
+                try {
+                  const index = findinheap(sdata[0]);
+                  increasekey(index,idata[0]);
+                } catch (error) {
+                  alert(error.message);
+                }
               }
           }}>increase</button>
       </div>
