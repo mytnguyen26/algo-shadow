@@ -222,6 +222,26 @@ function HeapPage() {
                   }
               }
           }}>Delete</button>
+
+          <input id="select" placeholder="select a number" />
+          <input id="increase" placeholder="increase a number" />
+          <button id="ksubmit" onClick={() => {
+              let sdata = document.getElementById("select").value.split(",");
+              let idata = document.getElementById("increase").value.split(",");
+              let t = 0;
+              if (validonedata(sdata)&&validonedata(idata)) {
+                  for (var i = 0; i < dataset.length; i++) {
+                      if (dataset[i].value == sdata[0]) {
+                          increasekey(i,idata[0]);
+                          t = 1;
+                          break;
+                      }
+                  }
+                  if (t == 0) {
+                      alert(sdata[0] + " is not in heap");
+                  }
+              }
+          }}>increase</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
