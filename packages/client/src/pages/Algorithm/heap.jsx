@@ -6,11 +6,6 @@ import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 
-
-
-
-
-
 const width = 900;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
@@ -20,7 +15,7 @@ var record = []
 var step = 0
 var deletetest = -1;
 var deletegraph=  -1;
-
+var totallen = dataset.length
 
 function validdata(xdata) {
   for (const ele of xdata) {
@@ -257,7 +252,6 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-          <button onClick={reset}>extra heap</button>
           <button onClick={extraheap}>extra heap</button>
       </div>
     </div>
