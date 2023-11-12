@@ -144,6 +144,10 @@ const BST = () => {
     console.log(record)
   }
 
+  function test(){
+    AnimationB.addGradients(dataset,svgRef)
+  }
+
   return (
     <Container maxWidth="md">
       <Box className="canvas"><div style={{ display: 'flex' }}>
@@ -198,8 +202,11 @@ const BST = () => {
           <button onClick={nextStep}>Next Step</button>
           <button onClick={back}>Back</button>
           <button onClick={reset}>Reset</button>
+          <button onClick={test}>Test</button>
           </div>
         </div>
+
+        
 
       </div>
       </Box>

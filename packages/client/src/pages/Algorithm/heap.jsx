@@ -166,7 +166,7 @@ function HeapPage() {
   }
 
   function extraheap(){
-    state =1
+    state = 1
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     deletetest = tdataset[0].index-1
     deletegraph = tdataset[tdataset.length-1].index
@@ -223,7 +223,6 @@ function HeapPage() {
           <button id="ksubmit" onClick={() => {
               let sdata = document.getElementById("select").value.split(",");
               let idata = document.getElementById("increase").value.split(",");
-              let t = 0;
               if (validonedata(sdata)&&validonedata(idata)) {
                 try {
                   const index = findinheap(sdata[0]);
