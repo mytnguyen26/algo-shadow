@@ -5,7 +5,7 @@ import {
   } from '@mui/material';
 
 
-export const SaveInputToLocalStorage = ({ algorithm, inputData, useInput }) => {
+export const SaveInputToLocalStorage = ({ algorithm, inputData, useHisInput }) => {
   const storageKey = `${algorithm}_recentInputs`;
 
   const [inputValue, setInputValue] = useState('');
@@ -43,9 +43,9 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData, useInput }) => {
   };
   
   // Handler when "Use This" is clicked
-  const handleUseInput = () => {
+  const handleUseHisInput = () => {
     if (typeof selectedInput === 'string') {
-      useInput(selectedInput.split(',').map(Number)); // Convert string to array of numbers
+      useHisInput(selectedInput.split(',').map(Number)); // Convert string to array of numbers
       setShowHistory(false); // Optionally close the history dropdown
     } else {
       // Handle the error or initialize selectedInput as a string to prevent this
@@ -70,7 +70,7 @@ export const SaveInputToLocalStorage = ({ algorithm, inputData, useInput }) => {
             endAdornment: (
               selectedInput && (
                 <InputAdornment position="end">
-                  <Button onClick={handleUseInput}>
+                  <Button onClick={handleUseHisInput}>
                     Use This
                   </Button>
                 </InputAdornment>
