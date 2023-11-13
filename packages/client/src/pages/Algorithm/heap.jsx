@@ -158,7 +158,7 @@ function HeapPage() {
       e2: totallen+1
     })
   }
-  const useInput = (input) => {
+  const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input
     createHeap();
@@ -244,8 +244,7 @@ function HeapPage() {
           <button onClick={extraheap}>extra heap</button>
       </div>
     </div>
-    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} useInput={useInput}/>
-          
+    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} useHisInput={useHisInput}/>    
     </div>
   </div>
 );

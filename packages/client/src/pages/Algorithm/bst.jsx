@@ -1,10 +1,11 @@
 import React, { useState, useEffect , useRef} from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { ControlArea } from "./AlgComponent/controlArea";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Animation from "./HeapComponent/animate";
+import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
+import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
 
 var data = [4,7,8,2,1,3,5,9]
@@ -13,6 +14,7 @@ var record = []
 var step = 0
 var tree = null
 var exchange = []
+
 function validdata(tdata){
   for (const ele of tdata) {
     if (isNaN(ele)) {
@@ -74,6 +76,7 @@ function nextStep(){
     step++
   }
 }
+
 function back(){
   if(step<1)
   {
@@ -96,20 +99,38 @@ function back(){
   }
     
 }
+
 const BST = () => {
   const svgRef = useRef(null);
   useEffect(() => {
     createbst();
   },[]);
 
+  useEffect(() => {
+    SaveInputToLocalStorage
+  },[]);
+
+  const [bstResult, setBstResult] = useState(null);
+
+  const useHisInput = (input) => {
+    // Assuming `createHeap` is a function that takes an input array to create a heap
+    data = input
+    createbst();
+  };
+
   function createbst(){
     record = []
     tree = new BinarySearchTree();
-    datatran(data);
-    dataset.forEach(element => {
-      tree.insert(element, record);
+      datatran(data);
+      dataset.forEach(element => {
+        tree.insert(element, record);
+      });
+    const result = AnalyzeRuntime('createBST', data, () => {
+      AnimationB.createbst(dataset,svgRef);
+      return tree;
     });
-    AnimationB.createbst(dataset,svgRef);
+    setBstResult(result); // Update state
+    console.log(result)
   }
 
   function insertbst(idata){
@@ -191,8 +212,23 @@ const BST = () => {
               }
           }}>delete</button>
         </div>
+
         <div style={{ flexGrow: 1 }}>
           <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
+          <AlgorithmSpace svgRef={svgRef} width={width} height={height} />
+
+          {bstResult && (
+            <div>
+              <h3>BST Result:</h3>
+              <div>
+                <strong>Input:</strong> [{bstResult.input.join(", ")}]
+              </div>
+              <div>
+                <strong>Runtime:</strong> {bstResult.runtime} ms
+              </div>
+            </div>
+          )}
+
           <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={Inorder}>Inorder</button>
           <button onClick={Preorder}>Preorder</button>
@@ -205,7 +241,8 @@ const BST = () => {
           <button onClick={test}>Test</button>
           </div>
         </div>
-
+        <div><SaveInputToLocalStorage algorithm="bst" inputData={data} useHisInput={useHisInput}/>
+          </div>
         
 
       </div>
