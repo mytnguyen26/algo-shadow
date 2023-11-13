@@ -5,8 +5,8 @@ import { ControlArea } from "./AlgComponent/controlArea";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Animation from "./HeapComponent/animate";
-const width = 900;
-const height = 300;
+import Common from "./Common/common";
+
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
 var record = []
@@ -155,7 +155,7 @@ const BST = () => {
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
               let cdata = document.getElementById("create").value.split(",");
-              if (validdata(cdata)) {
+              if (Common.validdata(cdata)) {
                   data = cdata.map(item => Number(item.trim()))
                   createbst();
               } else {
@@ -192,7 +192,7 @@ const BST = () => {
           }}>delete</button>
         </div>
         <div style={{ flexGrow: 1 }}>
-          <AlgorithmSpace svgRef={svgRef} width={width} height={height} />
+          <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
           <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={Inorder}>Inorder</button>
           <button onClick={Preorder}>Preorder</button>

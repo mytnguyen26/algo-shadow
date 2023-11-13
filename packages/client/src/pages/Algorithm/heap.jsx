@@ -1,13 +1,12 @@
 import React, { useState, useEffect , useRef} from "react";
 import Animation from "./HeapComponent/animate";
+import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 
-const width = 900;
-const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
 var dataset = []
 var tdataset = []
@@ -17,24 +16,6 @@ var deletetest = -1;
 var deletegraph=  -1;
 var totallen = dataset.length
 var state = 0
-
-function validdata(xdata) {
-  for (const ele of xdata) {
-    if (isNaN(ele)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function validonedata(xdata){
-  if (validdata(xdata) && xdata.length === 1) {
-    return true
-  } else {
-      alert(xdata.length !== 1 ? "Only select one number" : "Only numbers and commas can be entered");
-  }
-
-}
 
 function findinheap(xdata) {
   for (var i = 0; i < dataset.length; i++) {
@@ -129,8 +110,8 @@ function HeapPage() {
   
   function insertheap(idata){
     state = 1
-    data.push(Number(idata[0]))
-    dataset.push({index:data.length,value:Number(idata[0])})
+    data.push(Number(idata))
+    dataset.push({index:data.length,value:Number(idata)})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     empty()
     const result = AnalyzeRuntime('insertheap', data, () => {
@@ -186,56 +167,54 @@ function HeapPage() {
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <input id="create" placeholder="Enter comma separated numbers" />
-          <button id="csubmit" onClick={() => {
-              let cdata = document.getElementById("create").value.split(",");
-              if (validdata(cdata)) {
-                  data = cdata.map(item => Number(item.trim()))
-                  createHeap();
-              } else {
-                  alert("Only numbers and commas can be entered");
-              }
+        <input id="create" placeholder="Enter comma separated numbers" />
+        <button id="csubmit" onClick={() => {
+          try {
+            let cdata = Common.validdata("create");
+            data = cdata.map(item => Number(item.trim()))
+            createHeap()
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Create Heap</button>
 
-          <input id="insert" placeholder="Insert a number" />
-          <button id="isubmit" onClick={() => {
-              let idata = document.getElementById("insert").value.split(",");
-              if (validonedata(idata)) {
-                  insertheap(idata);
-              } 
+        <input id="insert" placeholder="Insert a number" />
+        <button id="isubmit" onClick={() => {
+          try {
+            let idata = Common.validonedata("insert");
+            insertheap(idata)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Insert</button>
 
-          <input id="delete" placeholder="Delete a number" />
-          <button id="dsubmit" onClick={() => {
-              let ddata = document.getElementById("delete").value.split(",");
-              if (validonedata(ddata)) {
-                try {
-                  const index = findinheap(ddata[0]);
-                  deleteheap(index);
-                } catch (error) {
-                  alert(error.message);
-                }
-              }
+        <input id="delete" placeholder="Delete a number" />
+        <button id="dsubmit" onClick={() => {
+          try {
+            let ddata = Common.validonedata("delete");
+            const index = findinheap(ddata);
+            deleteheap(index)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Delete</button>
 
-          <input id="select" placeholder="select a number" />
-          <input id="increase" placeholder="increase a number" />
-          <button id="ksubmit" onClick={() => {
-              let sdata = document.getElementById("select").value.split(",");
-              let idata = document.getElementById("increase").value.split(",");
-              if (validonedata(sdata)&&validonedata(idata)) {
-                try {
-                  const index = findinheap(sdata[0]);
-                  increasekey(index,idata[0]);
-                } catch (error) {
-                  alert(error.message);
-                }
-              }
+        <input id="select" placeholder="select a number" />
+        <input id="increase" placeholder="increase a number" />
+        <button id="ksubmit" onClick={() => {
+          try {
+            let sdata = Common.validonedata("select");
+            let idata = Common.validonedata("increase");
+            const index = findinheap(sdata);
+            increasekey(index,idata);
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>increase</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-      <AlgorithmSpace svgRef={svgRef} width={width} height={height} resetkey={resetkey}> 
+      <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} resetkey={resetkey}> 
         {/* the graph will be rendered inside the AlgorithmSpace component */}
       </AlgorithmSpace>
           
