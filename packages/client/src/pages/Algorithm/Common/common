@@ -1,5 +1,6 @@
 import AnimationB from "../bstComponent/bstanimate.jsx";
-import Animation from "../HeapComponent/animate";
+import CAnimation from "./Canimate";
+
 const Common= {
     width : 900,
     height : 300,
@@ -28,7 +29,67 @@ const Common= {
           }
         }
         throw new Error(xdata + " is not in heap");
-    }
+    },
+    nextStep(step,record,...restParams){
+      if(step>=record.length)
+      {
+        alert("Animation is end!")
+        
+      }
+      else
+      {
+        if(typeof(record[step].e1) == "undefined"){
+          AnimationB.Pathdisplay(record[step]);
+        }
+        else{
+          if(record[step].e1==0){
+            if(restParams.length>0){
+              CAnimation.deleteelement(restParams[0]+1,restParams[1])
+            }
+            else{
+              CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
+            }
+            
+          }
+          else{
+            const text1 = document.getElementById("t" + record[step].e1);
+            const text2 = document.getElementById("t" + record[step].e2);
+            CAnimation.animateExchange(text1,text2);
+          }
+        }
+        ++step
+      }
+      return step
+    },
+
+    back(step,record,...restParams){
+      if(step<1)
+      {
+        alert("This is the first step!")
+      }
+      else
+      {
+        step--
+        if(typeof(record[step].e1) == "undefined"){
+          AnimationB.Pathdisappear(record[step]);
+        }
+        else{
+          if(record[step].e1==0){
+            if(restParams.length>0){
+              CAnimation.showelement(restParams[0]+1,restParams[1])
+            }else{
+              CAnimation.showelement(record[step-1].e2,record[step-1].e1)
+            } 
+          }
+          else{
+            const text1 = document.getElementById("t" + record[step].e1);
+            const text2 = document.getElementById("t" + record[step].e2);
+            CAnimation.animateExchange(text1,text2);
+          }
+        }
+      }
+      return step
+    } 
   }
 
   export default Common;

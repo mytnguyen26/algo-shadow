@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./HeapComponent/animate";
-import Common from "./Common/common";
-import CAnimation from "./Common/Canimate";
-import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import Heapification from "./HeapComponent/heapmethod";
+import Animation from "./HeapComponent/animate";
+import Common from "./Common/common";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
 var dataset = []
@@ -18,44 +17,6 @@ var deletegraph=  -1;
 var totallen = dataset.length
 var state = 0
 
-const nextStep = () => {
-  if(step>=record.length)
-  {
-    alert("Heap is end!")
-  }
-  else
-  {
-    if(record[step].e1==0){
-      CAnimation.deleteelement(deletetest+1,deletegraph)
-    }
-    else{
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      CAnimation.animateExchange(text1,text2);
-    }
-    step++
-  }
-}
-
-function back() {
-  if(step<1)
-  {
-    alert("This is the first step!")
-  }
-  else
-  {
-    step--
-    if(record[step].e1==0){
-      CAnimation.showelement(deletetest+1,deletegraph)
-    }
-    else{
-    const text1 = document.getElementById("t" + record[step].e1);
-    const text2 = document.getElementById("t" + record[step].e2);
-    CAnimation.animateExchange(text1,text2);
-    }
-  }
-}
-
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
@@ -65,7 +26,6 @@ function HeapPage() {
     record = []
     reset()
   }
-
 
   function reset() {
     step = 0;
@@ -219,8 +179,10 @@ function HeapPage() {
       )}
 
       <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={nextStep}>Next Step</button>
-          <button onClick={back}>Back</button>
+      <button onClick={() => {
+            step = Common.nextStep(step, record,deletetest,deletegraph)}}>Next Step</button>
+          <button onClick={() => {
+            step = Common.back(step, record,deletetest,deletegraph)}}>Back</button>
           <button onClick={reset}>Reset</button>
           <button onClick={() => {
               Animation.fianlTree(dataset, svgRef);

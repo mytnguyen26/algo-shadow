@@ -6,7 +6,6 @@ const Animation = {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
-    const my = 60;
     const p = svg
       .append("g")
       .attr("stroke", "black")

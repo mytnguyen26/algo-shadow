@@ -1,11 +1,10 @@
 import React, { useState, useEffect , useRef} from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import BinarySearchTree from "./bstComponent/bstmethod.js";
-import AnimationB from "./bstComponent/bstanimate.jsx";
-import CAnimation from "./Common/Canimate";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import BinarySearchTree from "./bstComponent/bstmethod.js";
+import AnimationB from "./bstComponent/bstanimate.jsx";
 import Common from "./Common/common";
 
 var data = [4,7,8,2,1,3,5,9]
@@ -35,54 +34,6 @@ function Preorder(){
 function Postorder(){
   reset()
   record = tree.postOrderTraverse()
-}
-
-function nextStep(){
-  if(step>=record.length)
-  {
-    alert("Animation is end!")
-  }
-  else
-  {
-    if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisplay(record[step]);
-    }
-    else{
-      if(record[step].e1==0){
-        CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
-      }
-      else{
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        CAnimation.animateExchange(text1,text2);
-      }
-    }
-    step++
-  }
-}
-
-function back(){
-  if(step<1)
-  {
-    alert("This is the first step!")
-  }
-  else
-  {
-    step--
-    if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisappear(record[step]);
-    }
-    else{
-      if(record[step].e1==0){
-        CAnimation.showelement(record[step-1].e2,record[step-1].e1)
-      }
-      else{
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        CAnimation.animateExchange(text1,text2);
-      }
-    }
-  }
 }
 
 const BST = () => {
@@ -210,8 +161,10 @@ const BST = () => {
           <button onClick={Postorder}>Postorder</button>
           </div>
         <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={nextStep}>Next Step</button>
-          <button onClick={back}>Back</button>
+          <button onClick={() => {
+            step = Common.nextStep(step, record)}}>Next Step</button>
+          <button onClick={() => {
+            step = Common.back(step, record)}}>Back</button>
           <button onClick={reset}>Reset</button>
           <button onClick={test}>Test</button>
           </div>
