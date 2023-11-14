@@ -34,3 +34,4 @@ build/
 
 ### Jar files ###
 .mvn/wrapper/*.jar
+src/main/java/.DS_Store
