@@ -39,7 +39,17 @@ export const Navbar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton component={Link} to={Paths.ABOUT}>
+              <ListItemButton>
+                <Link
+                  href={Paths.ALGORITHM}
+                  sx={{ textDecoration: "none", color: "black" }}
+                >
+                  <ListItemText primary="Algorithm" />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
                 <ListItemText primary="About" />
               </ListItemButton>
             </ListItem>

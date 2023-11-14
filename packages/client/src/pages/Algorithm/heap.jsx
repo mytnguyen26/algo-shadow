@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Animation from "./HeapComponent/animate";
 import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
@@ -72,12 +72,11 @@ function HeapPage() {
       Animation.createTree(dataset,svgRef);
   }
 
+
   function reset() {
-    step = 0
-    if(state==0)
-      Animation.createTree(dataset,svgRef)
-    else
-      Animation.fianlTree(tdataset,svgRef)
+    step = 0;
+    if (state == 0) Animation.createTree(dataset, svgRef);
+    else Animation.fianlTree(tdataset, svgRef);
   }
 
   useEffect(() => {
@@ -124,6 +123,7 @@ function HeapPage() {
       e2: totallen+1
     })
     data.splice(dataset[i].index-1, 1); 
+
   }
 
   function increasekey(i,kdata){

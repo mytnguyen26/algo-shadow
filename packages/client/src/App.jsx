@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Layout } from "./pages/Home/layout.jsx";
+import { Paths } from "./constants/Paths.js";
 import Home from "./pages/Home/home";
 import About from "./pages/Home/about.jsx";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import Heap from "./pages/Algorithm/heap.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
-import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
+import { Dijkstra } from "./components/dijkstra/Dijkstra.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route index element={<Algorithm />} />
             <Route path={Paths.HEAP} element={<Heap />} />
             <Route path={Paths.BST} element={<BST />} />
+            <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
           </Route>
         </Route>
       </Routes>
