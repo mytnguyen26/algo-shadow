@@ -1,3 +1,5 @@
+import AnimationB from "../bstComponent/bstanimate.jsx";
+import Animation from "../HeapComponent/animate";
 const Common= {
     width : 900,
     height : 300,

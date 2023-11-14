@@ -17,15 +17,6 @@ var deletegraph=  -1;
 var totallen = dataset.length
 var state = 0
 
-function findinheap(xdata,dataset) {
-  for (var i = 0; i < dataset.length; i++) {
-    if (dataset[i].value == xdata) {
-      return i;
-    }
-  }
-  throw new Error(xdata + " is not in heap");
-}
-
 const nextStep = () => {
   if(step>=record.length)
   {
@@ -174,7 +165,7 @@ function HeapPage() {
             data = cdata.map(item => Number(item.trim()))
             createHeap()
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message);
           }
           }}>Create Heap</button>
 
@@ -184,7 +175,7 @@ function HeapPage() {
             let idata = Common.validonedata("insert");
             insertheap(idata)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Insert</button>
 
@@ -195,7 +186,7 @@ function HeapPage() {
             const index = Common.findinarray(ddata,dataset);
             deleteheap(index)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Delete</button>
 
@@ -208,7 +199,7 @@ function HeapPage() {
             const index = Common.findinarray(sdata,dataset);
             increasekey(index,idata);
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>increase</button>
       </div>

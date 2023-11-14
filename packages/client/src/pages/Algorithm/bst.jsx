@@ -14,24 +14,17 @@ var record = []
 var step = 0
 var tree = null
 
-function datatran(data){
-  dataset = []
-  for (let i = 1; i <= data.length; ++i) {
-    dataset[i-1] = { index: i, value: Number(data[i-1]),position: 1 };
-  }
-  return dataset
-}
-
 function reset(){
   step = 0
-  record.forEach(element => {
-    AnimationB.Pathdisappear(dataset[element-1].position)
+  dataset.forEach(element => {
+    AnimationB.Pathdisappear(element.position)
   })
 }
 
 function Inorder(){
   reset()
   record = tree.inOrderTraverse()
+  console.log(record)
 }
 
 function Preorder(){
@@ -47,16 +40,16 @@ function Postorder(){
 function nextStep(){
   if(step>=record.length)
   {
-    alert("AnimationB is end!")
+    alert("Animation is end!")
   }
   else
   {
     if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisplay(dataset[record[step]-1].position);
+      AnimationB.Pathdisplay(record[step]);
     }
     else{
       if(record[step].e1==0){
-        Animation.deleteelement(record[step-1].e2,record[step-1].e1)
+        Animation.deleteelement(record[step].e2[1],record[step].e2[0])
       }
       else{
         const text1 = document.getElementById("t" + record[step].e1);
@@ -77,7 +70,7 @@ function back(){
   {
     step--
     if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisappear(dataset[record[step]-1].position);
+      AnimationB.Pathdisappear(record[step]);
     }
     else{
       if(record[step].e1==0){
@@ -114,7 +107,7 @@ const BST = () => {
   function createbst(){
     record = []
     tree = new BinarySearchTree();
-      datatran(data);
+    dataset = data.map((value, index) => ({ index: index + 1, value: Number(value), position: 1 }));
       dataset.forEach(element => {
         tree.insert(element, record);
       });
@@ -123,6 +116,8 @@ const BST = () => {
       return tree;
     });
     setBstResult(result); // Update state
+    console.log(dataset)
+    console.log(record)
   }
 
   function insertbst(idata){
@@ -136,27 +131,20 @@ const BST = () => {
 
   function deletebst(ddata,k){
     record = []
-    //k 被删除，i交换
+    //k delete，t exchange
     tree.delete(ddata,record)
-    //tree.inOrderTraverse()
     let t = record[record.length-1]
-    for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {        
-        if(dataset[i].value!=ddata){
-          console.log("exchange "+dataset[i].position + " and " +dataset[k].position)         
-          record.push({
-            e1: dataset[i].position,
-            e2: dataset[k].position
-          })
-        }        
-        break;
-      }
+    if(dataset[k].position!=t){
+      record.push({
+        e1: t,
+        e2: dataset[k].position
+      })
     }
     record.push({
       e1: 0,
-      e2: dataset[k].position
+      e2: [t,dataset[k].position]
     })
-    data.splice(dataset[i].index-1, 1); 
+    data.splice(dataset[k].index-1, 1); 
   }
 
   function test(){
@@ -175,7 +163,7 @@ const BST = () => {
             data = cdata.map(item => Number(item.trim()))
             createbst()
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Create</button>
 
@@ -185,7 +173,7 @@ const BST = () => {
             let idata = Common.validonedata("insert");
             insertbst(idata)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Insert</button>
 
@@ -196,7 +184,7 @@ const BST = () => {
             const index = Common.findinarray(ddata,dataset);
             deletebst(ddata,index)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Delete</button>
         </div>
