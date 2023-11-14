@@ -18,6 +18,14 @@ const Common= {
         }else {
             throw new Error("Only select one number");
         }
+    },
+    findinarray(xdata,dataset) {
+        for (var i = 0; i < dataset.length; i++) {
+          if (dataset[i].value == xdata) {
+            return i;
+          }
+        }
+        throw new Error(xdata + " is not in heap");
     }
   }
 

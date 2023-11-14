@@ -13,16 +13,6 @@ var dataset = []
 var record = []
 var step = 0
 var tree = null
-var exchange = []
-
-function validdata(tdata){
-  for (const ele of tdata) {
-    if (isNaN(ele)) {
-      return false; // Return false if any element is not a valid number
-    }
-  }
-  return true
-}
 
 function datatran(data){
   dataset = []
@@ -61,17 +51,18 @@ function nextStep(){
   }
   else
   {
-    if(record[step]=="e"){
-      const text1 = document.getElementById("t" + exchange[0]);
-      const text2 = document.getElementById("t" + exchange[1]);
-      Animation.animateExchange(text1,text2);
-    }
-    else if(record[step]<0){
-      Animation.deleteelement(exchange[1],exchange[0])
-      console.log("delete value:"+dataset[-record[step]-1].value)
+    if(typeof(record[step].e1) == "undefined"){
+      AnimationB.Pathdisplay(dataset[record[step]-1].position);
     }
     else{
-      AnimationB.Pathdisplay(dataset[record[step]-1].position);
+      if(record[step].e1==0){
+        Animation.deleteelement(record[step-1].e2,record[step-1].e1)
+      }
+      else{
+        const text1 = document.getElementById("t" + record[step].e1);
+        const text2 = document.getElementById("t" + record[step].e2);
+        Animation.animateExchange(text1,text2);
+      }
     }
     step++
   }
@@ -85,16 +76,18 @@ function back(){
   else
   {
     step--
-    if(record[step]=="e"){
-      const text1 = document.getElementById("t" + exchange[0]);
-      const text2 = document.getElementById("t" + exchange[1]);
-      Animation.animateExchange(text1,text2);
-    }
-    else if(record[step]<0){
-      Animation.showelement(exchange[1],exchange[0])
+    if(typeof(record[step].e1) == "undefined"){
+      AnimationB.Pathdisappear(dataset[record[step]-1].position);
     }
     else{
-      AnimationB.Pathdisappear(dataset[record[step]-1].position);
+      if(record[step].e1==0){
+        Animation.showelement(record[step-1].e2,record[step-1].e1)
+      }
+      else{
+        const text1 = document.getElementById("t" + record[step].e1);
+        const text2 = document.getElementById("t" + record[step].e2);
+        Animation.animateExchange(text1,text2);
+      }
     }
   }
     
@@ -130,7 +123,6 @@ const BST = () => {
       return tree;
     });
     setBstResult(result); // Update state
-    console.log(result)
   }
 
   function insertbst(idata){
@@ -148,25 +140,28 @@ const BST = () => {
     tree.delete(ddata,record)
     //tree.inOrderTraverse()
     let t = record[record.length-1]
-    
     for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {
+      if (dataset[i].index == t) {        
         if(dataset[i].value!=ddata){
-          console.log("exchange "+dataset[i].position + " and " +dataset[k].position)
-          exchange.push(dataset[i].position)
-          exchange.push(dataset[k].position)
-          record.push("e")//exchange
-        }
+          console.log("exchange "+dataset[i].position + " and " +dataset[k].position)         
+          record.push({
+            e1: dataset[i].position,
+            e2: dataset[k].position
+          })
+        }        
         break;
       }
     }
-    record.push(-(k+1))//exchange
+    record.push({
+      e1: 0,
+      e2: dataset[k].position
+    })
     data.splice(dataset[i].index-1, 1); 
-    console.log(record)
   }
 
   function test(){
-    AnimationB.addGradients(dataset,svgRef)
+    console.log(record[0].e1)
+    //AnimationB.addGradients(dataset,svgRef)
   }
 
   return (
@@ -175,47 +170,39 @@ const BST = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
-              let cdata = document.getElementById("create").value.split(",");
-              if (Common.validdata(cdata)) {
-                  data = cdata.map(item => Number(item.trim()))
-                  createbst();
-              } else {
-                  alert("Only numbers and commas can be entered");
-              }
+          try {
+            let cdata = Common.validdata("create");
+            data = cdata.map(item => Number(item.trim()))
+            createbst()
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Create</button>
+
         <input id="insert" placeholder="Insert a number" />
         <button id="isubmit" onClick={() => {
-              let idata = document.getElementById("insert").value.split(",");
-              if (validdata(idata)&& idata.length === 1) {
-                  insertbst(idata);
-              } else {
-                  alert("Only numbers and commas can be entered");
-              }
+          try {
+            let idata = Common.validonedata("insert");
+            insertbst(idata)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Insert</button>
-          <input id="delete" placeholder="Insert a number" />
+
+        <input id="delete" placeholder="Insert a number" />
         <button id="dsubmit" onClick={() => {
-              let ddata = document.getElementById("delete").value.split(",");
-              let t = 0;
-              if (validdata(ddata)&& ddata.length === 1) {
-                for (var i = 0; i < dataset.length; i++) {
-                  if (dataset[i].value == ddata[0]) {
-                      deletebst(ddata[0],i);
-                      t = 1;
-                      break;
-                  }
-                }
-                if (t == 0) {
-                    alert(ddata[0] + " is not in heap");
-                }
-              } else {
-                  alert("Only numbers and commas can be entered");
-              }
-          }}>delete</button>
+          try {
+            let ddata = Common.validonedata("delete");
+            const index = Common.findinarray(ddata,dataset);
+            deletebst(ddata,index)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
+          }}>Delete</button>
         </div>
 
         <div style={{ flexGrow: 1 }}>
           <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
-          <AlgorithmSpace svgRef={svgRef} width={width} height={height} />
 
           {bstResult && (
             <div>

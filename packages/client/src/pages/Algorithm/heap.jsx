@@ -17,7 +17,7 @@ var deletegraph=  -1;
 var totallen = dataset.length
 var state = 0
 
-function findinheap(xdata) {
+function findinheap(xdata,dataset) {
   for (var i = 0; i < dataset.length; i++) {
     if (dataset[i].value == xdata) {
       return i;
@@ -192,7 +192,7 @@ function HeapPage() {
         <button id="dsubmit" onClick={() => {
           try {
             let ddata = Common.validonedata("delete");
-            const index = findinheap(ddata);
+            const index = Common.findinarray(ddata,dataset);
             deleteheap(index)
           } catch (error) {
             alert("Error: " + error.message); // 输出错误消息
@@ -205,7 +205,7 @@ function HeapPage() {
           try {
             let sdata = Common.validonedata("select");
             let idata = Common.validonedata("increase");
-            const index = findinheap(sdata);
+            const index = Common.findinarray(sdata,dataset);
             increasekey(index,idata);
           } catch (error) {
             alert("Error: " + error.message); // 输出错误消息
