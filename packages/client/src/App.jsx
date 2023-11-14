@@ -4,7 +4,6 @@ import { Paths } from "./constants/Paths.js";
 import Home from "./pages/Home/home";
 import About from "./pages/Home/about.jsx";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
-import Heap from "./pages/Algorithm/heap.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
 import Heap from "./pages/Algorithm/HeapComponent/HeapGraph.jsx"

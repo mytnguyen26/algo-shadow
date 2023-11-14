@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Animation from "../../../components/GraphRenderer/animate";
-import Heapification from "../../../components/solver/heapmethod";
+import Heapification from "../../../components/AlgorithmSolver/heapmethod";
 const width = 600;
 const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
