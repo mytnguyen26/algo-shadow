@@ -4,7 +4,7 @@ import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Animation from "./HeapComponent/animate";
-import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
+import { AnalyzeRuntime } from './AlgComponent/RuntimeAnalysis.jsx';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
 
