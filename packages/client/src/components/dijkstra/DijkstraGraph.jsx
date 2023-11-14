@@ -1,7 +1,10 @@
+/**
+ * This module renders a graph component for Dijkstra algorithm
+ */
 import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
-import Graph from "./algorithm.js";
+import DijkstraConcreteStrategy from "./DijkstraConreteStrategy.js";
 
 export const DijkstraGraph = () => {
   const [nodes, setNodes] = useState([
@@ -107,7 +110,7 @@ export const DijkstraGraph = () => {
   const [isAuto, setIsAuto] = useState(true);
 
   // Example usage:
-  const graph = new Graph();
+  const graph = new DijkstraConcreteStrategy();
 
   graph.addNode("A", { C: 3, F: 2 });
   graph.addNode("B", { D: 1, E: 2, G: 2 });
@@ -119,6 +122,10 @@ export const DijkstraGraph = () => {
   const startNode = "A";
   const endNode = "B";
 
+
+  /**
+   * Render graph with D3 when nodes, links, shortestPath, and nodeColors change
+   */
   useEffect(() => {
     const svg = d3.select(svgRef.current);
 
@@ -185,6 +192,9 @@ export const DijkstraGraph = () => {
       .text((d) => `${d.id}`);
   }, [nodes, links, shortestPath, nodeColors]);
 
+  /**
+   * Render graph withh D3 when step, and orderedVisitedPath change
+   */
   useEffect(() => {
     if (orderedVisitedPath.length > 0) {
       const svg = d3.select(svgRef.current);
@@ -255,12 +265,18 @@ export const DijkstraGraph = () => {
     }
   }, [step, orderedVisitedPath]);
 
+  /**
+   * Run Dijkstra Algo to find shortestPath and change
+   * NodeColors, ShortestPath, OrderedVisitedPath, Step state
+   * Once the state change, D3 renders the new graph with useEffect()
+   * Hook.
+   */
   const findShortestPath = () => {
     const {
       shortestPath,
       distances,
       orderedVisitedNodes: path,
-    } = graph.dijkstra(startNode, endNode);
+    } = graph.run(startNode, endNode);
 
     // Set the color of nodes in the shortest path to red
     const coloredNodes = {};
@@ -275,11 +291,19 @@ export const DijkstraGraph = () => {
     setStep((prevStep) => Math.min(prevStep + 1, path.length - 1));
   };
 
+  /**
+   * Action associated with "Next Step" button
+   * Invoke run Dijkstra Algo and change underlying state
+   */
   const runNextStep = () => {
     setIsAuto(false);
     findShortestPath();
   };
 
+  /**
+   * Action associated with "Auto Start" button
+   * Invoke run Dijkstra Algo and change underlying state
+   */
   const runAutoStep = () => {
     setIsAuto(true);
     findShortestPath();

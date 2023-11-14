@@ -1,3 +1,10 @@
+
+/**
+ * React Component for Navigation Bar, comprises of links to
+ * Algorithm Page
+ * About Page
+ * Contact Us Page
+ */
 import * as React from "react";
 import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
@@ -7,6 +14,7 @@ import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
 import { Paths } from "../../../constants/Paths.js";
 import { Link } from "@mui/material";
+import Contact from "../contact.jsx";
 
 export const Navbar = () => {
   const [openContact, setOpenContact] = React.useState(false);

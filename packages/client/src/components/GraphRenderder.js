@@ -1,49 +1,44 @@
-/**
- * This module renders a graph component for Dijkstra algorithm
- */
 import * as d3 from "d3";
-const getdepth = (c) => {
-  return Math.ceil(Math.log2(c + 1)) - 1;
-};
+import DijkstraConcreteStrategy from "./dijkstra/DijkstraConreteStrategy"
 
-const getx = (c, width) => {
-  const depth = getdepth(c);
-  const distance = 2 ** depth;
-  const index = c - distance;
-  return (width / (distance + 1)) * (index + 1);
-};
+export default const GraphRenderer = (strategy) => {
+  // constructor() {
+  //   this._solverStrategy = null
+  // }
 
-const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
-  // Animation for X-axis
-  const animateElementX = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "animate",
-  );
-  animateElementX.setAttribute("attributeName", attributeNameX);
-  animateElementX.setAttribute("from", x1);
-  animateElementX.setAttribute("to", x2);
-  animateElementX.setAttribute("begin", "0s");
-  animateElementX.setAttribute("dur", "3s");
-  animateElementX.setAttribute("fill", "freeze");
-  c1.appendChild(animateElementX);
-  animateElementX.beginElement();
+  // set solverStrategy(strategy) {
+  //   switch(strategy) {
+  //     case "dijkstra":
+  //       this._solverStrategy = new DijkstraConcreteStrategy()
+  //       break;
+  //     default:
+  //       console.log("No algorithm solver found")
+  //       break;
+  //   }
+  // },
 
-  // Animation for Y-axis
-  const animateElementY = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "animate",
-  );
-  animateElementY.setAttribute("attributeName", attributeNameY);
-  animateElementY.setAttribute("from", y1);
-  animateElementY.setAttribute("to", y2);
-  animateElementY.setAttribute("begin", "0s");
-  animateElementY.setAttribute("dur", "3s");
-  animateElementY.setAttribute("fill", "freeze");
-  c1.appendChild(animateElementY);
-  animateElementY.beginElement();
-};
+  let solverStrategy = (strategy) => {
+    const solverStrategy = null
 
-const Animation = {
+    switch(strategy) {
+      case "dijkstra":
+        solverStrategy = new DijkstraConcreteStrategy()
+        break;
+      default:
+        console.log("No algorithm solver found")
+        break;
+    }
+    return solverStrategy
+  }
+
+  const getdepth = (c) => {
+    return Math.ceil(Math.log2(c + 1)) - 1;
+  },
+
+  /**
+   * Renders the tree
+   * 
+   */
   createTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
     //console.log(dataSetToUse)
@@ -92,7 +87,8 @@ const Animation = {
       .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
       .text((t) => t.value);
   },
-  fianlTree: (dataSetToUse, svgRef) => {
+
+  finalTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     //console.log(dataSetToUse)
@@ -160,7 +156,7 @@ const Animation = {
     c2.setAttribute("dy", y1);
   },
 
-  deleteelement: (e, size) => {
+  deletelement: (e, size) => {
     document.getElementById("t" + e).style.display = "none";
     document.getElementById("c" + size).style.display = "none";
     document.getElementById("l" + size).style.display = "none";
@@ -172,6 +168,47 @@ const Animation = {
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
   },
-};
 
-export default Animation;
+  drawLink: (svg) => {
+    svg
+      .selectAll(".link")
+      .data(links)
+      .enter()
+      .append("line")
+      .attr("class", "link")
+      .attr("x1", (d) => nodes.find((node) => node.id === d.source).x)
+      .attr("y1", (d) => nodes.find((node) => node.id === d.source).y)
+      .attr("x2", (d) => nodes.find((node) => node.id === d.target).x)
+      .attr("y2", (d) => nodes.find((node) => node.id === d.target).y)
+      .attr("stroke", "black");
+  },
+
+  drawLabel: (svg) => {
+    svg
+      .selectAll(".link-label")
+      .data(links)
+      .enter()
+      .append("text")
+      .attr("class", "link-label")
+      .attr(
+        "x",
+        (d) =>
+          (nodes.find((node) => node.id === d.source).x +
+            nodes.find((node) => node.id === d.target).x) /
+          2
+      )
+      .attr(
+        "y",
+        (d) =>
+          (nodes.find((node) => node.id === d.source).y +
+            nodes.find((node) => node.id === d.target).y) /
+          2
+      )
+      .text((d) => d.weight);
+  },
+
+  drawNodes: (svg) => {
+
+  }
+
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./HeapComponent/animate";
-import Heapification from "./HeapComponent/heapmethod";
+import Animation from "../../components/HeapComponent/animate.jsx";
+import Heapification from "../../components/HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { analyzeRuntime } from './AlgComponent/RuntimeAnalysis';

@@ -1,3 +1,6 @@
+/**
+ * This module has concrete logic implementation for Heap
+ */
 const maxheap = (localDataset, i, localRecord) => {
   const n = localDataset.length;
   const left = 2 * i;

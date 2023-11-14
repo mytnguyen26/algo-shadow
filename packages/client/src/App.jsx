@@ -6,8 +6,8 @@ import About from "./pages/Home/about.jsx";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
-import Heap from "./components/HeapComponent/heap.jsx"
-import { Dijkstra } from "./components/dijkstra/Dijkstra.jsx";
+import Heap from "./pages/Algorithm/heap.jsx"
+import { Dijkstra } from "./pages/Algorithm/Dijkstra.jsx";
 
 function App() {
   return (
