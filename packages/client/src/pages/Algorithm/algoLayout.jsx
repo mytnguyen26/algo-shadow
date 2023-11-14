@@ -4,9 +4,9 @@ import { Outlet } from "react-router-dom";
 
 const Algorithm = () => {
   return (
-    <Container>
+    <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
       <DropdownMenu />
-      <Box sx={{ paddingLeft: 30 }}>
+      <Box>
         <Outlet />
       </Box>
     </Container>
