@@ -13,6 +13,39 @@ var record = []
 var step = 0
 var tree = null
 
+function next(){
+  if(step>=record.length)
+      {
+        alert("Animation is end!")
+      }
+      else
+      {
+        if(typeof(record[step].e1) == "undefined"){
+          AnimationB.Pathdisplay(record[step]);
+          step++
+        }else{
+          step = Common.nextStep(step, record)
+        }
+      }
+}
+
+function back(){
+  if(step<1)
+  {
+    alert("This is the first step!")
+  }
+  else
+  {
+    if(typeof(record[step-1].e1) == "undefined"){
+      step--
+      AnimationB.Pathdisappear(record[step]);
+    }
+    else{
+      step = Common.back(step, record)
+    }
+  }
+}
+
 function reset(){
   step = 0
   dataset.forEach(element => {
@@ -57,15 +90,15 @@ const BST = () => {
   function createbst(){
     record = []
     reset()
-    tree = new BinarySearchTree();
-    dataset = data.map((value, index) => ({ index: index + 1, value: Number(value), position: 1 }));
-      dataset.forEach(element => {
-        tree.insert(element, record);
-      });
+    
     const result = AnalyzeRuntime('createBST', data, () => {
-      AnimationB.createbst(dataset,svgRef);
-      return tree;
+      tree = new BinarySearchTree();
+      dataset = data.map((value, index) => ({ index: index + 1, value: Number(value), position: 1 }));
+      dataset.forEach(element => {
+      tree.insert(element, record);
+      });
     });
+    AnimationB.createbst(dataset,svgRef);
     setBstResult(result); // Update state
   }
 
@@ -75,7 +108,6 @@ const BST = () => {
     data.push(Number(idata[0]))
     dataset.push({index:data.length,value:Number(idata[0]),position: 1})
     tree.insert(dataset[data.length-1],record);
-    record.push(dataset[data.length-1].index)
     AnimationB.createbst(dataset,svgRef);
   }
 
@@ -99,7 +131,8 @@ const BST = () => {
   }
 
   function test(){
-    console.log(record[0].e1)
+    console.log(record)
+    console.log(tree)
     //AnimationB.addGradients(dataset,svgRef)
   }
 
@@ -161,10 +194,8 @@ const BST = () => {
           <button onClick={Postorder}>Postorder</button>
           </div>
         <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={() => {
-            step = Common.nextStep(step, record)}}>Next Step</button>
-          <button onClick={() => {
-            step = Common.back(step, record)}}>Back</button>
+          <button onClick={next}>Next Step</button>
+          <button onClick={back}>Back</button>
           <button onClick={reset}>Reset</button>
           <button onClick={test}>Test</button>
           </div>

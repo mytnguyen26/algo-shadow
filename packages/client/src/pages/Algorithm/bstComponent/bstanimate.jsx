@@ -89,6 +89,7 @@ const AnimationB = {
   },
   
   Pathdisplay(index){
+    
     const circle = document.getElementById("c" + index);
     const line = document.getElementById("l" + index);
   

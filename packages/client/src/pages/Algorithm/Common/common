@@ -30,7 +30,7 @@ const Common= {
         }
         throw new Error(xdata + " is not in heap");
     },
-    nextStep(step,record,...restParams){
+    nextStep(step,record){
       if(step>=record.length)
       {
         alert("Animation is end!")
@@ -38,24 +38,13 @@ const Common= {
       }
       else
       {
-        if(typeof(record[step].e1) == "undefined"){
-          AnimationB.Pathdisplay(record[step]);
+        if(record[step].e1==0){
+          CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
         }
         else{
-          if(record[step].e1==0){
-            if(restParams.length>0){
-              CAnimation.deleteelement(restParams[0]+1,restParams[1])
-            }
-            else{
-              CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
-            }
-            
-          }
-          else{
-            const text1 = document.getElementById("t" + record[step].e1);
-            const text2 = document.getElementById("t" + record[step].e2);
-            CAnimation.animateExchange(text1,text2);
-          }
+          const text1 = document.getElementById("t" + record[step].e1);
+          const text2 = document.getElementById("t" + record[step].e2);
+          CAnimation.animateExchange(text1,text2);
         }
         ++step
       }
@@ -75,11 +64,7 @@ const Common= {
         }
         else{
           if(record[step].e1==0){
-            if(restParams.length>0){
-              CAnimation.showelement(restParams[0]+1,restParams[1])
-            }else{
-              CAnimation.showelement(record[step-1].e2,record[step-1].e1)
-            } 
+            CAnimation.showelement(record[step].e2[1],record[step].e2[0])
           }
           else{
             const text1 = document.getElementById("t" + record[step].e1);

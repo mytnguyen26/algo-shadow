@@ -13,7 +13,7 @@ class BinarySearchTree{
   constructor() {
     this.root = null;
   }
-  // 插入节点
+  // insert node
   insert(data,record) {
     const newNode = new Node(data);
     const insertNode = (node, newNode,position) => {
@@ -21,8 +21,9 @@ class BinarySearchTree{
             if (node.left === null) {    
                 data.position = position * 2
                 newNode.position = data.position
-                node.left = newNode                
-                record.push(node.left.position)
+                node.left = newNode          
+                record.push(position)      
+                record.push(data.position)
             }else {
                 record.push(node.position)
                 insertNode(node.left, newNode,position * 2) // 递归找下一层的左侧节点（重点）                   
@@ -32,6 +33,7 @@ class BinarySearchTree{
                 data.position = position * 2+1
                 newNode.position = data.position
                 node.right = newNode;
+                record.push(position)  
                 record.push(data.position)
               } else {
                 record.push(node.position)
@@ -47,7 +49,7 @@ class BinarySearchTree{
           insertNode(this.root, newNode,1);
       }
   }
-  // 中序遍历所有节点（左根右）
+  // Inorder iterates over all nodes（left root right）
   inOrderTraverse() {
       let backs = [];
       const callback = data => {
@@ -63,7 +65,7 @@ class BinarySearchTree{
       inOrderNode(this.root, callback)
       return backs
   }
-  // 先序遍历所有节点（根左右）
+  // Preorder iterates over all nodes（root left right）
   preOrderTraverse() {
       let backs = [];
       const callback = data => {
@@ -79,7 +81,7 @@ class BinarySearchTree{
       inOrderNode(this.root, callback)
       return backs
   }
-  // 后序遍历所有节点（左右根）
+  // Postorder iterates over all nodes（left right root）
   postOrderTraverse() {
       let backs = [];
       const callback = data => {

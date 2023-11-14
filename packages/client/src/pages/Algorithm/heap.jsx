@@ -49,6 +49,7 @@ function HeapPage() {
       Heapification.buildmaxheap(dataset, record);
       return dataset;
     });
+    totallen = dataset.length
     setHeapResult(result);
   }
   
@@ -62,6 +63,7 @@ function HeapPage() {
       Heapification.insertheap(dataset,record)
       return dataset;
     });
+    totallen = dataset.length
     setHeapResult(result);
   }
   
@@ -69,13 +71,14 @@ function HeapPage() {
     state = 1
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
     empty()
-    deletetest = i
+    deletetest = tdataset[i].index
     deletegraph = tdataset[tdataset.length-1].index
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
-      e2: totallen+1
+      e2: [tdataset[tdataset.length-1].index,tdataset[i].index]
     })
+    console.log(deletetest)
     data.splice(dataset[i].index-1, 1); 
 
   }
@@ -100,7 +103,7 @@ function HeapPage() {
     Heapification.extraheap(dataset, record)
     record.push({
       e1: 0,
-      e2: totallen+1
+      e2: [tdataset[tdataset.length-1].index,tdataset[0].index-1]
     })
   }
   const useHisInput = (input) => {
@@ -180,9 +183,9 @@ function HeapPage() {
 
       <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
       <button onClick={() => {
-            step = Common.nextStep(step, record,deletetest,deletegraph)}}>Next Step</button>
+            step = Common.nextStep(step, record)}}>Next Step</button>
           <button onClick={() => {
-            step = Common.back(step, record,deletetest,deletegraph)}}>Back</button>
+            step = Common.back(step, record)}}>Back</button>
           <button onClick={reset}>Reset</button>
           <button onClick={() => {
               Animation.fianlTree(dataset, svgRef);
