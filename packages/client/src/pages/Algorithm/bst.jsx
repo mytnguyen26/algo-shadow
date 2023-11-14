@@ -3,7 +3,7 @@ import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
-import Animation from "./HeapComponent/animate";
+import CAnimation from "./Common/Canimate";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
@@ -49,12 +49,12 @@ function nextStep(){
     }
     else{
       if(record[step].e1==0){
-        Animation.deleteelement(record[step].e2[1],record[step].e2[0])
+        CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
       }
       else{
         const text1 = document.getElementById("t" + record[step].e1);
         const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1,text2);
+        CAnimation.animateExchange(text1,text2);
       }
     }
     step++
@@ -74,16 +74,15 @@ function back(){
     }
     else{
       if(record[step].e1==0){
-        Animation.showelement(record[step-1].e2,record[step-1].e1)
+        CAnimation.showelement(record[step-1].e2,record[step-1].e1)
       }
       else{
         const text1 = document.getElementById("t" + record[step].e1);
         const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1,text2);
+        CAnimation.animateExchange(text1,text2);
       }
     }
   }
-    
 }
 
 const BST = () => {
@@ -106,6 +105,7 @@ const BST = () => {
 
   function createbst(){
     record = []
+    reset()
     tree = new BinarySearchTree();
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value), position: 1 }));
       dataset.forEach(element => {
@@ -116,12 +116,11 @@ const BST = () => {
       return tree;
     });
     setBstResult(result); // Update state
-    console.log(dataset)
-    console.log(record)
   }
 
   function insertbst(idata){
     record = []
+    reset()
     data.push(Number(idata[0]))
     dataset.push({index:data.length,value:Number(idata[0]),position: 1})
     tree.insert(dataset[data.length-1],record);
@@ -131,6 +130,7 @@ const BST = () => {
 
   function deletebst(ddata,k){
     record = []
+    reset()
     //k delete，t exchange
     tree.delete(ddata,record)
     let t = record[record.length-1]

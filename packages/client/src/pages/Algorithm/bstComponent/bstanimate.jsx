@@ -1,22 +1,9 @@
 import * as d3 from "d3";
+import CAnimation from "../Common/Canimate";
 
-function getdepth(c)
-{
-    return Math.ceil(Math.log2(c+1))-1
-}
-
-function getx(c,width)
-{
-    var depth = getdepth(c)
-    var distance = 2**depth
-    var index = c-(2**depth)
-    return (width/(distance+1))*(index+1)
-}
-const my = 60
 const AnimationB = {
     createbst(dataset, svgRef){
     const width = svgRef.current.clientWidth;
-    console.log(width)
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     var p = svg.append("g")
@@ -34,14 +21,14 @@ const AnimationB = {
                 {
                     return null
                 }
-                return getx(c.position,width)
+                return CAnimation.getx(c.position,width)
             })
             .attr("y1", function(c){
                 if(c.position==1)
                 {
                     return null
                 }
-                return my*(getdepth(c.position)+1)
+                return CAnimation.my*(CAnimation.getdepth(c.position)+1)
             })
             .attr("x2", function(c){
                 if(c.position==1)
@@ -49,14 +36,14 @@ const AnimationB = {
                     return null
                 }
                 c = Math.floor(c.position/2)
-                return getx(c,width)
+                return CAnimation.getx(c,width)
             })
             .attr("y2", function(c){
                 if(c.position==1)
                 {
                     return null
                 }
-                return my*(getdepth(c.position))
+                return CAnimation.my*(CAnimation.getdepth(c.position))
             })
   
     var c = svg.append("g")
@@ -72,10 +59,10 @@ const AnimationB = {
               return "c"+c.position
             })
             .attr("cx", function(c){
-              return getx(c.position,width)
+              return CAnimation.getx(c.position,width)
             })
             .attr("cy", function(c){
-              return my*(getdepth(c.position)+1)
+              return CAnimation.my*(CAnimation.getdepth(c.position)+1)
             })
             .attr("r",20)
   
@@ -91,10 +78,10 @@ const AnimationB = {
               return "t"+c.position
             })
             .attr("dx", function(c){
-              return getx(c.position,width)
+              return CAnimation.getx(c.position,width)
             })
             .attr("dy", function(c){
-              return my*(getdepth(c.position)+1)+5
+              return CAnimation.my*(CAnimation.getdepth(c.position)+1)+5
             })
             .text(function(t){
               return t.value;
@@ -105,17 +92,17 @@ const AnimationB = {
     const circle = document.getElementById("c" + index);
     const line = document.getElementById("l" + index);
   
-    // 设置圆形的渐变动画
+    // Set up the circle gradient animation
     const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
     circleAnimate.setAttribute("attributeName", "stroke");
     circleAnimate.setAttribute("values", "black;blue");
-    circleAnimate.setAttribute("dur", "2s");
+    circleAnimate.setAttribute("dur", "1s");
     circleAnimate.setAttribute("fill", "freeze");
   
     circle.appendChild(circleAnimate);
     circleAnimate.beginElement();
   
-    //设置线段的渐变动画
+    //Set up the line gradient animation
     if (index !== 1) {
       const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
       lineAnimate.setAttribute("attributeName", "stroke");
@@ -130,9 +117,30 @@ const AnimationB = {
   },
 
   Pathdisappear(index){
-    document.getElementById("c"+index).setAttribute("stroke","black")
-    if(index!=1){
-      document.getElementById("l"+index).setAttribute("stroke","black")
+    const circle = document.getElementById("c" + index);
+    const line = document.getElementById("l" + index);
+  
+    // Set up the circle gradient animation
+    const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    circleAnimate.setAttribute("attributeName", "stroke");
+    circleAnimate.setAttribute("values", "blue;black");
+    circleAnimate.setAttribute("dur", "1s");
+    circleAnimate.setAttribute("fill", "freeze");
+  
+    circle.appendChild(circleAnimate);
+    circleAnimate.beginElement();
+  
+    //Set up the line gradient animation
+    if (index !== 1) {
+      const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+      lineAnimate.setAttribute("attributeName", "stroke");
+      lineAnimate.setAttribute("values", "blue;black");
+      lineAnimate.setAttribute("fill", "freeze");
+      lineAnimate.setAttribute("dur", "5s");
+      lineAnimate.setAttribute("fill", "freeze");
+      lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
+      line.appendChild(lineAnimate);
+      lineAnimate.beginElement();
     }
     },
 
@@ -156,10 +164,10 @@ const AnimationB = {
             return "c" + c.position;
           })
           .attr("cx", function (c) {
-            return getx(c.position, width);
+            return CAnimation.getx(c.position, width);
           })
           .attr("cy", function (c) {
-            return my * (getdepth(c.position) + 1);
+            return CAnimation.my * (CAnimation.getdepth(c.position) + 1);
           })
           .attr("r", 20)
           .transition()

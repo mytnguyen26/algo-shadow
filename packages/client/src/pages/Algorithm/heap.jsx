@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Animation from "./HeapComponent/animate";
 import Common from "./Common/common";
+import CAnimation from "./Common/Canimate";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
@@ -25,12 +26,12 @@ const nextStep = () => {
   else
   {
     if(record[step].e1==0){
-      Animation.deleteelement(deletetest+1,deletegraph)
+      CAnimation.deleteelement(deletetest+1,deletegraph)
     }
     else{
       const text1 = document.getElementById("t" + record[step].e1);
       const text2 = document.getElementById("t" + record[step].e2);
-      Animation.animateExchange(text1,text2);
+      CAnimation.animateExchange(text1,text2);
     }
     step++
   }
@@ -45,17 +46,15 @@ function back() {
   {
     step--
     if(record[step].e1==0){
-      Animation.showelement(deletetest+1,deletegraph)
+      CAnimation.showelement(deletetest+1,deletegraph)
     }
     else{
     const text1 = document.getElementById("t" + record[step].e1);
     const text2 = document.getElementById("t" + record[step].e2);
-    Animation.animateExchange(text1,text2);
+    CAnimation.animateExchange(text1,text2);
     }
   }
 }
-
-
 
 function HeapPage() {
   const svgRef = useRef(null);
@@ -64,12 +63,7 @@ function HeapPage() {
 
   function empty(){
     record = []
-    step = 0
-    console.log(state)
-    if(state==1)
-      Animation.fianlTree(tdataset,svgRef)
-    else
-      Animation.createTree(dataset,svgRef);
+    reset()
   }
 
 
