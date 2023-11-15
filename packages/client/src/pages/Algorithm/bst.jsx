@@ -69,6 +69,13 @@ function Postorder(){
   record = tree.postOrderTraverse()
 }
 
+function Searchbst(sdata){
+  record = []
+  reset()
+  let node = tree.search(sdata,record)
+  console.log(node)
+}
+
 const BST = () => {
   const svgRef = useRef(null);
   useEffect(() => {
@@ -171,6 +178,16 @@ const BST = () => {
             alert("Error: " + error.message); 
           }
           }}>Delete</button>
+
+        <input id="search" placeholder="Insert a number" />
+        <button id="ssubmit" onClick={() => {
+          try {
+            let sdata = Common.validonedata("search");
+            Searchbst(sdata)
+          } catch (error) {
+            alert("Error: " + error.message); 
+          }
+          }}>Search</button>
         </div>
 
         <div style={{ flexGrow: 1 }}>

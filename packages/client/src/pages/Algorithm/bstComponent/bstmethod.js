@@ -97,34 +97,35 @@ class BinarySearchTree{
       inOrderNode(this.root, callback)
       return backs
   }
-  //查找最小值
-  // 这里可以利用search 查找指定节点下面的最小值
+
   min(node) {
       const minNode = (node) => {
           return  node ? (node.left ? minNode(node.left) : node) : null
       }
       return minNode(node || this.root)
   }
-  // 查找最大值
+
   max(node) {
       const maxNode = (node) => {
           return  node ? (node.right ? maxNode(node.right) : node) : null
       }
       return maxNode(node || this.root)
   }
-  //查找特定值
-  search(data) {
+
+  search(data,record) {
       const searchNode = (node) => {
           if (node === null) return false;
-          if (node.data === data) {
-              return node;
+          if (node.data == data) {
+            record.push(node.position)
+            return node;
           }
+          record.push(node.position)
           return searchNode(data < node.data ? node.left : node.right, data)
       }
       return searchNode(this.root, data)
   }
-  //从树中移除某个键
-  delete(dData,localRecord) { // 删除节点复杂之处在于每次删除节点时候二叉树要根据不同情况改变结构 同样也需要递归
+  //delete
+  delete(dData,localRecord) {
       const removeNode = (node,dData) => {
           if(node === null) return null;
           if(node.data === dData){
