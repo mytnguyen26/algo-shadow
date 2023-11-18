@@ -113,12 +113,12 @@ const BST = () => {
 
   function createbst(){
     record = []
-    tree = new BinarySearchTree();
-    datatran(data);
     const result = AnalyzeRuntime('createBST', data, () => {
-    });
-    dataset.forEach(element => {
-      tree.insert(element, record);
+      tree = new BinarySearchTree();
+      datatran(data);
+      dataset.forEach(element => {
+        tree.insert(element, record);
+      });
     });
     AnimationB.createbst(dataset,svgRef);
 
