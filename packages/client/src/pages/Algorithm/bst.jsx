@@ -4,7 +4,7 @@ import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Animation from "./HeapComponent/animate";
-import { AnalyzeRuntime } from './AlgComponent/RuntimeAnalysis.jsx';
+import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis.jsx';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
 
@@ -114,14 +114,14 @@ const BST = () => {
   function createbst(){
     record = []
     tree = new BinarySearchTree();
-      datatran(data);
-      dataset.forEach(element => {
-        tree.insert(element, record);
-      });
+    datatran(data);
     const result = AnalyzeRuntime('createBST', data, () => {
-      AnimationB.createbst(dataset,svgRef);
-      return tree;
     });
+    dataset.forEach(element => {
+      tree.insert(element, record);
+    });
+    AnimationB.createbst(dataset,svgRef);
+
     setBstResult(result); // Update state
   }
 
