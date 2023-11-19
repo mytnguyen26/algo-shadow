@@ -10,6 +10,7 @@ import { Paths } from "../../../constants/Paths.js";
 import Contact from '../contact';
 
 
+
 export const Navbar = () => {
   const [openContact, setOpenContact] = React.useState(false);
 
@@ -49,13 +50,13 @@ export const Navbar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to={Paths.ABOUT}>
                 <ListItemText primary="About" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-                <ListItemButton onClick={handleOpenContact}>
-                  <ListItemText primary="Contact" />
+              <ListItemButton onClick={handleOpenContact}>
+                <ListItemText primary="Contact" />
               </ListItemButton>
             </ListItem>
           </SideList>
