@@ -67,9 +67,10 @@ const AnimationB = {
             .attr("r",20)
   
     var t = svg.append("g")
-            .attr("stroke","black")
+            .attr("stroke", "white")
             .attr("text-anchor","middle")
-            .attr("text-size","10px")
+            .attr("text-size","20px")
+            .attr("font-weight", "bold")
             .selectAll("text")
             .data(dataset)
             .enter()
@@ -95,8 +96,8 @@ const AnimationB = {
   
     // Set up the circle gradient animation
     const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    circleAnimate.setAttribute("attributeName", "stroke");
-    circleAnimate.setAttribute("values", "black;blue");
+    circleAnimate.setAttribute("attributeName", "fill");
+    circleAnimate.setAttribute("values", "white;blue");
     circleAnimate.setAttribute("dur", "1s");
     circleAnimate.setAttribute("fill", "freeze");
   
@@ -104,17 +105,17 @@ const AnimationB = {
     circleAnimate.beginElement();
   
     //Set up the line gradient animation
-    if (index !== 1) {
-      const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-      lineAnimate.setAttribute("attributeName", "stroke");
-      lineAnimate.setAttribute("values", "black;blue");
-      lineAnimate.setAttribute("fill", "freeze");
-      lineAnimate.setAttribute("dur", "5s");
-      lineAnimate.setAttribute("fill", "freeze");
-      lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
-      line.appendChild(lineAnimate);
-      lineAnimate.beginElement();
-    }
+    // if (index !== 1) {
+    //   const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    //   lineAnimate.setAttribute("attributeName", "stroke");
+    //   lineAnimate.setAttribute("values", "black;blue");
+    //   lineAnimate.setAttribute("fill", "freeze");
+    //   lineAnimate.setAttribute("dur", "5s");
+    //   lineAnimate.setAttribute("fill", "freeze");
+    //   lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
+    //   line.appendChild(lineAnimate);
+    //   lineAnimate.beginElement();
+    // }
   },
 
   Pathdisappear(index){
@@ -123,8 +124,8 @@ const AnimationB = {
   
     // Set up the circle gradient animation
     const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    circleAnimate.setAttribute("attributeName", "stroke");
-    circleAnimate.setAttribute("values", "blue;black");
+    circleAnimate.setAttribute("attributeName", "fill");
+    circleAnimate.setAttribute("values", "blue;white");
     circleAnimate.setAttribute("dur", "1s");
     circleAnimate.setAttribute("fill", "freeze");
   
@@ -132,17 +133,17 @@ const AnimationB = {
     circleAnimate.beginElement();
   
     //Set up the line gradient animation
-    if (index !== 1) {
-      const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-      lineAnimate.setAttribute("attributeName", "stroke");
-      lineAnimate.setAttribute("values", "blue;black");
-      lineAnimate.setAttribute("fill", "freeze");
-      lineAnimate.setAttribute("dur", "5s");
-      lineAnimate.setAttribute("fill", "freeze");
-      lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
-      line.appendChild(lineAnimate);
-      lineAnimate.beginElement();
-    }
+    // if (index !== 1) {
+    //   const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    //   lineAnimate.setAttribute("attributeName", "stroke");
+    //   lineAnimate.setAttribute("values", "blue;black");
+    //   lineAnimate.setAttribute("fill", "freeze");
+    //   lineAnimate.setAttribute("dur", "5s");
+    //   lineAnimate.setAttribute("fill", "freeze");
+    //   lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
+    //   line.appendChild(lineAnimate);
+    //   lineAnimate.beginElement();
+    // }
     },
 
     addGradients(dataset, svgRef){
