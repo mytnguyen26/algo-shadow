@@ -12,9 +12,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Paths } from "../../../constants/Paths.js";
-import { Link } from "@mui/material";
-import Contact from "../contact.jsx";
+import Contact from '../contact';
+
 
 export const Navbar = () => {
   const [openContact, setOpenContact] = React.useState(false);

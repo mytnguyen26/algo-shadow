@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "../../components/HeapComponent/animate.jsx";
-import Heapification from "../../components/HeapComponent/heapmethod";
+import Animation from "./HeapComponent/animate";
+import Common from "./Common/common";
+import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { analyzeRuntime } from './AlgComponent/RuntimeAnalysis';
+import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
+import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 
-
-
-
-const width = 900;
-const height = 300;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]
 var dataset = []
 var tdataset = []
@@ -17,15 +14,16 @@ var record = []
 var step = 0
 var deletetest = -1;
 var deletegraph=  -1;
-var totallen = data.length;
+var totallen = dataset.length
+var state = 0
 
-function validdata(xdata) {
-  for (const ele of xdata) {
-    if (isNaN(ele)) {
-      return false;
+function findinheap(xdata,dataset) {
+  for (var i = 0; i < dataset.length; i++) {
+    if (dataset[i].value == xdata) {
+      return i;
     }
   }
-  return true;
+  throw new Error(xdata + " is not in heap");
 }
 
 const nextStep = () => {
@@ -47,7 +45,6 @@ const nextStep = () => {
   }
 }
 
-
 function back() {
   if(step<1)
   {
@@ -67,28 +64,43 @@ function back() {
   }
 }
 
-function empty(){
-  record = []
-  step = 0
-}
+
 
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey,setResetkey] = useState(0);
-  const [state, setState] = useState(0);
   const [heapResult, setHeapResult] = useState(null);
+
+  function empty(){
+    record = []
+    step = 0
+    console.log(state)
+    if(state==1)
+      Animation.fianlTree(tdataset,svgRef)
+    else
+      Animation.createTree(dataset,svgRef);
+  }
+
+
+  function reset() {
+    step = 0;
+    if (state == 0) Animation.createTree(dataset, svgRef);
+    else Animation.fianlTree(tdataset, svgRef);
+  }
 
   useEffect(() => {
     createHeap()
-    
-  },[resetkey]);
+  },[]);
+
+  useEffect(() => {
+    SaveInputToLocalStorage
+  },[]);
 
   function createHeap(){
     dataset = data.map((value, index) => ({ index: index + 1, value: Number(value) }));
+    state = 0
     empty()
-    // console.log(data)
-    Animation.createTree(dataset,svgRef);
-    const result = analyzeRuntime('createHeap', data, () => {
+    const result = AnalyzeRuntime('createHeap', data, () => {
       Heapification.buildmaxheap(dataset, record);
       return dataset;
     });
@@ -96,13 +108,12 @@ function HeapPage() {
   }
   
   function insertheap(idata){
-    empty() 
-    totallen++
-    data.push(Number(idata[0]))
-    dataset.push({index:totallen,value:Number(idata[0])})
+    state = 1
+    data.push(Number(idata))
+    dataset.push({index:data.length,value:Number(idata)})
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    Animation.fianlTree(dataset,svgRef);
-    const result = analyzeRuntime('insertheap', data, () => {
+    empty()
+    const result = AnalyzeRuntime('insertheap', data, () => {
       Heapification.insertheap(dataset,record)
       return dataset;
     });
@@ -110,81 +121,100 @@ function HeapPage() {
   }
   
   function deleteheap(i){
-    empty()
-    Animation.fianlTree(dataset,svgRef);
+    state = 1
     tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
-    //console.log(tdataset[tdataset.length-1].index)
+    empty()
     deletetest = i
     deletegraph = tdataset[tdataset.length-1].index
-    // const result = analyzeRuntime('deleteheap', data, () => {
-    //   Heapification.deleteheap(i+1,dataset,record);
-    //   return dataset;
-    // });
-    // setHeapResult(result);
     Heapification.deleteheap(i+1,dataset,record);
     record.push({
       e1: 0,
-      e2: dataset.length+1
+      e2: totallen+1
     })
     data.splice(dataset[i].index-1, 1); 
+
   }
 
-  function reset() {
-    step = 0
-    if(state==0)
-      Animation.createTree(dataset,svgRef)
-    else
-      Animation.fianlTree(tdataset,svgRef)
+  function increasekey(i,kdata){
+    if (kdata < dataset[i].value) {
+      alert("new value is smaller than before");
+    }
+    state = 1
+    dataset[i].value = kdata;
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    empty()
+    Heapification.increasekey(i+1,kdata,dataset,record)
   }
+
+  function extraheap(){
+    state = 1
+    tdataset = JSON.parse(JSON.stringify(dataset));//save data before sort
+    deletetest = tdataset[0].index-1
+    deletegraph = tdataset[tdataset.length-1].index
+    empty()
+    Heapification.extraheap(dataset, record)
+    record.push({
+      e1: 0,
+      e2: totallen+1
+    })
+  }
+  const useHisInput = (input) => {
+    // Assuming `createHeap` is a function that takes an input array to create a heap
+    data = input
+    createHeap();
+  };
 
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <input id="create" placeholder="Enter comma separated numbers" />
-          <button id="csubmit" onClick={() => {
-              let cdata = document.getElementById("create").value.split(",");
-              if (validdata(cdata)) {
-                  data = cdata.map(item => Number(item.trim()))
-                  createHeap();
-              } else {
-                  alert("Only numbers and commas can be entered");
-              }
+        <input id="create" placeholder="Enter comma separated numbers" />
+        <button id="csubmit" onClick={() => {
+          try {
+            let cdata = Common.validdata("create");
+            data = cdata.map(item => Number(item.trim()))
+            createHeap()
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Create Heap</button>
 
-          <input id="insert" placeholder="Insert a number" />
-          <button id="isubmit" onClick={() => {
-              let idata = document.getElementById("insert").value.split(",");
-              if (validdata(idata) && idata.length === 1) {
-                  insertheap(idata);
-              } else {
-                  alert(idata.length !== 1 ? "Only insert one number" : "Only numbers and commas can be entered");
-              }
+        <input id="insert" placeholder="Insert a number" />
+        <button id="isubmit" onClick={() => {
+          try {
+            let idata = Common.validonedata("insert");
+            insertheap(idata)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Insert</button>
 
-          <input id="delete" placeholder="Delete a number" />
-          <button id="dsubmit" onClick={() => {
-              let ddata = document.getElementById("delete").value.split(",");
-              let t = 0;
-              if (validdata(ddata) && ddata.length === 1) {
-                  for (var i = 0; i < dataset.length; i++) {
-                      if (dataset[i].value == ddata[0]) {
-                          deleteheap(i);
-                          t = 1;
-                          break;
-                      }
-                  }
-                  if (t == 0) {
-                      alert(ddata[0] + " is not in heap");
-                  }
-              } else {
-                  alert(ddata.length !== 1 ? "Only delete one number" : "Only numbers and commas can be entered");
-              }
+        <input id="delete" placeholder="Delete a number" />
+        <button id="dsubmit" onClick={() => {
+          try {
+            let ddata = Common.validonedata("delete");
+            const index = Common.findinarray(ddata,dataset);
+            deleteheap(index)
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
           }}>Delete</button>
-          <button onClick={reset}>increase key</button>
+
+        <input id="select" placeholder="select a number" />
+        <input id="increase" placeholder="increase a number" />
+        <button id="ksubmit" onClick={() => {
+          try {
+            let sdata = Common.validonedata("select");
+            let idata = Common.validonedata("increase");
+            const index = Common.findinarray(sdata,dataset);
+            increasekey(index,idata);
+          } catch (error) {
+            alert("Error: " + error.message); // 输出错误消息
+          }
+          }}>increase</button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-      <AlgorithmSpace svgRef={svgRef} width={width} height={height} resetkey={resetkey}> 
+      <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} resetkey={resetkey}> 
         {/* the graph will be rendered inside the AlgorithmSpace component */}
       </AlgorithmSpace>
           
@@ -211,9 +241,11 @@ function HeapPage() {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
           }}>Final Heap</button>
-          <button onClick={reset}>extra heap</button>
+          <button onClick={extraheap}>extra heap</button>
       </div>
-      </div>
+    </div>
+    <div><SaveInputToLocalStorage algorithm="heap" inputData={data} useHisInput={useHisInput}/>    
+    </div>
   </div>
 );
 }
