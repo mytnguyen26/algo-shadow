@@ -24,13 +24,52 @@ class Graph {
     }
 
     addEdge(node1, node2, weight) {
-        if(this.kind=="Undirected"){
+        if(this.kind==="Undirected"){
             this.edges.get(node1).push({ node: node2, weight: weight });
             this.edges.get(node2).push({ node: node1, weight: weight });
         }else{
             this.edges.get(node1).push({ node: node2, weight: weight });
         }
         
+    }
+
+    fromAdjacencyMatrix(matrix,k) {
+        this.kind = k
+        const numNodes = matrix.length;
+
+        // Add nodes to the graph
+        for (let i = 0; i < numNodes; i++) {
+            this.addNode(String.fromCharCode('A'.charCodeAt(0) + i));
+        }
+
+        // Add edges based on the parsed matrix
+        for (let i = 0; i < numNodes; i++) {
+            for (let j = 0; j < numNodes; j++) {
+                if (matrix[i][j] !== 0) {
+                    this.addEdge(String.fromCharCode('A'.charCodeAt(0) + i), 
+                    String.fromCharCode('A'.charCodeAt(0) + j), matrix[i][j]);
+                }
+            }
+        }
+    }
+
+    // Method to create a graph from an edge list
+    fromEdgeList(edgeList,k) {
+        this.kind = k
+        // Add nodes to the graph  
+        for (const edge of edgeList) {
+            console.log(edge)
+            if(this.nodes.indexOf(edge.node1)==-1){
+                this.addNode(edge.node1);
+            }
+            if(this.nodes.indexOf(edge.node2)==-1){
+                this.addNode(edge.node2);
+            }
+        }
+        // Add edges based on the edge list
+        for (const edge of edgeList) {
+            this.addEdge(edge.node1, edge.node2, edge.weight);
+        }
     }
 
     bfs(startNode) {
@@ -71,7 +110,7 @@ class Graph {
                 matrix[i][node2Index] = neighbor.weight;
             }
         }
-        
+        console.log(matrix)
         return matrix;
     }
 
@@ -107,8 +146,6 @@ class Graph {
                 }
             }
         }
-        
-            
         return edgeList;
     }
 
@@ -185,14 +222,6 @@ class Graph {
 
         return minNode;
     }
-
-    bst(startNode){
-        var ns = this.nodes
-
-    }
 }
-
-
-// Example usage:
 
 export default Graph;

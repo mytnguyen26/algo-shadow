@@ -10,7 +10,6 @@ const AnimationG = {
         digraph G {
             rankdir=LR;
             node [shape=circle];`
-        const kind = graph.kind
         if(graph.kind=="Undirected"){
             graphvizCode+=`edge [dir="none"];`
         }else{
@@ -22,7 +21,7 @@ const AnimationG = {
             graphvizCode += n +` [id="c`+n+`"]`
         });
         edges.forEach(e => {
-            graphvizCode += e.node1 +` -> `+e.node2+`;`
+            graphvizCode += e.node1 +` -> `+e.node2+` [label="`+e.weight+`"];`
         });
         
         graphvizCode = graphvizCode+`}`
