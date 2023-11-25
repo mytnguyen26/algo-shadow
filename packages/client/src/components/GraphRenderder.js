@@ -1,21 +1,9 @@
 import * as d3 from "d3";
-import DijkstraConcreteStrategy from "./dijkstra/DijkstraConreteStrategy"
+import DijkstraConcreteStrategy from "./AlgorithmSolver/DijkstraConcreteStrategy"
+import BSTConcreteStrategy from "./AlgorithmSolver/DijkstraConcreteStrategy"
+import HeapConcreteStrategy from "./AlgorithmSolver/HeapConcreteStrategy"
 
 export default const GraphRenderer = (strategy) => {
-  // constructor() {
-  //   this._solverStrategy = null
-  // }
-
-  // set solverStrategy(strategy) {
-  //   switch(strategy) {
-  //     case "dijkstra":
-  //       this._solverStrategy = new DijkstraConcreteStrategy()
-  //       break;
-  //     default:
-  //       console.log("No algorithm solver found")
-  //       break;
-  //   }
-  // },
 
   let solverStrategy = (strategy) => {
     const solverStrategy = null
@@ -24,6 +12,10 @@ export default const GraphRenderer = (strategy) => {
       case "dijkstra":
         solverStrategy = new DijkstraConcreteStrategy()
         break;
+      case "bst":
+        solverStrategy = new BSTConcreteStrategy()
+      case "heap":
+        solverStrategy = new HeapConcreteStrategy()
       default:
         console.log("No algorithm solver found")
         break;

@@ -3,7 +3,7 @@ import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
-import Animation from "./HeapComponent/animate";
+import Animation from "../../components/GraphRenderer/animate";
 import { AnalyzeRuntime } from './AlgComponent/RuntimeAnalysis.jsx';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";

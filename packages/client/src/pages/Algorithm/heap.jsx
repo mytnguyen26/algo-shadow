@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./HeapComponent/animate";
+import Animation from "../../components/GraphRenderer/animate";
 import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
 import { Button, TextField } from '@mui/material';
