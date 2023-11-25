@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
-import DijkstraConcreteStrategy from "./DijkstraConreteStrategy.js";
+import DijkstraConcreteStrategy from "../../../components/AlgorithmSolver/DijkstraConcreteStrategy";
 import Animation from "../../../components/GraphRenderer/animate";
 
 
