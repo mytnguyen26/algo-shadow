@@ -1,5 +1,6 @@
 /**
  * This module has concrete logic implementation for Dijkstra
+ * TODO: Replace this after refactor DijkstraConcreteStrategy.js in pages
  */
 export default class DijkstraConcreteStrategy {
   constructor() {
