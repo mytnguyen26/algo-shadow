@@ -7,6 +7,8 @@ import Animation from "./HeapComponent/animate";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis.jsx';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
+import ResultsTable from './AlgComponent/tableCreater';
+
 
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
@@ -103,16 +105,33 @@ const BST = () => {
     SaveInputToLocalStorage
   },[]);
 
-  const [bstResult, setBstResult] = useState(null);
-
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input
     createbst();
   };
 
-  function createbst(){
-    record = []
+  const [bstResults, setBstResults] = useState(() => {
+    const savedResults = localStorage.getItem('bstResults');
+    return savedResults ? JSON.parse(savedResults) : [];
+  });  
+
+  const addResult = (newResult) => {
+    setBstResults(prevResults => {
+      // Ensure prevResults is always an array
+      const updatedResults = Array.isArray(prevResults) ? [...prevResults, newResult] : [newResult];
+  
+      if (updatedResults.length > 10) {
+        updatedResults.shift(); // Remove the oldest result
+      }
+  
+      localStorage.setItem('bstResults', JSON.stringify(updatedResults));
+      return updatedResults;
+    });
+  };
+
+  function createbst() {
+    record = [];
     const result = AnalyzeRuntime('createBST', data, () => {
       tree = new BinarySearchTree();
       datatran(data);
@@ -120,11 +139,10 @@ const BST = () => {
         tree.insert(element, record);
       });
     });
-    AnimationB.createbst(dataset,svgRef);
-
-    setBstResult(result); // Update state
+    AnimationB.createbst(dataset, svgRef);
+    addResult(result); // Correctly add the result
   }
-
+  
   function insertbst(idata){
     record = []
     data.push(Number(idata[0]))
@@ -204,18 +222,6 @@ const BST = () => {
         <div style={{ flexGrow: 1 }}>
           <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
 
-          {bstResult && (
-            <div>
-              <h3>BST Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )}
-
           <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
           <button onClick={Inorder}>Inorder</button>
           <button onClick={Preorder}>Preorder</button>
@@ -227,6 +233,8 @@ const BST = () => {
           <button onClick={reset}>Reset</button>
           <button onClick={test}>Test</button>
           </div>
+          <ResultsTable results={bstResults} />
+
         </div>
         <div><SaveInputToLocalStorage algorithm="bst" inputData={data} useHisInput={useHisInput}/>
           </div>

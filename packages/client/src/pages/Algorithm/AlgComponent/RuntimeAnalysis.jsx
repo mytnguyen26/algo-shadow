@@ -1,17 +1,23 @@
-export const AnalyzeRuntime = (algorithm, input, func, ...args) => {
+export const AnalyzeRuntime = (algorithm, input, func, iterations = 10, ...args) => {
+  if (typeof func !== 'function') {
+    throw new Error('Provided func is not a function');
+  }
+
   let totalTime = 0;
-  const iterations = 10; // Repeat the operation 1000 times
-  let output;
+  let output = func(...args); // Execute the function once outside the loop
+  if (output === undefined) {
+    output = 'No explicit output'; // Or any other default value
+  }  
 
   for (let i = 0; i < iterations; i++) {
     const startTime = performance.now();
-    output = func(...args); // Execute the function being tested
+    func(...args); // Execute the function for time measurement
     const endTime = performance.now();
     totalTime += endTime - startTime;
   }
 
   const averageTime = totalTime / iterations;
-
-  return { input, output, runtime: averageTime };
+  const roundedTime = Math.round(averageTime * 10000) / 10000;
+  // console.log(roundedTime)
+  return { input, output, runtime: roundedTime };
 };
-  
