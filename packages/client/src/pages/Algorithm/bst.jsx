@@ -6,7 +6,7 @@ import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage"
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Common from "./Common/common";
-
+import CAnimation from "./Common/Canimate";
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
 var record = []
@@ -21,7 +21,8 @@ function next(){
       else
       {
         if(typeof(record[step].e1) == "undefined"){
-          AnimationB.Pathdisplay(record[step]);
+          const c = document.getElementById("c" + record[step]);
+          CAnimation.Pathdisplay(c,"fill","white;blue")
           step++
         }else{
           step = Common.nextStep(step, record)
@@ -38,7 +39,8 @@ function back(){
   {
     if(typeof(record[step-1].e1) == "undefined"){
       step--
-      AnimationB.Pathdisappear(record[step]);
+      const c = document.getElementById("c" + record[step]);
+      CAnimation.Pathdisplay(c,"fill","blue;white")
     }
     else{
       step = Common.back(step, record)

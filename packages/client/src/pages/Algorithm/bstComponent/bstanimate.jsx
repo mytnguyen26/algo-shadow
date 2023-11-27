@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import CAnimation from "../Common/Canimate";
 
 const AnimationB = {
-    createbst(dataset, svgRef){
+  createbst(dataset, svgRef){
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -88,99 +88,42 @@ const AnimationB = {
               return t.value;
             })
   },
-  
-  Pathdisplay(index){
-    
-    const circle = document.getElementById("c" + index);
-    const line = document.getElementById("l" + index);
-  
-    // Set up the circle gradient animation
-    const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    circleAnimate.setAttribute("attributeName", "fill");
-    circleAnimate.setAttribute("values", "white;blue");
-    circleAnimate.setAttribute("dur", "1s");
-    circleAnimate.setAttribute("fill", "freeze");
-  
-    circle.appendChild(circleAnimate);
-    circleAnimate.beginElement();
-  
-    //Set up the line gradient animation
-    // if (index !== 1) {
-    //   const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    //   lineAnimate.setAttribute("attributeName", "stroke");
-    //   lineAnimate.setAttribute("values", "black;blue");
-    //   lineAnimate.setAttribute("fill", "freeze");
-    //   lineAnimate.setAttribute("dur", "5s");
-    //   lineAnimate.setAttribute("fill", "freeze");
-    //   lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
-    //   line.appendChild(lineAnimate);
-    //   lineAnimate.beginElement();
-    // }
-  },
 
-  Pathdisappear(index){
-    const circle = document.getElementById("c" + index);
-    const line = document.getElementById("l" + index);
-  
-    // Set up the circle gradient animation
-    const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    circleAnimate.setAttribute("attributeName", "fill");
-    circleAnimate.setAttribute("values", "blue;white");
-    circleAnimate.setAttribute("dur", "1s");
-    circleAnimate.setAttribute("fill", "freeze");
-  
-    circle.appendChild(circleAnimate);
-    circleAnimate.beginElement();
-  
-    //Set up the line gradient animation
-    // if (index !== 1) {
-    //   const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-    //   lineAnimate.setAttribute("attributeName", "stroke");
-    //   lineAnimate.setAttribute("values", "blue;black");
-    //   lineAnimate.setAttribute("fill", "freeze");
-    //   lineAnimate.setAttribute("dur", "5s");
-    //   lineAnimate.setAttribute("fill", "freeze");
-    //   lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
-    //   line.appendChild(lineAnimate);
-    //   lineAnimate.beginElement();
-    // }
-    },
+  addGradients(dataset, svgRef){
+    const width = svgRef.current.clientWidth;
+    const svg = d3.select(svgRef.current);
+    var layer2 = document.getElementById('circle');
 
-    addGradients(dataset, svgRef){
-      const width = svgRef.current.clientWidth;
-      const svg = d3.select(svgRef.current);
-      var layer2 = document.getElementById('circle');
+    // Create a new group with a unique ID
+    var circles = svg.append("g").attr("id", "newCircleGroup");
 
-      // Create a new group with a unique ID
-      var circles = svg.append("g").attr("id", "newCircleGroup");
-
-      // Append circles to the group
-      if (true) {
-        console.log("isAuto");
-        circles
-          .selectAll("circle")
-          .data(dataset)
-          .enter()
-          .append("circle")
-          .attr("id", function (c) {
-            return "c" + c.position;
-          })
-          .attr("cx", function (c) {
-            return CAnimation.getx(c.position, width);
-          })
-          .attr("cy", function (c) {
-            return CAnimation.my * (CAnimation.getdepth(c.position) + 1);
-          })
-          .attr("r", 20)
-          .transition()
-          .duration(1000)
-          .delay((d, i) => i * 600)
-          .attr("fill", (d) =>"blue")
-          .style("stroke", (d) => "blue" || "blue")
-          .transition()
-          .duration(1000)
-          .delay((d, i) => (i + 4) * 400); // Adjust the delay as needed
-      } else {
+    // Append circles to the group
+    if (true) {
+      console.log("isAuto");
+      circles
+        .selectAll("circle")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("id", function (c) {
+          return "c" + c.position;
+        })
+        .attr("cx", function (c) {
+          return CAnimation.getx(c.position, width);
+        })
+        .attr("cy", function (c) {
+          return CAnimation.my * (CAnimation.getdepth(c.position) + 1);
+        })
+        .attr("r", 20)
+        .transition()
+        .duration(1000)
+        .delay((d, i) => i * 600)
+        .attr("fill", (d) =>"blue")
+        .style("stroke", (d) => "blue" || "blue")
+        .transition()
+        .duration(1000)
+        .delay((d, i) => (i + 4) * 400); // Adjust the delay as needed
+     } else {
         circles
           .selectAll("circle")
           .data(dataset)

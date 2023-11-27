@@ -3,11 +3,12 @@ import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
+import CAnimation from "./Common/Canimate";
 import Graph from "./DijkstraComponent/Graph"
 import AnimationG from "./DijkstraComponent/graphanimate.js"
 var data = [[0, 10, 0, 5, 0],[0, 0, 1, 2, 0],[0, 0, 0, 0, 4],
 [0, 3, 9, 0, 0],[7, 0, 6, 0, 0]]
-var dataset = []
+//var dataset = []
 var record = []
 var step = 0
 var graph = null
@@ -20,15 +21,18 @@ function next(){
       {
         let t = record[step]
         if(typeof(t.node)=="string"){
+          const c = document.getElementById("c" + t.node).getElementsByTagName("ellipse")[0];
           if(t.change=="stroke"){
-            AnimationG.Pathdisplay(t.node,t.change,"black;blue")
+            
+            CAnimation.Pathdisplay(c,t.change,"black;blue")
           }else{
-            AnimationG.Pathdisplay(t.node,t.change,"white;blue")
+            CAnimation.Pathdisplay(c,t.change,"white;blue")
           }
         }
         else{
           record[step].node.forEach(element => {
-            AnimationG.Pathdisplay(element,"stroke","black;green")
+            const c = document.getElementById("c" + element).getElementsByTagName("ellipse")[0];
+            CAnimation.Pathdisplay(c,"stroke","black;green")
           });
         }
         step++
@@ -37,20 +41,30 @@ function next(){
 
 function back(){
   if(step<1)
-  {
-    alert("This is the first step!")
-  }
-  else
-  {
-    if(typeof(record[step-1].e1) == "undefined"){
-      step--
-      //AnimationB.Pathdisappear(record[step]);
-    }
-    else{
-      step = Common.back(step, record)
-    }
-  }
+      {
+        alert("This is the first step!")
+      }
+      else
+      {
+        step--
+        let t = record[step]
+        if(typeof(t.node)=="string"){
+          const c = document.getElementById("c" + t.node).getElementsByTagName("ellipse")[0];
+          if(t.change=="stroke"){
+            CAnimation.Pathdisplay(c,t.change,"blue;black")
+          }else{
+            CAnimation.Pathdisplay(c,t.change,"blue;white")
+          }
+        }
+        else{
+          record[step].node.forEach(element => {
+            const c = document.getElementById("c" + element).getElementsByTagName("ellipse")[0];
+            CAnimation.Pathdisplay(c,"stroke","green;black")
+          });
+        }
+      }
 }
+
 
 const Dijkstra = () => {
   const [graphKind, setGraphKind] = useState('');
@@ -66,6 +80,10 @@ const Dijkstra = () => {
   useEffect(() => {
     SaveInputToLocalStorage
   },[]);
+  function reset(){
+    step=0
+    AnimationG.creategraph(graph,svgRef)
+  }
 
   function creategraph(cdata){
     step = 0
@@ -142,14 +160,6 @@ const Dijkstra = () => {
     }
     return matrix
   }
-
-  function validateGraphKind() {
-    const selectedValue = document.getElementById("graph-kind").value
-    if (selectedValue === '') {
-      throw new Error("Please choose a graph kind.");
-    }
-    return selectedValue
-}
 
 const GraphKindChange = (event) => {
   const selectedValue = event.target.value;
@@ -235,8 +245,6 @@ const validateEdgeList = (valuename) => {
               try {
                 let cdata = validateEdgeList("create");
                 creategraph(cdata)
-                // graph.fromAdjacencyMatrix(cdata,validateGraphKind())
-                // AnimationG.creategraph(graph,svgRef)
               } catch (error) {
                 alert("Error: " + error.message); 
               }
@@ -245,16 +253,6 @@ const validateEdgeList = (valuename) => {
               )}
             </>
             )}
-
-        {/* <input id="search" placeholder="Insert a number" />
-        <button id="ssubmit" onClick={() => {
-          try {
-            let sdata = Common.validonedata("search");
-            Searchbst(sdata)
-          } catch (error) {
-            alert("Error: " + error.message); 
-          }
-          }}>Search</button> */}
           <div id="adjacencyMatrix"></div>
         </div>
         
@@ -273,18 +271,11 @@ const validateEdgeList = (valuename) => {
                 <strong>Runtime:</strong> {bstResult.runtime} ms
               </div>
             </div>
-          )}
-
-          <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={Inorder}>Inorder</button>
-          <button onClick={Preorder}>Preorder</button>
-          <button onClick={Postorder}>Postorder</button>
-          </div> */}
+          )} */}
         <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
         <button onClick={next}>Next Step</button>
-          {/* 
-          <button onClick={back}>Back</button>
-          <button onClick={reset}>Reset</button> */}
+        <button onClick={back}>Back</button>
+        <button onClick={reset}>Reset</button>
           <button onClick={dijkstra}>Dijkstra</button>
           <button onClick={test}>Test</button>
           </div>
