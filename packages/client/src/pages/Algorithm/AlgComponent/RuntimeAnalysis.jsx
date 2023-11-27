@@ -1,3 +1,15 @@
+/**
+ * Analyzes and calculates the average runtime of a given function over a specified number of iterations.
+ *
+ * @param {string} algorithm - The name or description of the algorithm being tested.
+ * @param {any} input - The input on which the algorithm is being tested.
+ * @param {Function} func - The function that implements the algorithm.
+ * @param {number} [iterations=10] - The number of times the function is executed to calculate the average runtime. Defaults to 10.
+ * @param {...any} args - Additional arguments to pass to the function being tested.
+ * @returns {{input: any, output: any, runtime: number}} An object containing the input, the output of the function, and the average runtime in milliseconds.
+ * @throws {Error} If the provided 'func' is not a function.
+ */
+
 export const AnalyzeRuntime = (algorithm, input, func, iterations = 10, ...args) => {
   if (typeof func !== 'function') {
     throw new Error('Provided func is not a function');
