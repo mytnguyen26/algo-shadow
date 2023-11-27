@@ -14,7 +14,7 @@ function getx(c,width)
 }
 const my = 60
 const AnimationB = {
-    createbst(dataset, svgRef){
+  createbst(dataset, svgRef){
     const width = svgRef.current.clientWidth;
     console.log(width)
     const svg = d3.select(svgRef.current);
@@ -26,41 +26,13 @@ const AnimationB = {
             .data(dataset)
             .enter()
             .append("line")
-            .attr("id",function(c){
-              return "l"+c.position
-            })
-            .attr("x1", function(c){
-                if(c.position==1)
-                {
-                    return null
-                }
-                return getx(c.position,width)
-            })
-            .attr("y1", function(c){
-                if(c.position==1)
-                {
-                    return null
-                }
-                return my*(getdepth(c.position)+1)
-            })
-            .attr("x2", function(c){
-                if(c.position==1)
-                {
-                    return null
-                }
-                c = Math.floor(c.position/2)
-                return getx(c,width)
-            })
-            .attr("y2", function(c){
-                if(c.position==1)
-                {
-                    return null
-                }
-                return my*(getdepth(c.position))
-            })
-  
+            .attr("id", (c) => ("l"+c["position"]))
+            .attr("x1", (c) => (c["position"]===1 ? null : getx(c["position"],width)))
+            .attr("y1", (c) => (c["position"]===1 ? null : my*(getdepth(c["position"])+1)))
+            .attr("x2", (c) => (c["position"]===1 ? null : getx(Math.floor(c["position"]/2),width)))
+            .attr("y2", (c) => (c["position"]===1 ? null : my*(getdepth(c["position"]))))
     var c = svg.append("g")
-    .attr("id","circle")
+            .attr("id","circle")
             .attr("stroke","black")
             .attr("fill","white")
             .attr("stroke-width","2")

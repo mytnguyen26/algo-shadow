@@ -7,6 +7,7 @@ import Animation from "../../components/GraphRenderer/animate";
 import { AnalyzeRuntime } from './AlgComponent/RuntimeAnalysis.jsx';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
+import GraphRenderer from "../../components/GraphRenderder"
 
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
@@ -119,7 +120,10 @@ const BST = () => {
         tree.insert(element, record);
       });
     const result = AnalyzeRuntime('createBST', data, () => {
-      AnimationB.createbst(dataset,svgRef);
+      //AnimationB.createbst(dataset,svgRef);
+      const renderder = new GraphRenderer();
+      renderder.solverStrategy = "bst";
+      renderder.createTree(dataset, svgRef);
       return tree;
     });
     setBstResult(result); // Update state
@@ -171,7 +175,7 @@ const BST = () => {
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
           try {
-            let cdata = Common.validdata("create");
+            let cdata = Common.validData("create");
             data = cdata.map(item => Number(item.trim()))
             createbst()
           } catch (error) {

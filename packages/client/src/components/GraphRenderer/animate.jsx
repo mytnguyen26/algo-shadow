@@ -3,12 +3,6 @@ const getdepth = (c) => {
   return Math.ceil(Math.log2(c + 1)) - 1;
 };
 
-/**
- * Helper function
- * @param {*} c 
- * @param {*} width 
- * @returns 
- */
 const getx = (c, width) => {
   const depth = getdepth(c);
   const distance = 2 ** depth;
@@ -16,16 +10,6 @@ const getx = (c, width) => {
   return (width / (distance + 1)) * (index + 1);
 };
 
-/**
- * Helper function for animateExchange
- * @param {*} c1 
- * @param {*} x1 
- * @param {*} x2 
- * @param {*} y1 
- * @param {*} y2 
- * @param {*} attributeNameX 
- * @param {*} attributeNameY 
- */
 const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
   const animateElementX = document.createElementNS(
@@ -59,21 +43,18 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
 const Animation = {
   createTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
+    console.log(dataSetToUse)
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     const my = 60;
-
-    // draw links
     const p = svg
-      .append("g")              // "g" is used to group SVG shape together
+      .append("g")
       .attr("stroke", "black")
       .attr("stroke-width", "1")
       .selectAll("line")
       .data(dataSetToUse)
       .enter()
       .append("line")
-
-      // what's the difference between this and finalTree
       .attr("id", (c) => "l" + c.index)
       .attr("x1", (c) => (c.index === 1 ? null : getx(c.index, width)))
       .attr("y1", (c) => (c.index === 1 ? null : my * (getdepth(c.index) + 1)))
@@ -81,8 +62,6 @@ const Animation = {
         c.index === 1 ? null : getx(Math.floor(c.index / 2), width),
       )
       .attr("y2", (c) => (c.index === 1 ? null : my * getdepth(c.index)));
-
-    // draw node
     const c = svg
       .append("g")
       .attr("stroke", "black")
@@ -96,8 +75,6 @@ const Animation = {
       .attr("cx", (c) => getx(c.index, width))
       .attr("cy", (c) => my * (getdepth(c.index) + 1))
       .attr("r", 20);
-    
-    // draw label
     const t = svg
       .append("g")
       .attr("stroke", "black")
@@ -112,14 +89,12 @@ const Animation = {
       .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
       .text((t) => t.value);
   },
-
-  finalTree: (dataSetToUse, svgRef) => {
+  fianlTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
+    //console.log(dataSetToUse)
     svg.selectAll("*").remove();
     const my = 60;
-
-    // draw links
     const p = svg
       .append("g")
       .attr("stroke", "black")
@@ -128,8 +103,6 @@ const Animation = {
       .data(dataSetToUse)
       .enter()
       .append("line")
-
-      // what's the difference between this and createTree
       .attr("id", (c) => "l" + c.index)
       .attr("x1", (c, i) => (i === 0 ? null : getx(i + 1, width)))
       .attr("y1", (c, i) => (i === 0 ? null : my * (getdepth(i + 1) + 1)))
@@ -137,9 +110,6 @@ const Animation = {
         i === 0 ? null : getx(Math.floor((i + 1) / 2), width),
       )
       .attr("y2", (c, i) => (i === 0 ? null : my * getdepth(i + 1)));
-      //
-    
-    // draw node
     const c = svg
       .append("g")
       .attr("stroke", "black")
@@ -153,8 +123,6 @@ const Animation = {
       .attr("cx", (c, i) => getx(i + 1, width))
       .attr("cy", (c, i) => my * (getdepth(i + 1) + 1))
       .attr("r", 20);
-
-    // draw label
     const t = svg
       .append("g")
       .attr("stroke", "black")
@@ -196,7 +164,6 @@ const Animation = {
   },
 
   showelement: (e, size) => {
-    console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";

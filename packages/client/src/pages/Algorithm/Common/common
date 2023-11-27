@@ -1,7 +1,7 @@
 const Common= {
     width : 900,
     height : 300,
-    validdata(valuename){
+    validData(valuename){
         let tdata = document.getElementById(valuename).value.split(",")
         for (const ele of tdata) {
           if (isNaN(ele)) {
@@ -11,21 +11,28 @@ const Common= {
         return tdata
     },
       
-    validonedata(valuename){
-        let xdata =  Common.validdata(valuename)
+    validOneData(valuename){
+        let xdata =  Common.validData(valuename)
         if (xdata.length === 1) {
             return xdata[0]
         }else {
             throw new Error("Only select one number");
         }
     },
-    findinarray(xdata,dataset) {
+    findInArray(xdata,dataset) {
         for (var i = 0; i < dataset.length; i++) {
           if (dataset[i].value == xdata) {
             return i;
           }
         }
         throw new Error(xdata + " is not in heap");
+    },
+    dataTransform(data) {
+      var dataset = []
+      for (let i = 1; i <= data.length; ++i) {
+        dataset[i-1] = { index: i, value: Number(data[i-1]),position: 1 };
+      }
+      return dataset
     }
   }
 
