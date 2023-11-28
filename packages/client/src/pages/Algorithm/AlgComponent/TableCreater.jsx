@@ -20,6 +20,9 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 function ResultsTable({ results }) {
   if (!results || results.length === 0) return null;
 
+  // Clone and reverse the results array to display newest first
+  const reversedResults = [...results].reverse();
+
   return (
     <TableContainer component={Paper} style={{ marginTop: '20px' }}>
       <Table aria-label="simple table">
@@ -31,7 +34,7 @@ function ResultsTable({ results }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {results.map((result, index) => (
+          {reversedResults.map((result, index) => (
             <TableRow key={index}>
               <TableCell component="th" scope="row">
                 {Array.isArray(result.input) ? result.input.join(", ") : result.input}
@@ -53,3 +56,4 @@ function ResultsTable({ results }) {
 }
 
 export default ResultsTable;
+

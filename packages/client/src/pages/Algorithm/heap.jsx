@@ -133,7 +133,6 @@ function HeapPage() {
       Heapification.insertheap(dataset,record)
       return dataset;
     });
-    addResult(result);
   }
   
   function deleteheap(i){
