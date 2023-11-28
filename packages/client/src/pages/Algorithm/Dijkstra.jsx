@@ -4,7 +4,7 @@
 import Box from "@mui/material/Box";
 import { DijkstraGraph } from "../Algorithm/DijkstraComponent/DijkstraGraph";
 
-export const Dijkstra = () => {
+const Dijkstra = () => {
   return (
     <div>
       <h1>Dijkstra</h1>
@@ -14,3 +14,5 @@ export const Dijkstra = () => {
     </div>
   );
 };
+
+export default Dijkstra;
