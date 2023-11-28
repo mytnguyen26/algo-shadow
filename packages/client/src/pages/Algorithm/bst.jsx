@@ -9,72 +9,10 @@ import BSTConcreteStrategy from "../../components/AlgorithmSolver/BSTConcreteStr
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
 // const graphData = new GraphData(data)
-var dataset = [];
 var record = [];
-var step = 0;
 var tree = null;
 
 const renderer = new GraphRenderer();
-
-function reset() {
-  step = 0;
-  record.forEach((element) => {
-    AnimationB.pathDisappear(dataset[element - 1].position);
-  });
-}
-
-function Inorder() {
-  reset();
-  record = tree.inOrderTraverse();
-}
-
-function Preorder() {
-  reset();
-  record = tree.preOrderTraverse();
-}
-
-function Postorder() {
-  reset();
-  record = tree.postOrderTraverse();
-}
-
-function nextStep() {
-  if (step >= record.length) {
-    alert("AnimationB is end!");
-  } else {
-    if (typeof record[step].e1 == "undefined") {
-      AnimationB.pathDisplay(dataset[record[step] - 1].position);
-    } else {
-      if (record[step].e1 == 0) {
-        renderer.deleteElement(record[step - 1].e2, record[step - 1].e1);
-      } else {
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        renderer.animateExchange(text1, text2);
-      }
-    }
-    step++;
-  }
-}
-
-function back() {
-  if (step < 1) {
-    alert("This is the first step!");
-  } else {
-    step--;
-    if (typeof record[step].e1 == "undefined") {
-      AnimationB.pathDisappear(dataset[record[step] - 1].position);
-    } else {
-      if (record[step].e1 == 0) {
-        renderer.showElement(record[step - 1].e2, record[step - 1].e1);
-      } else {
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        renderer.animateExchange(text1, text2);
-      }
-    }
-  }
-}
 
 const BST = () => {
   const svgRef = useRef(null);
@@ -100,7 +38,8 @@ const BST = () => {
    * TODO
    */
   function createBST() {
-    renderer.solverStrategy = new BSTConcreteStrategy()
+    tree = new BSTConcreteStrategy()   // might need to change this to singleton
+    renderer.solverStrategy = tree
     const result = renderer.create(data)
     setBstResult(result) // Update state
   }
@@ -109,13 +48,13 @@ const BST = () => {
    * TODO
    * @param {*} idata
    */
-  function insertBST(idata) {
-    record = [];
-    data.push(Number(idata[0]));
-    dataset.push({ index: data.length, value: Number(idata[0]), position: 1 });
-    tree.insert(dataset[data.length - 1], record);
-    record.push(dataset[data.length - 1].index);
-    renderer.renderGraph(dataset, svgRef);
+  function insertBST() {
+    try {
+      let idata = Common.validOneData("insert");
+      renderer.insert(idata);
+    } catch (error) {
+      alert("Error: " + error.message); // 输出错误消息
+    }
   }
 
   /**
@@ -123,31 +62,14 @@ const BST = () => {
    * @param {*} ddata
    * @param {*} k
    */
-  function deleteBST(ddata, k) {
-    record = [];
-    //k 被删除，i交换
-    tree.delete(ddata, record);
-    //tree.inOrderTraverse()
-    let t = record[record.length - 1];
-    for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {
-        if (dataset[i].value != ddata) {
-          console.log(
-            "exchange " + dataset[i].position + " and " + dataset[k].position,
-          );
-          record.push({
-            e1: dataset[i].position,
-            e2: dataset[k].position,
-          });
-        }
-        break;
-      }
+  function deleteBST() {
+    try {
+      let ddata = Common.validOneData("delete");
+      const index = Common.findInArray(ddata, renderer.dataset);
+      record = renderer.delete(ddata, index);
+    } catch (error) {
+      alert("Error: " + error.message); // 输出错误消息
     }
-    record.push({
-      e1: 0,
-      e2: dataset[k].position,
-    });
-    data.splice(dataset[i].index - 1, 1);
   }
 
   function test() {
@@ -155,6 +77,33 @@ const BST = () => {
     //AnimationB.addGradients(dataset,svgRef)
   }
 
+  function inOrder() {
+    renderer.reset();
+    record = tree.inOrderTraverse();
+  }
+  
+  function preOrder() {
+    renderer.reset();
+    record = tree.preOrderTraverse();
+  }
+  
+  function postOrder() {
+    renderer.reset();
+    record = tree.postOrderTraverse();
+  }
+  
+  function reset() {
+    renderer.reset();
+  }
+  
+  function nextStep() {
+    renderer.nextStep();
+  }
+  
+  function back() {
+    renderer.back()
+  }
+ 
   return (
     <Container maxWidth="md">
       <Box className="canvas">
@@ -165,7 +114,7 @@ const BST = () => {
             <input id="create" placeholder="Enter comma separated numbers" />
             <button
               id="csubmit"
-              onClick={() => {
+              onClick={() => { // need to keep this if we want to render test data first
                 try {
                   let cdata = Common.validData("create");
                   data = cdata.map((item) => Number(item.trim()));
@@ -179,35 +128,9 @@ const BST = () => {
             </button>
 
             <input id="insert" placeholder="Insert a number" />
-            <button
-              id="isubmit"
-              onClick={() => {
-                try {
-                  let idata = Common.validOneData("insert");
-                  insertBST(idata);
-                } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
-                }
-              }}
-            >
-              Insert
-            </button>
-
+            <button id="isubmit" onClick={insertBST}>Insert</button>
             <input id="delete" placeholder="Insert a number" />
-            <button
-              id="dsubmit"
-              onClick={() => {
-                try {
-                  let ddata = Common.validOneData("delete");
-                  const index = Common.findInArray(ddata, dataset);
-                  deleteBST(ddata, index);
-                } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
-                }
-              }}
-            >
-              Delete
-            </button>
+            <button id="dsubmit" onClick={{deleteBST}}>Delete</button>
           </div>
 
           <div style={{ flexGrow: 1 }}>
@@ -237,9 +160,9 @@ const BST = () => {
                 marginTop: "10px",
               }}
             >
-              <button onClick={Inorder}>Inorder</button>
-              <button onClick={Preorder}>Preorder</button>
-              <button onClick={Postorder}>Postorder</button>
+              <button onClick={inOrder}>Inorder</button>
+              <button onClick={preOrder}>Preorder</button>
+              <button onClick={postOrder}>Postorder</button>
             </div>
             <div
               style={{
@@ -249,9 +172,9 @@ const BST = () => {
                 marginTop: "10px",
               }}
             >
-              <button onClick={renderer.nextStep}>Next Step</button>
-              <button onClick={renderer.back}>Back</button>
-              <button onClick={renderer.reset}>Reset</button>
+              <button onClick={nextStep}>Next Step</button>
+              <button onClick={back}>Back</button>
+              <button onClick={reset}>Reset</button>
               <button onClick={test}>Test</button>
             </div>
           </div>

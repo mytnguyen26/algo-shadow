@@ -14,15 +14,15 @@ import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.j
 class GraphRenderer {
   constructor() {
     this._solverStrategy = null
+    this.data = []
     this.position = null
     this.step = 0
-    this.tree = null
     this.record = []
     this.dataset = []
     this.svgRef = null
   }
   
-  set solverStrategy(strategy) {
+  set solverStrategy (strategy) {
     this._solverStrategy = strategy
     switch(strategy.constructor.name) {
       case "DijkstraConcreteStrategy":
@@ -39,6 +39,10 @@ class GraphRenderer {
         console.log("No algorithm solver found")
         break;
     }
+  }
+
+  getTargetNode (node) {
+    return this._solverStrategy.getNeighborOf(node);
   }
 
   /**
@@ -279,6 +283,7 @@ class GraphRenderer {
     this.record.forEach(element => {
       this.pathDisappear(this.dataset[element-1].position)
     })
+    console.log(this.record)
   }
 
   nextStep() {
@@ -336,16 +341,18 @@ class GraphRenderer {
    */
   create(data) {
     this.record = []
-    let dataset = Common.dataTransform(data);
-    console.log(dataset)
+    this.data = data
+    this.dataset = Common.dataTransform(data);
+    console.log(this.dataset)
     
     const result = AnalyzeRuntime('createBST', data, () => {
-      dataset.forEach(element => {
+      this.dataset.forEach(element => {
         this._solverStrategy.insert(element, this.record);
       });     // because this is so specific to each algo, 
               // encapsulate in solverStrategy run() method
-      this.renderGraph(dataset)
+      this.renderGraph(this.dataset)
     });
+    console.log(this.record)
     return result
   }
   
@@ -357,11 +364,40 @@ class GraphRenderer {
     this.dataset.push({index: data.length, value:Number(data[0]), position: 1})
     this._solverStrategy.insert(this.dataset[data.length-1], this.record);
     this.record.push(this.dataset[data.length-1].index)
-    this.renderGraph();
+    this.renderGraph(this.dataset);
   }
 
-  delete() {
-
+  /**
+   * TODO
+   * @param {*} ddata
+   * @param {*} k
+   */
+  delete(ddata, k) {
+    console.log(this.data)
+    this.record = [];
+    //k 被删除，i交换
+    this._solverStrategy.delete(ddata, this.record);
+    let t = this.record[this.record.length - 1];
+    for (var i = 0; i < this.dataset.length; i++) {
+      if (this.dataset[i].index == t) {
+        if (this.dataset[i].value != ddata) {
+          console.log(
+            "exchange " + this.dataset[i].position + " and " + this.dataset[k].position,
+          );
+          this.record.push({
+            e1: this.dataset[i].position,
+            e2: this.dataset[k].position,
+          });
+        }
+        break;
+      }
+    }
+    this.record.push({
+      e1: 0,
+      e2: this.dataset[k].position,
+    });
+    this.data.splice(this.dataset[i].index - 1, 1);
+    this.renderGraph(this.dataset)
   }
   
   // drawLink (svg) {
