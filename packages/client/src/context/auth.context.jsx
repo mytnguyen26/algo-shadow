@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { Paths } from "@constants/paths";
+import { Paths } from "../constants/Paths.js";
 
 const AuthContext = createContext({});
 
