@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useAuth } from "@context/auth.context";
-import { Paths } from "@constants/paths";
+import { useAuth } from "../../context/auth.context.jsx";
+import { Paths } from "../../constants/Paths.js";
 import { Outlet } from "react-router-dom";
 
 export const AuthGuard = () => {
