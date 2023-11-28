@@ -4,7 +4,13 @@ import { Outlet } from "react-router-dom";
 
 const Algorithm = () => {
   return (
-    <Container style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <Container
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
       <DropdownMenu />
       <Box>
         <Outlet />

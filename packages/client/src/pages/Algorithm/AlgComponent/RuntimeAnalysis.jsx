@@ -10,16 +10,22 @@
  * @throws {Error} If the provided 'func' is not a function.
  */
 
-export const AnalyzeRuntime = (algorithm, input, func, iterations = 10, ...args) => {
-  if (typeof func !== 'function') {
-    throw new Error('Provided func is not a function');
+export const AnalyzeRuntime = (
+  algorithm,
+  input,
+  func,
+  iterations = 10,
+  ...args
+) => {
+  if (typeof func !== "function") {
+    throw new Error("Provided func is not a function");
   }
 
   let totalTime = 0;
   let output = func(...args); // Execute the function once outside the loop
   if (output === undefined) {
-    output = 'No explicit output'; // Or any other default value
-  }  
+    output = "No explicit output"; // Or any other default value
+  }
 
   for (let i = 0; i < iterations; i++) {
     const startTime = performance.now();

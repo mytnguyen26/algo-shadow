@@ -1,5 +1,5 @@
 /**
- * `ResultsTable` is a React component for displaying a list of results in a table format. 
+ * `ResultsTable` is a React component for displaying a list of results in a table format.
  * This component utilizes Material-UI components to render the table.
  *
  * Props:
@@ -14,8 +14,16 @@
  * This component is ideal for displaying structured data such as algorithm outputs, where each entry includes the input data, the resulting output, and the time taken to compute the output.
  */
 
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 function ResultsTable({ results }) {
   if (!results || results.length === 0) return null;
@@ -24,7 +32,7 @@ function ResultsTable({ results }) {
   const reversedResults = [...results].reverse();
 
   return (
-    <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+    <TableContainer component={Paper} style={{ marginTop: "20px" }}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -37,15 +45,17 @@ function ResultsTable({ results }) {
           {reversedResults.map((result, index) => (
             <TableRow key={index}>
               <TableCell component="th" scope="row">
-                {Array.isArray(result.input) ? result.input.join(", ") : result.input}
+                {Array.isArray(result.input)
+                  ? result.input.join(", ")
+                  : result.input}
               </TableCell>
               <TableCell align="center">
                 {result.output && Array.isArray(result.output)
-                  ? result.output.map(item => item.value).join(", ")
+                  ? result.output.map((item) => item.value).join(", ")
                   : result.output}
               </TableCell>
               <TableCell align="center">
-                {result.runtime ? result.runtime.toFixed(4) : 'N/A'}
+                {result.runtime ? result.runtime.toFixed(4) : "N/A"}
               </TableCell>
             </TableRow>
           ))}
@@ -56,4 +66,3 @@ function ResultsTable({ results }) {
 }
 
 export default ResultsTable;
-
