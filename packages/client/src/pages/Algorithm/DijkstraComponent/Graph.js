@@ -1,6 +1,3 @@
-import * as d3 from "d3";
-import Viz from 'viz.js';
-import { Module, render } from 'viz.js/full.render';
 function createTableCell(content) {
     const cell = document.createElement('td');
     cell.textContent = content;

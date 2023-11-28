@@ -121,6 +121,12 @@ const Dijkstra = () => {
   // graph.addEdge('G', 'B', 2);
   }
 
+  const useHisInput = (input) => {
+    // Assuming `createHeap` is a function that takes an input array to create a heap
+    data = input
+    creategraph(data);
+  };
+
   function dijkstra(){
     graph.dijkstra("A",record);
   }
@@ -263,7 +269,7 @@ const validateEdgeList = (valuename) => {
           
           {/* {bstResult && (
             <div>
-              <h3>BST Result:</h3>
+              <h3>Dijkstra Result:</h3>
               <div>
                 <strong>Input:</strong> [{bstResult.input.join(", ")}]
               </div>
@@ -280,8 +286,8 @@ const validateEdgeList = (valuename) => {
           <button onClick={test}>Test</button>
           </div>
         </div>
-        {/* <div><SaveInputToLocalStorage algorithm="bst" inputData={data} useHisInput={useHisInput}/>
-          </div> */}
+        <div><SaveInputToLocalStorage algorithm="dij" inputData={data} useHisInput={useHisInput}/>
+          </div>
         
 
       </div>
