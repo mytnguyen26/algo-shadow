@@ -6,7 +6,7 @@ import About from "./pages/Home/about.jsx";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
-import Heap from "./pages/Algorithm/heap.jsx"
+import Heap from "./pages/Algorithm/heap.jsx";
 import { Dijkstra } from "./pages/Algorithm/dijkstra.jsx";
 
 function App() {

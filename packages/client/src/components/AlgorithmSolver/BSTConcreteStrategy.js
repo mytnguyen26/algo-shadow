@@ -8,73 +8,73 @@ class Node {  // 创建节点
   }
 }
 
-class BinarySearchTree{
+class BSTConcreteStrategy {
   constructor() {
     this.root = null;
   }
   // 插入节点
-  insert(data,record) {
-      const newNode = new Node(data);
-      const insertNode = (node, newNode,position) => {
-          if (newNode.data < node.data) { // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
-              if (node.left === null) {                    
-                  node.left = newNode
-                  record.push(node.index)
-                  data.position = position * 2
-              }else {
-                  record.push(node.index)
-                  insertNode(node.left, newNode,position * 2) // 递归找下一层的左侧节点（重点）                   
-              }
-          }else {
-              if (node.right === null) {
-                  node.right = newNode;
-                 record.push(node.index)
-                 data.position = position * 2+1
-              } else {
-                  record.push(node.index)
-                  insertNode(node.right, newNode,position * 2+1)                   
-              }
-          }
-      }
-      if (!this.root) {
-          this.root = newNode;
-          data.position = 1;
+  insert(data, record) {
+    const newNode = new Node(data);
+    const insertNode = (node, newNode, position) => {
+      if (newNode.data < node.data) { // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
+        if (node.left === null) {                    
+            node.left = newNode
+            record.push(node.index)
+            data.position = position * 2
+        } else {
+          record.push(node.index)
+          insertNode(node.left, newNode, position * 2) // 递归找下一层的左侧节点（重点）                   
+        }
       } else {
-          insertNode(this.root, newNode,1);
-         //record.push({parent:this.root.index, this:newNode.index})
+        if (node.right === null) {
+          node.right = newNode;
+          record.push(node.index)
+          data.position = position * 2+1
+        } else {
+          record.push(node.index)
+          insertNode(node.right, newNode,position * 2+1)                   
+        }
       }
+    }
+    if (!this.root) {
+      this.root = newNode;
+      data.position = 1;
+    } else {
+      insertNode(this.root, newNode,1);
+      //record.push({parent:this.root.index, this:newNode.index})
+    }
   }
   // 中序遍历所有节点（左根右）
   inOrderTraverse() {
-      let backs = [];
-      const callback = data => {
-          return data
+    let backs = [];
+    const callback = data => {
+      return data
+    }
+    const inOrderNode = (node, callback) => {
+      if (node !== null) {
+        inOrderNode(node.left, callback); // 递归遍历出左节点
+        backs.push(callback(node.index));  // 将值push到数组里
+        inOrderNode(node.right, callback)  // 递归遍历出右节点
       }
-      const inOrderNode = (node, callback) => {
-          if (node !== null) {
-              inOrderNode(node.left, callback); // 递归遍历出左节点
-              backs.push(callback(node.index));  // 将值push到数组里
-              inOrderNode(node.right, callback)  // 递归遍历出右节点
-          }
-      }
-      inOrderNode(this.root, callback)
-      return backs
+    }
+    inOrderNode(this.root, callback)
+    return backs
   }
   // 先序遍历所有节点（根左右）
   preOrderTraverse() {
-      let backs = [];
-      const callback = data => {
-          return data
+    let backs = [];
+    const callback = data => {
+      return data
+    }
+    const inOrderNode = (node, callback) => {
+      if (node !== null) {
+        backs.push(callback(node.index));  // 将值push到数组里
+        inOrderNode(node.left, callback); // 递归遍历出左节点
+        inOrderNode(node.right, callback)  // 递归遍历出右节点
       }
-      const inOrderNode = (node, callback) => {
-          if (node !== null) {
-              backs.push(callback(node.index));  // 将值push到数组里
-              inOrderNode(node.left, callback); // 递归遍历出左节点
-              inOrderNode(node.right, callback)  // 递归遍历出右节点
-          }
-      }
-      inOrderNode(this.root, callback)
-      return backs
+    }
+    inOrderNode(this.root, callback)
+    return backs
   }
   // 后序遍历所有节点（左右根）
   postOrderTraverse() {
@@ -147,4 +147,4 @@ class BinarySearchTree{
   }
 }
 
-export default BinarySearchTree;
+export default BSTConcreteStrategy;

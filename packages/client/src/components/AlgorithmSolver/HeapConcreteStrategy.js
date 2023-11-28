@@ -39,7 +39,7 @@ const getparent = (i) => {
 };
 
 
-const Heapification = {
+const HeapConcreteStrategy = {
   buildmaxheap: (dataset, record) => {
     let result = 0;
     for (var i = Math.floor(dataset.length / 2); i > 0; i--) {
@@ -108,4 +108,4 @@ const Heapification = {
 
 };
 
-export default Heapification;
+export default HeapConcreteStrategy;

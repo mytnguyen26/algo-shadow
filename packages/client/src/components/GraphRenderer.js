@@ -1,35 +1,41 @@
 /**
  * A GraphRenderer renders the visuals of the data structure for 
- * `algorithm`, as determined by `strategy` property.
+ * `algorithm`, as determined by `strategy` property. It is only responsible
+ * for visualizing data after manipulation or computation by one of the 
+ * AlgorithmSolver strategy
  * GraphRenderer uses `strategy` property to set appropriate `AlgorithmSolver`
  * strategy to `solverStrategy` and use the strategy to apply algorithmic
  * logic to the input data
  */
 import * as d3 from "d3";
-import DijkstraConcreteStrategy from "./AlgorithmSolver/DijkstraConcreteStrategy"
-import BSTConcreteStrategy from "./AlgorithmSolver/DijkstraConcreteStrategy"
-// import HeapConcreteStrategy from "./AlgorithmSolver/HeapConcreteStrategy"
+import Common from "../pages/Algorithm/Common/Common"
+import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/RuntimeAnalysis.jsx"
 
 class GraphRenderer {
   constructor() {
     this._solverStrategy = null
     this.position = null
-    }
+    this.step = 0
+    this.tree = null
+    this.record = []
+    this.dataset = []
+    this.svgRef = null
+  }
+  
   set solverStrategy(strategy) {
-    switch(strategy) {
-      case "dijkstra":
-        this._solverStrategy = new DijkstraConcreteStrategy()
+    this._solverStrategy = strategy
+    switch(strategy.constructor.name) {
+      case "DijkstraConcreteStrategy":
         this.position = "index"
         break;
-      case "bst":
-        this._solverStrategy = new BSTConcreteStrategy()
+      case "BSTConcreteStrategy":
         this.position = "position"
         break;
-      case "heap":
-        this._solverStrategy = null
+      case "HeapConcreteStrategy":
         this.position = "index"
         break;
       default:
+        this.position = "index"
         console.log("No algorithm solver found")
         break;
     }
@@ -90,11 +96,11 @@ class GraphRenderer {
    * @param {*} svgRef [description]
    * 
    */
-  createTree (dataset, svgRef) {
-    const width = svgRef.current.clientWidth;
-    //console.log(dataSetToUse)
+  renderGraph (dataset) {
+    const width = this.svgRef.current.clientWidth;
+    console.log(dataset)
     console.log(this.position)
-    const svg = d3.select(svgRef.current);
+    const svg = d3.select(this.svgRef.current);
     svg.selectAll("*").remove();
     const my = 60;
     const p = svg
@@ -146,9 +152,9 @@ class GraphRenderer {
    * @param {*} dataset 
    * @param {*} svgRef 
    */
-  finalTree (dataset, svgRef) {
-    const width = svgRef.current.clientWidth;
-    const svg = d3.select(svgRef.current);
+  finalTree () {
+    const width = this.svgRef.current.clientWidth;
+    const svg = d3.select(this.svgRef.current);
     //console.log(dataSetToUse)
     svg.selectAll("*").remove();
     const my = 60;
@@ -157,7 +163,7 @@ class GraphRenderer {
       .attr("stroke", "black")
       .attr("stroke-width", "1")
       .selectAll("line")
-      .data(dataset)
+      .data(this.dataset)
       .enter()
       .append("line")
       .attr("id", (c) => "l" + c.index)
@@ -173,7 +179,7 @@ class GraphRenderer {
       .attr("fill", "white")
       .attr("stroke-width", "1")
       .selectAll("circle")
-      .data(dataset)
+      .data(this.dataset)
       .enter()
       .append("circle")
       .attr("id", (c) => "c" + c.index)
@@ -186,7 +192,7 @@ class GraphRenderer {
       .attr("text-anchor", "middle")
       .attr("text-size", "10px")
       .selectAll("text")
-      .data(dataset)
+      .data(this.dataset)
       .enter()
       .append("text")
       .attr("id", (c) => {
@@ -233,6 +239,131 @@ class GraphRenderer {
     document.getElementById("l" + size).style.display = "block";
   }
 
+  pathDisplay(index) {
+    const circle = document.getElementById("c" + index);
+    const line = document.getElementById("l" + index);
+  
+    // 设置圆形的渐变动画
+    const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    circleAnimate.setAttribute("attributeName", "stroke");
+    circleAnimate.setAttribute("values", "black;blue");
+    circleAnimate.setAttribute("dur", "2s");
+    circleAnimate.setAttribute("fill", "freeze");
+  
+    circle.appendChild(circleAnimate);
+    circleAnimate.beginElement();
+  
+    //设置线段的渐变动画
+    if (index !== 1) {
+      const lineAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+      lineAnimate.setAttribute("attributeName", "stroke");
+      lineAnimate.setAttribute("values", "black;blue");
+      lineAnimate.setAttribute("fill", "freeze");
+      lineAnimate.setAttribute("dur", "5s");
+      lineAnimate.setAttribute("fill", "freeze");
+      lineAnimate.setAttribute("begin", "c" + index + ".animate.end");
+      line.appendChild(lineAnimate);
+      lineAnimate.beginElement();
+    }
+  }
+
+  pathDisappear(index) {
+    document.getElementById("c"+index).setAttribute("stroke","black")
+    if(index!=1){
+      document.getElementById("l"+index).setAttribute("stroke","black")
+    }
+  }
+
+  reset() {
+    this.step = 0
+    this.record.forEach(element => {
+      this.pathDisappear(this.dataset[element-1].position)
+    })
+  }
+
+  nextStep() {
+    if(this.step >= this.record.length)
+    {
+      alert("AnimationB is end!")
+    }
+    else
+    {
+      if(typeof(this.record[this.step].e1) == "undefined"){
+        this.pathDisplay(this.dataset[this.record[this.step]-1].position);
+      }
+      else{
+        if(this.record[this.step].e1==0){
+          this.deleteElement(this.record[this.step-1].e2, this.record[this.step-1].e1)
+        }
+        else{
+          const text1 = document.getElementById("t" + this.record[this.step].e1);
+          const text2 = document.getElementById("t" + this.record[this.step].e2);
+          this.animateExchange(text1,text2);
+        }
+      }
+      this.step++
+    }
+  }
+
+  back(){
+    if(this.step<1)
+    {
+      alert("This is the first step!")
+    }
+    else
+    {
+      this.step--
+      if(typeof(this.record[this.step].e1) == "undefined"){
+        this.pathDisappear(this.dataset[this.record[this.step]-1].position);
+      }
+      else{
+        if(this.record[this.step].e1==0){
+          this.renderer.showElement(this.record[this.step-1].e2, this.record[this.step-1].e1)
+        }
+        else{
+          const text1 = document.getElementById("t" + this.record[this.step].e1);
+          const text2 = document.getElementById("t" + this.record[this.step].e2);
+          this.renderer.animateExchange(text1,text2);
+        }
+      }
+    }
+      
+  }
+  
+  /**
+   * Create a new Graph from user input to perform algorithm on
+   * @param {Array} dataset the transformed user input parsed from UI
+   */
+  create(data) {
+    this.record = []
+    let dataset = Common.dataTransform(data);
+    console.log(dataset)
+    
+    const result = AnalyzeRuntime('createBST', data, () => {
+      dataset.forEach(element => {
+        this._solverStrategy.insert(element, this.record);
+      });     // because this is so specific to each algo, 
+              // encapsulate in solverStrategy run() method
+      this.renderGraph(dataset)
+    });
+    return result
+  }
+  
+  /**
+   * Insert new elements from user input to existing Graph
+   */
+  insert(data) {
+    this.record = []
+    this.dataset.push({index: data.length, value:Number(data[0]), position: 1})
+    this._solverStrategy.insert(this.dataset[data.length-1], this.record);
+    this.record.push(this.dataset[data.length-1].index)
+    this.renderGraph();
+  }
+
+  delete() {
+
+  }
+  
   // drawLink (svg) {
   //   svg
   //     .selectAll(".link")

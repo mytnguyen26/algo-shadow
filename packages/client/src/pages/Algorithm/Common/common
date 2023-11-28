@@ -30,7 +30,7 @@ const Common= {
     dataTransform(data) {
       var dataset = []
       for (let i = 1; i <= data.length; ++i) {
-        dataset[i-1] = { index: i, value: Number(data[i-1]),position: 1 };
+        dataset[i-1] = { index: i, value: Number(data[i-1]), position: 1};
       }
       return dataset
     }

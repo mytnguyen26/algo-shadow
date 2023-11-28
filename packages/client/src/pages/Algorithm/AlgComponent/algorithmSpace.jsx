@@ -11,8 +11,8 @@ export const AlgorithmSpace = ({ svgRef, width, height, resetkey }) => {
         border: "1px solid #ddd",
         marginTop: (theme) =>
           `calc((100vh - 400px - ${theme.spacing(5)}px) / 2)`,
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
         flexGrow: 1,
       }}
     >

@@ -43,7 +43,7 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
 const Animation = {
   createTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
-    console.log(dataSetToUse)
+    console.log(dataSetToUse);
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     const my = 60;
