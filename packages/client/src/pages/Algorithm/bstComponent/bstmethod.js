@@ -17,7 +17,7 @@ class BinarySearchTree{
   insert(data,record) {
     const newNode = new Node(data);
     const insertNode = (node, newNode,position) => {
-        if (newNode.data < node.data) { // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
+        if (newNode.data < node.data) { // If the value of the inserted node is smaller than the parent node, it is inserted into the left node and otherwise it is inserted into the right node
             if (node.left === null) {    
                 data.position = position * 2
                 newNode.position = data.position
@@ -26,7 +26,7 @@ class BinarySearchTree{
                 record.push(data.position)
             }else {
                 record.push(node.position)
-                insertNode(node.left, newNode,position * 2) // 递归找下一层的左侧节点（重点）                   
+                insertNode(node.left, newNode,position * 2) // Recursively find the left node of the next level                  
             }
         }else{
             if (node.right === null) {
@@ -57,9 +57,9 @@ class BinarySearchTree{
       }
       const inOrderNode = (node, callback) => {
           if (node !== null) {
-              inOrderNode(node.left, callback); // 递归遍历出左节点
-              backs.push(callback(node.position));  // 将值push到数组里
-              inOrderNode(node.right, callback)  // 递归遍历出右节点
+              inOrderNode(node.left, callback); // Recursively iterate over the left node
+              backs.push(callback(node.position));  // push the values into the array
+              inOrderNode(node.right, callback)  // Recursively iterate over the right node
           }
       }
       inOrderNode(this.root, callback)

@@ -65,12 +65,12 @@ function back(){
       }
 }
 
-
 const Dijkstra = () => {
   const [graphKind, setGraphKind] = useState('');
   const [createKindVisible, setCreateKindVisible] = useState(false);
   const [createKind, setCreateKind] = useState('');
-  const [createData, setCreateData] = useState('');
+  const [p_adj, setP] = useState('0 1\n1 0');
+  const [p_edge, setE] = useState('A B 3\nC B 2');
 
   const svgRef = useRef(null);
   useEffect(() => {
@@ -206,6 +206,7 @@ const validateEdgeList = (valuename) => {
     });
     }
   }
+  
   return edgeList
 };
 
@@ -220,6 +221,7 @@ const validateEdgeList = (valuename) => {
               <option value="Directed">Directed</option>
               <option value="Undirected">Undirected</option>
             </select>
+            
             {createKindVisible && (
             <>
               <label htmlFor="create-kind">Select Create Kind:</label>
@@ -232,7 +234,9 @@ const validateEdgeList = (valuename) => {
               {createKind === 'AdjacencyMatrix' && (
               <>
                 <label htmlFor="create">Enter Adjacency Matrix:</label>
-                <textarea id="create" rows="5" placeholder="Enter comma-separated numbers"></textarea>
+                
+                <textarea id="create" rows="5" 
+                placeholder={p_adj}></textarea>
                 <button id="csubmit" onClick={() => {
                   try {
                     let cdata = validmatrix("create");
@@ -246,7 +250,8 @@ const validateEdgeList = (valuename) => {
               {createKind === 'EdgeList' && (
                 <>
                   <label htmlFor="create">Enter Edge List:</label>
-                  <textarea id="create" rows="5" placeholder="Enter edge pairs"></textarea>
+                  <textarea id="create" rows="5" placeholder={p_edge}></textarea>
+                  
                   <button id="csubmit" onClick={() => {
               try {
                 let cdata = validateEdgeList("create");
