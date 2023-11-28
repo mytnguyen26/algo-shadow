@@ -1,8 +1,7 @@
 import { DijkstraGraph } from "../src/pages/Algorithm/DijkstraComponent/DijkstraGraph.jsx";
 import { expect, it, describe, vi } from "vitest";
-import { render, renderHook } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import Graph from "../src/components/AlgorithmSolver/algorithm.js";
-import { useNodes } from "../src/pages/Algorithm/DijkstraComponent/useNodes.jsx";
 
 const fn = vi.fn();
 describe(DijkstraGraph, () => {
