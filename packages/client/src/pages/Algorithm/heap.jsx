@@ -8,7 +8,7 @@ import Heapification from "./HeapComponent/heapmethod";
 import HeapConcreteStrategy from "../../components/AlgorithmSolver/HeapConcreteStrategy"
 import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
+import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import { common } from "@mui/material/colors";
 

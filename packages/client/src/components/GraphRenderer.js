@@ -9,7 +9,7 @@
  */
 import * as d3 from "d3";
 import Common from "../pages/Algorithm/Common/Common"
-import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/RuntimeAnalysis.jsx"
+import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.jsx"
 
 class GraphRenderer {
   constructor() {
