@@ -8,7 +8,7 @@
  * logic to the input data
  */
 import * as d3 from "d3";
-import Common from "../pages/Algorithm/Common/Common"
+import Common from "../pages/Algorithm/Common/common"
 import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.jsx"
 
 class GraphRenderer {
