@@ -5,9 +5,9 @@ const getdepth = (c) => {
 
 /**
  * Helper function
- * @param {*} c 
- * @param {*} width 
- * @returns 
+ * @param {*} c
+ * @param {*} width
+ * @returns
  */
 const getx = (c, width) => {
   const depth = getdepth(c);
@@ -18,13 +18,13 @@ const getx = (c, width) => {
 
 /**
  * Helper function for animateExchange
- * @param {*} c1 
- * @param {*} x1 
- * @param {*} x2 
- * @param {*} y1 
- * @param {*} y2 
- * @param {*} attributeNameX 
- * @param {*} attributeNameY 
+ * @param {*} c1
+ * @param {*} x1
+ * @param {*} x2
+ * @param {*} y1
+ * @param {*} y2
+ * @param {*} attributeNameX
+ * @param {*} attributeNameY
  */
 const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
@@ -65,7 +65,7 @@ const Animation = {
 
     // draw links
     const p = svg
-      .append("g")              // "g" is used to group SVG shape together
+      .append("g") // "g" is used to group SVG shape together
       .attr("stroke", "black")
       .attr("stroke-width", "1")
       .selectAll("line")
@@ -96,7 +96,7 @@ const Animation = {
       .attr("cx", (c) => getx(c.index, width))
       .attr("cy", (c) => my * (getdepth(c.index) + 1))
       .attr("r", 20);
-    
+
     // draw label
     const t = svg
       .append("g")
@@ -137,8 +137,8 @@ const Animation = {
         i === 0 ? null : getx(Math.floor((i + 1) / 2), width),
       )
       .attr("y2", (c, i) => (i === 0 ? null : my * getdepth(i + 1)));
-      //
-    
+    //
+
     // draw node
     const c = svg
       .append("g")

@@ -7,8 +7,7 @@ import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Paths } from "../../../constants/Paths.js";
-import Contact from '../contact';
-
+import Contact from "../contact";
 
 export const Navbar = () => {
   const [openContact, setOpenContact] = React.useState(false);
@@ -54,8 +53,8 @@ export const Navbar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-                <ListItemButton onClick={handleOpenContact}>
-                  <ListItemText primary="Contact" />
+              <ListItemButton onClick={handleOpenContact}>
+                <ListItemText primary="Contact" />
               </ListItemButton>
             </ListItem>
           </SideList>
