@@ -5,7 +5,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
 import { Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Paths } from "../../../constants/Paths.js";
+import Contact from '../contact';
 import { useAuth } from "../../../context/auth.context.jsx";
 
 export const Navbar = () => {
@@ -29,6 +31,18 @@ export const Navbar = () => {
     },
   ];
 
+
+export const Navbar = () => {
+  const [openContact, setOpenContact] = React.useState(false);
+
+  const handleOpenContact = () => {
+    setOpenContact(true);
+  };
+
+  const handleCloseContact = () => {
+    setOpenContact(false);
+  };
+
   return (
     <Box>
       {/* Grey navbar section */}
@@ -39,7 +53,6 @@ export const Navbar = () => {
           alignItems="center"
         >
           <Typography variant="h5">Algo-Shadow</Typography>
-
           <Stack direction="row">
             <SideList sx={{ display: "flex", direction: "row" }}>
               {configs.map((config) => (
@@ -68,6 +81,7 @@ export const Navbar = () => {
           </Stack>
         </Stack>
       </Box>
+      <Contact open={openContact} onClose={handleCloseContact} />
     </Box>
   );
 };
