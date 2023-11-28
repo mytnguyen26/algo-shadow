@@ -4,7 +4,6 @@ import { Paths } from "./constants/Paths.js";
 import Home from "./pages/Home/home";
 import About from "./pages/Home/about.jsx";
 import Algorithm from "./pages/Algorithm/algorithm.jsx";
-import { Paths } from "./constants/Paths.js";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
 import { Callback } from "./pages/Auth/callback.jsx";
 import { AuthProvider } from "./context/auth.context.jsx";
