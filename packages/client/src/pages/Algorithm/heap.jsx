@@ -11,9 +11,7 @@ import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import { common } from "@mui/material/colors";
-import Heapification from "./HeapComponent/heapmethod";
 import Animation from "./HeapComponent/animate";
-import Common from "./Common/common";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
 var dataset = [];
@@ -21,62 +19,10 @@ var tdataset = [];
 var record = [];
 var step = 0;
 var deletetest = -1;
-var deletegraph = -1;
 var totallen = dataset.length;
 var state = 0;
 
 const renderer = new GraphRenderer();
-
-/**
- * TODO
- * @param {*} xdata
- * @param {*} dataset
- * @returns
- */
-function findInHeap(xdata, dataset) {
-  for (var i = 0; i < dataset.length; i++) {
-    if (dataset[i].value == xdata) {
-      return i;
-    }
-  }
-  throw new Error(xdata + " is not in heap");
-}
-
-/**
- * TODO
- */
-const nextStep = () => {
-  if (step >= record.length) {
-    alert("Heap is end!");
-  } else {
-    if (record[step].e1 == 0) {
-      renderer.deleteElement(deletetest + 1, deletegraph);
-    } else {
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      renderer.animateExchange(text1, text2);
-    }
-    step++;
-  }
-};
-
-/**
- * TODO
- */
-function back() {
-  if (step < 1) {
-    alert("This is the first step!");
-  } else {
-    step--;
-    if (record[step].e1 == 0) {
-      renderer.showElement(deletetest + 1, deletegraph);
-    } else {
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      renderer.animateExchange(text1, text2);
-    }
-  }
-}
 
 /**
  * TODO
