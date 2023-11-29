@@ -19,6 +19,7 @@ var tdataset = [];
 var record = [];
 var step = 0;
 var deletetest = -1;
+var deletegraph = -1;
 var totallen = dataset.length;
 var state = 0;
 
@@ -100,19 +101,19 @@ function HeapPage() {
    * TODO
    * @param {*} i TODO: What is i?
    */
-  function deleteheap(i) {
-    state = 1;
-    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
-    empty();
-    deletetest = i;
-    deletegraph = tdataset[tdataset.length - 1].index;
-    Heapification.deleteheap(i + 1, dataset, record);
-    record.push({
-      e1: 0,
-      e2: totallen + 1,
-    });
-    data.splice(dataset[i].index - 1, 1);
-  }
+  // function deleteheap(i) {
+  //   state = 1;
+  //   tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
+  //   empty();
+  //   deletetest = i;
+  //   deletegraph = tdataset[tdataset.length - 1].index;
+  //   Heapification.deleteheap(i + 1, dataset, record);
+  //   record.push({
+  //     e1: 0,
+  //     e2: totallen + 1,
+  //   });
+  //   data.splice(dataset[i].index - 1, 1);
+  // }
   
   function deleteheap(i){
     state = 1
