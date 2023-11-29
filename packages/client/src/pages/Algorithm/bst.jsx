@@ -1,12 +1,12 @@
 import React, { useState, useEffect , useRef} from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
+import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis.jsx';
+import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
-import Animation from "./HeapComponent/animate";
-import { AnalyzeRuntime } from './AlgComponent/RuntimeAnalysis.jsx';
-import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
+import CAnimation from "./Common/Canimate";
 
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
@@ -14,24 +14,52 @@ var record = []
 var step = 0
 var tree = null
 
-function datatran(data){
-  dataset = []
-  for (let i = 1; i <= data.length; ++i) {
-    dataset[i-1] = { index: i, value: Number(data[i-1]),position: 1 };
+function next(){
+  if(step>=record.length)
+      {
+        alert("Animation is end!")
+      }
+      else
+      {
+        if(typeof(record[step].e1) == "undefined"){
+          const c = document.getElementById("c" + record[step]);
+          CAnimation.Pathdisplay(c,"fill","white;blue")
+          step++
+        }else{
+          step = Common.nextStep(step, record)
+        }
+      }
+}
+
+function back(){
+  if(step<1)
+  {
+    alert("This is the first step!")
   }
-  return dataset
+  else
+  {
+    if(typeof(record[step-1].e1) == "undefined"){
+      step--
+      const c = document.getElementById("c" + record[step]);
+      CAnimation.Pathdisplay(c,"fill","blue;white")
+    }
+    else{
+      step = Common.back(step, record)
+    }
+  }
 }
 
 function reset(){
   step = 0
-  record.forEach(element => {
-    AnimationB.Pathdisappear(dataset[element-1].position)
+  dataset.forEach(element => {
+    AnimationB.Pathdisappear(element.position)
   })
 }
 
 function Inorder(){
   reset()
   record = tree.inOrderTraverse()
+  console.log(record)
 }
 
 function Preorder(){
@@ -44,53 +72,11 @@ function Postorder(){
   record = tree.postOrderTraverse()
 }
 
-function nextStep(){
-  if(step>=record.length)
-  {
-    alert("AnimationB is end!")
-  }
-  else
-  {
-    if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisplay(dataset[record[step]-1].position);
-    }
-    else{
-      if(record[step].e1==0){
-        Animation.deleteelement(record[step-1].e2,record[step-1].e1)
-      }
-      else{
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1,text2);
-      }
-    }
-    step++
-  }
-}
-
-function back(){
-  if(step<1)
-  {
-    alert("This is the first step!")
-  }
-  else
-  {
-    step--
-    if(typeof(record[step].e1) == "undefined"){
-      AnimationB.Pathdisappear(dataset[record[step]-1].position);
-    }
-    else{
-      if(record[step].e1==0){
-        Animation.showelement(record[step-1].e2,record[step-1].e1)
-      }
-      else{
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1,text2);
-      }
-    }
-  }
-    
+function Searchbst(sdata){
+  record = []
+  reset()
+  let node = tree.search(sdata,record)
+  console.log(node)
 }
 
 const BST = () => {
@@ -113,54 +99,50 @@ const BST = () => {
 
   function createbst(){
     record = []
-    tree = new BinarySearchTree();
-      datatran(data);
-      dataset.forEach(element => {
-        tree.insert(element, record);
-      });
+    reset()
+    
     const result = AnalyzeRuntime('createBST', data, () => {
-      AnimationB.createbst(dataset,svgRef);
-      return tree;
+      tree = new BinarySearchTree();
+      dataset = data.map((value, index) => ({ index: index + 1, value: Number(value), position: 1 }));
+      dataset.forEach(element => {
+      tree.insert(element, record);
+      });
     });
+    AnimationB.createbst(dataset,svgRef);
     setBstResult(result); // Update state
   }
 
   function insertbst(idata){
     record = []
+    reset()
     data.push(Number(idata[0]))
     dataset.push({index:data.length,value:Number(idata[0]),position: 1})
     tree.insert(dataset[data.length-1],record);
-    record.push(dataset[data.length-1].index)
     AnimationB.createbst(dataset,svgRef);
   }
 
   function deletebst(ddata,k){
     record = []
-    //k 被删除，i交换
+    reset()
+    //k delete，t exchange
     tree.delete(ddata,record)
-    //tree.inOrderTraverse()
     let t = record[record.length-1]
-    for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {        
-        if(dataset[i].value!=ddata){
-          console.log("exchange "+dataset[i].position + " and " +dataset[k].position)         
-          record.push({
-            e1: dataset[i].position,
-            e2: dataset[k].position
-          })
-        }        
-        break;
-      }
+    if(dataset[k].position!=t){
+      record.push({
+        e1: t,
+        e2: dataset[k].position
+      })
     }
     record.push({
       e1: 0,
-      e2: dataset[k].position
+      e2: [t,dataset[k].position]
     })
-    data.splice(dataset[i].index-1, 1); 
+    data.splice(dataset[k].index-1, 1); 
   }
 
   function test(){
-    console.log(record[0].e1)
+    console.log(record)
+    console.log(tree)
     //AnimationB.addGradients(dataset,svgRef)
   }
 
@@ -175,7 +157,7 @@ const BST = () => {
             data = cdata.map(item => Number(item.trim()))
             createbst()
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Create</button>
 
@@ -185,7 +167,7 @@ const BST = () => {
             let idata = Common.validonedata("insert");
             insertbst(idata)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Insert</button>
 
@@ -196,9 +178,19 @@ const BST = () => {
             const index = Common.findinarray(ddata,dataset);
             deletebst(ddata,index)
           } catch (error) {
-            alert("Error: " + error.message); // 输出错误消息
+            alert("Error: " + error.message); 
           }
           }}>Delete</button>
+
+        <input id="search" placeholder="Insert a number" />
+        <button id="ssubmit" onClick={() => {
+          try {
+            let sdata = Common.validonedata("search");
+            Searchbst(sdata)
+          } catch (error) {
+            alert("Error: " + error.message); 
+          }
+          }}>Search</button>
         </div>
 
         <div style={{ flexGrow: 1 }}>
@@ -222,7 +214,7 @@ const BST = () => {
           <button onClick={Postorder}>Postorder</button>
           </div>
         <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={nextStep}>Next Step</button>
+          <button onClick={next}>Next Step</button>
           <button onClick={back}>Back</button>
           <button onClick={reset}>Reset</button>
           <button onClick={test}>Test</button>
