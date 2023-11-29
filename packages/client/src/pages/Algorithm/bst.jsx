@@ -211,50 +211,51 @@ const BST = () => {
               Delete
             </button>
           </div>
+        </div>
       </Box>
       <Box className="canvas"><div style={{ display: 'flex' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input id="create" placeholder="Enter comma separated numbers" />
-        <button id="csubmit" onClick={() => {
-          try {
-            let cdata = Common.validdata("create");
-            data = cdata.map(item => Number(item.trim()))
-            createbst()
-          } catch (error) {
-            alert("Error: " + error.message); 
-          }
-          }}>Create</button>
+          <input id="create" placeholder="Enter comma separated numbers" />
+          <button id="csubmit" onClick={() => {
+            try {
+              let cdata = Common.validdata("create");
+              data = cdata.map(item => Number(item.trim()))
+              createbst()
+            } catch (error) {
+              alert("Error: " + error.message); 
+            }
+            }}>Create</button>
 
-        <input id="insert" placeholder="Insert a number" />
-        <button id="isubmit" onClick={() => {
-          try {
-            let idata = Common.validonedata("insert");
-            insertbst(idata)
-          } catch (error) {
-            alert("Error: " + error.message); 
-          }
-          }}>Insert</button>
+          <input id="insert" placeholder="Insert a number" />
+          <button id="isubmit" onClick={() => {
+            try {
+              let idata = Common.validonedata("insert");
+              insertbst(idata)
+            } catch (error) {
+              alert("Error: " + error.message); 
+            }
+            }}>Insert</button>
 
-        <input id="delete" placeholder="Insert a number" />
-        <button id="dsubmit" onClick={() => {
-          try {
-            let ddata = Common.validonedata("delete");
-            const index = Common.findinarray(ddata,dataset);
-            deletebst(ddata,index)
-          } catch (error) {
-            alert("Error: " + error.message); 
-          }
-          }}>Delete</button>
+          <input id="delete" placeholder="Insert a number" />
+          <button id="dsubmit" onClick={() => {
+            try {
+              let ddata = Common.validonedata("delete");
+              const index = Common.findinarray(ddata,dataset);
+              deletebst(ddata,index)
+            } catch (error) {
+              alert("Error: " + error.message); 
+            }
+            }}>Delete</button>
 
-        <input id="search" placeholder="Insert a number" />
-        <button id="ssubmit" onClick={() => {
-          try {
-            let sdata = Common.validonedata("search");
-            Searchbst(sdata)
-          } catch (error) {
-            alert("Error: " + error.message); 
-          }
-          }}>Search</button>
+          <input id="search" placeholder="Insert a number" />
+          <button id="ssubmit" onClick={() => {
+            try {
+              let sdata = Common.validonedata("search");
+              Searchbst(sdata)
+            } catch (error) {
+              alert("Error: " + error.message); 
+            }
+            }}>Search</button>
         </div>
 
           <div style={{ flexGrow: 1 }}>
@@ -308,11 +309,12 @@ const BST = () => {
               inputData={data}
               useHisInput={useHisInput}
             />
-        <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={next}>Next Step</button>
-          <button onClick={back}>Back</button>
-          <button onClick={reset}>Reset</button>
-          <button onClick={test}>Test</button>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
+            <button onClick={next}>Next Step</button>
+            <button onClick={back}>Back</button>
+            <button onClick={reset}>Reset</button>
+            <button onClick={test}>Test</button>
           </div>
         </div>
       </Box>
