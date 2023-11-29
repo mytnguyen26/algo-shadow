@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/auth.context.jsx";
 import { Logout } from "./pages/Auth/logout.jsx";
 import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
+//import { Dijkstra } from "./components/dijkstra/Dijkstra.jsx";
 
 function App() {
   return (
