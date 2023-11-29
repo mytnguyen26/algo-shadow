@@ -14,7 +14,7 @@ import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.j
 class GraphRenderer {
   constructor() {
     this._solverStrategy = null
-    this.data = []
+    this.data = []        // represent raw data
     this.position = null
     this.step = 0
     this.record = []
@@ -48,21 +48,31 @@ class GraphRenderer {
   /**
    * A helper function calculate the depth of the node
    * within the tree
-   * @param {*} c is the position of the node
+   * @param {*} node is the position of the node
    * @returns 
    */
-  getdepth (c) {
-    return Math.ceil(Math.log2(c + 1)) - 1;
+  getdepth (node) {
+    return Math.ceil(Math.log2(node + 1)) - 1;
   }
 
-  getx (c, width) {
-    const depth = this.getdepth(c);
+  /**
+   * Calculate the x coordinate of input node relative to the
+   * position of the node within the graph and React canvas
+   * @param {*} node the input node
+   * @param {*} width 
+   * @returns 
+   */
+  getx (node, width) {
+    const depth = this.getdepth(node);
     const distance = 2 ** depth;
-    const index = c - distance;
+    const index = node - distance;
     return (width / (distance + 1)) * (index + 1);
   }
   
-  addmove (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
+  gety (node) {
+
+  }
+  addMove (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
     // Animation for X-axis
     const animateElementX = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -106,6 +116,7 @@ class GraphRenderer {
     console.log(this.position)
     const svg = d3.select(this.svgRef.current);
     svg.selectAll("*").remove();
+    console.log("dataset", dataset)
     const my = 60;
     const p = svg
       .append("g")
@@ -221,8 +232,8 @@ class GraphRenderer {
     const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
     const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
 
-    this.addmove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-    this.addmove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
+    this.addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
+    this.addMove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
 
     c1.setAttribute("dx", x2);
     c1.setAttribute("dy", y2);
@@ -279,7 +290,9 @@ class GraphRenderer {
   }
 
   reset() {
+    this._solverStrategy.reset()
     this.step = 0
+    this 
     this.record.forEach(element => {
       this.pathDisappear(this.dataset[element-1].position)
     })
@@ -400,14 +413,14 @@ class GraphRenderer {
     this.renderGraph(this.dataset)
   }
   
-  // drawLink (svg) {
+  // drawLink (svg, sourceNode, targetNode) {
   //   svg
   //     .selectAll(".link")
   //     .data(links)
   //     .enter()
   //     .append("line")
   //     .attr("class", "link")
-  //     .attr("x1", (d) => nodes.find((node) => node.id === d.source).x)
+  //     .attr("x1", (d) => this._solverStrategy.getx)
   //     .attr("y1", (d) => nodes.find((node) => node.id === d.source).y)
   //     .attr("x2", (d) => nodes.find((node) => node.id === d.target).x)
   //     .attr("y2", (d) => nodes.find((node) => node.id === d.target).y)

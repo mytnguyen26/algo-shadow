@@ -38,10 +38,10 @@ const BST = () => {
    * TODO
    */
   function createBST() {
-    tree = new BSTConcreteStrategy()   // might need to change this to singleton
-    renderer.solverStrategy = tree
-    const result = renderer.create(data)
-    setBstResult(result) // Update state
+    tree = new BSTConcreteStrategy(); // might need to change this to singleton
+    renderer.solverStrategy = tree;
+    const result = renderer.create(data);
+    setBstResult(result); // Update state
   }
 
   /**
@@ -81,29 +81,29 @@ const BST = () => {
     renderer.reset();
     record = tree.inOrderTraverse();
   }
-  
+
   function preOrder() {
     renderer.reset();
     record = tree.preOrderTraverse();
   }
-  
+
   function postOrder() {
     renderer.reset();
     record = tree.postOrderTraverse();
   }
-  
+
   function reset() {
     renderer.reset();
   }
-  
+
   function nextStep() {
     renderer.nextStep();
   }
-  
+
   function back() {
-    renderer.back()
+    renderer.back();
   }
- 
+
   return (
     <Container maxWidth="md">
       <Box className="canvas">
@@ -114,7 +114,8 @@ const BST = () => {
             <input id="create" placeholder="Enter comma separated numbers" />
             <button
               id="csubmit"
-              onClick={() => { // need to keep this if we want to render test data first
+              onClick={() => {
+                // need to keep this if we want to render test data first
                 try {
                   let cdata = Common.validData("create");
                   data = cdata.map((item) => Number(item.trim()));
@@ -128,9 +129,13 @@ const BST = () => {
             </button>
 
             <input id="insert" placeholder="Insert a number" />
-            <button id="isubmit" onClick={insertBST}>Insert</button>
+            <button id="isubmit" onClick={insertBST}>
+              Insert
+            </button>
             <input id="delete" placeholder="Insert a number" />
-            <button id="dsubmit" onClick={{deleteBST}}>Delete</button>
+            <button id="dsubmit" onClick={() => {deleteBST()}}>
+              Delete
+            </button>
           </div>
 
           <div style={{ flexGrow: 1 }}>

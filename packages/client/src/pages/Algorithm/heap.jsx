@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import GraphRenderer from "../../components/GraphRenderer";
 import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
-import HeapConcreteStrategy from "../../components/AlgorithmSolver/HeapConcreteStrategy"
+import HeapConcreteStrategy from "../../components/AlgorithmSolver/HeapConcreteStrategy";
 import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
@@ -124,7 +124,7 @@ function HeapPage() {
    */
   function createHeap() {
     dataset = Common.dataTransform(data);
-    renderer.solverStrategy = HeapConcreteStrategy
+    renderer.solverStrategy = HeapConcreteStrategy;
     state = 0;
     empty();
     const result = AnalyzeRuntime("createHeap", data, () => {

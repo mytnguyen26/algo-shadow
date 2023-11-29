@@ -1,10 +1,10 @@
 class Node {  // 创建节点
   constructor(data) {
-      this.root = this;
-      this.data = data.value;
-      this.left = null;
-      this.right = null;
-      this.index = data.index;
+    this.root = this;
+    this.data = data.value;
+    this.left = null;
+    this.right = null;
+    this.index = data.index;
   }
 }
 
@@ -12,9 +12,13 @@ class BSTConcreteStrategy {
   constructor() {
     this.root = null;
   }
+
+  getx(node) {}
+  gety(node) {}
   // 插入节点
   insert(data, record) {
     const newNode = new Node(data);
+    console.log(newNode)
     const insertNode = (node, newNode, position) => {
       if (newNode.data < node.data) { // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
         if (node.left === null) {                    
