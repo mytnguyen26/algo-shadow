@@ -294,8 +294,8 @@ function HeapPage() {
               <strong>Runtime:</strong> {heapResult.runtime} ms
             </div>
           </div>
-        </div>
       )}
+      </div>
 
       <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
         <button onClick={() => {
