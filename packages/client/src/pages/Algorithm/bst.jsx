@@ -51,7 +51,9 @@ function back(){
 function reset(){
   step = 0
   dataset.forEach(element => {
-    AnimationB.Pathdisappear(element.position)
+    //AnimationB.Pathdisappear(element.position)
+    const c = document.getElementById("c" + element.position);
+    CAnimation.Pathdisplay(c,"fill","blue;white")
   })
 }
 
@@ -142,7 +144,6 @@ const BST = () => {
   function test(){
     console.log(record)
     console.log(tree)
-    //AnimationB.addGradients(dataset,svgRef)
   }
 
   return (
