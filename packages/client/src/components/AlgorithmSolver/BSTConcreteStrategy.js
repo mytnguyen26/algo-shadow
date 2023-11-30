@@ -1,12 +1,15 @@
-class Node {
+import { Node } from "./GraphData.js"
+
+class BSTData {
   // 创建节点
-  constructor(data) {
-    this.root = this
-    this.data = data.value
-    this.left = null
-    this.right = null
-    this.index = data.index
-    this.position = null
+  constructor(nodeData) {
+    this.root = this;
+    this.left = null;
+    this.right = null;
+    this.nodeData = nodeData;
+    // this.index = nodeData.index --> this.nodeData.index
+    // this.value = nodeData.value --> this.nodeData.value
+    // this.position = null        --> this.nodeData.position
   }
 }
 
@@ -14,15 +17,22 @@ class BSTConcreteStrategy {
   constructor() {
     this.root = null
   }
-  // insert node
+  /**
+   * Insert each node parsed from user input to the tree
+   * @param {Node} nodeData 
+   * @param {Array} record 
+   */
   insert(data, record) {
-    const newNode = new Node(data)
+    const newNode = new BSTData(data)
     const insertNode = (node, newNode, position) => {
-      if (newNode.data < node.data) {
+      if (newNode.nodeData.value < node.nodeData.value) {
         // 如果插入的节点值比父节点小则插入到左节点上反之则插入到右节点上
         if (node.left === null) {
+          console.log("input data", data)
+          console.log("insert position", node)
+          console.log("data position", data.position)
           data.position = position * 2
-          newNode.position = data.position
+          newNode.nodeData.position = data.position
           node.left = newNode
           record.push(position)
           record.push(data.position)
@@ -32,8 +42,11 @@ class BSTConcreteStrategy {
         }
       } else {
         if (node.right === null) {
+          console.log("input data", data)
+          console.log("insert position", node)
+          console.log("data position", data.position)
           data.position = position * 2 + 1
-          newNode.position = data.position
+          newNode.nodeData.position = data.position
           node.right = newNode
           record.push(position)
           record.push(data.position)
@@ -46,7 +59,7 @@ class BSTConcreteStrategy {
     if (!this.root) {
       this.root = newNode
       data.position = 1
-      this.root.position = data.position
+      this.root.nodeData.position = data.position
     } else {
       insertNode(this.root, newNode, 1)
     }
@@ -117,12 +130,12 @@ class BSTConcreteStrategy {
   search(data, record) {
     const searchNode = (node) => {
       if (node === null) return false
-      if (node.data == data) {
+      if (node.nodeData.value == data) {
         record.push(node.position)
         return node
       }
       record.push(node.position)
-      return searchNode(data < node.data ? node.left : node.right, data)
+      return searchNode(data < node.nodeData.value ? node.left : node.right, data)
     }
     return searchNode(this.root, data)
   }
@@ -130,18 +143,18 @@ class BSTConcreteStrategy {
   delete(dData, localRecord) {
     const removeNode = (node, dData) => {
       if (node === null) return null
-      if (node.data === dData) {
+      if (node.nodeData.value === dData) {
         if (node.left === null && node.right === null) return null
         if (node.left === null) return node.right
         if (node.right === null) return node.left
         if (node.left !== null && node.right !== null) {
           let _node = this.min(node.right)
-          node.data = _node.data
+          node.nodeData.value = _node.nodeData.value
           localRecord.push(node.position)
           node.right = removeNode(node.right, dData)
           return node
         }
-      } else if (dData < node.data) {
+      } else if (dData < node.nodeData.value) {
         localRecord.push(node.position)
         node.left = removeNode(node.left, dData)
         return node

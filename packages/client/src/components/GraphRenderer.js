@@ -14,11 +14,7 @@ import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.j
 class GraphRenderer {
   constructor() {
     this._solverStrategy = null
-    this.data = []        // represent raw data
     this.position = null
-    this.step = 0
-    this.record = []
-    this.dataset = []
     this.svgRef = null
   }
   
@@ -41,10 +37,6 @@ class GraphRenderer {
     }
   }
 
-  getTargetNode (node) {
-    return this._solverStrategy.getNeighborOf(node);
-  }
-
   /**
    * A helper function calculate the depth of the node
    * within the tree
@@ -58,7 +50,7 @@ class GraphRenderer {
   /**
    * Calculate the x coordinate of input node relative to the
    * position of the node within the graph and React canvas
-   * @param {*} node the input node
+   * @param {*} node the input node index or position
    * @param {*} width 
    * @returns 
    */
@@ -110,54 +102,53 @@ class GraphRenderer {
    * @param {*} svgRef [description]
    * 
    */
-  renderGraph (dataset) {
+  renderGraph (animationData) {
     const width = this.svgRef.current.clientWidth;
-    console.log(dataset)
-    console.log(this.position)
+    console.log("Post Strategy", animationData.dataset)
     const svg = d3.select(this.svgRef.current);
     svg.selectAll("*").remove();
-    console.log("dataset", dataset)
+    console.log("dataset", animationData.dataset)
     const my = 60;
     const p = svg
       .append("g")
       .attr("stroke", "black")
       .attr("stroke-width", "1")
       .selectAll("line")
-      .data(dataset)
+      .data(animationData.dataset)
       .enter()
       .append("line")
-      .attr("id", (c) => "l" + c[this.position])
-      .attr("x1", (c) => (c[this.position] === 1 ? null : this.getx(c[this.position], width)))
-      .attr("y1", (c) => (c[this.position] === 1 ? null : my * (this.getdepth(c[this.position]) + 1)))
-      .attr("x2", (c) =>
-        c[this.position] === 1 ? null : this.getx(Math.floor(c[this.position] / 2), width),
-      )
-      .attr("y2", (c) => (c[this.position] === 1 ? null : my * this.getdepth(c[this.position])));
+      .attr("id", (c) => "l" + c.index)
+      .attr("x1", (c) => (animationData.getx1(c, width, "line")))
+      .attr("y1", (c) => (animationData.gety1(c, my, "line")))
+      .attr("x2", (c) => (animationData.getx2(c, width)))
+      .attr("y2", (c) => (animationData.gety2(c, my)))
+    // append circle for node
     const c = svg
       .append("g")
       .attr("stroke", "black")
       .attr("fill", "white")
       .attr("stroke-width", "1")
       .selectAll("circle")
-      .data(dataset)
+      .data(animationData.dataset)
       .enter()
       .append("circle")
       .attr("id", (c) => "c" + c[this.position])
-      .attr("cx", (c) => this.getx(c[this.position], width))
-      .attr("cy", (c) => my * (this.getdepth(c[this.position]) + 1))
+      .attr("cx", (c) => animationData.getx1(c, width))
+      .attr("cy", (c) => animationData.gety1(c, my))
       .attr("r", 20);
+    // append label
     const t = svg
       .append("g")
       .attr("stroke", "black")
       .attr("text-anchor", "middle")
       .attr("text-size", "10px")
       .selectAll("text")
-      .data(dataset)
+      .data(animationData.dataset)
       .enter()
       .append("text")
       .attr("id", (c) => "t" + c[this.position])
-      .attr("dx", (c) => this.getx(c[this.position], width))
-      .attr("dy", (c) => my * (this.getdepth(c[this.position]) + 1) + 5)
+      .attr("dx", (c) => animationData.getx1(c, width))
+      .attr("dy", (c) => animationData.gety1(c, my) + 5)
       .text((t) => t.value);
   }
 
@@ -274,94 +265,71 @@ class GraphRenderer {
     }
   }
 
-  reset() {
+  reset(step, record) {
     this._solverStrategy.reset()
-    this.step = 0
-    this 
-    this.record.forEach(element => {
+    step = 0
+    record.forEach(element => {
       this.pathDisappear(this.dataset[element-1].position)
     })
-    console.log(this.record)
+    console.log(record)
   }
 
-  nextStep() {
-    if(this.step >= this.record.length)
+  nextStep(step, record) {
+    if(step >= record.length)
     {
       alert("AnimationB is end!")
     }
     else
     {
-      if(typeof(this.record[this.step].e1) == "undefined"){
-        this.pathDisplay(this.dataset[this.record[this.step]-1].position);
-      }
-      else{
-        if(this.record[this.step].e1==0){
-          this.deleteElement(this.record[this.step-1].e2, this.record[this.step-1].e1)
+      if(typeof(record[step].e1) == "undefined"){
+        this.pathDisplay(this.dataset[record[step]-1].position);
+      } else {
+        if(record[step].e1==0){
+          this.deleteElement(record[step-1].e2, record[step-1].e1)
         }
         else{
-          const text1 = document.getElementById("t" + this.record[this.step].e1);
-          const text2 = document.getElementById("t" + this.record[this.step].e2);
+          const text1 = document.getElementById("t" + record[step].e1);
+          const text2 = document.getElementById("t" + record[step].e2);
           this.animateExchange(text1,text2);
         }
       }
-      this.step++
+      step++
     }
   }
 
-  back(){
-    if(this.step<1)
+  back(step, record){
+    if(step<1)
     {
       alert("This is the first step!")
     }
     else
     {
-      this.step--
-      if(typeof(this.record[this.step].e1) == "undefined"){
-        this.pathDisappear(this.dataset[this.record[this.step]-1].position);
+      step--
+      if(typeof(record[step].e1) == "undefined"){
+        this.pathDisappear(this.dataset[record[step]-1].position);
       }
       else{
-        if(this.record[this.step].e1==0){
-          this.renderer.showElement(this.record[this.step-1].e2, this.record[this.step-1].e1)
+        if(record[step].e1==0){
+          this.renderer.showElement(record[step-1].e2, record[step-1].e1)
         }
         else{
-          const text1 = document.getElementById("t" + this.record[this.step].e1);
-          const text2 = document.getElementById("t" + this.record[this.step].e2);
+          const text1 = document.getElementById("t" + record[step].e1);
+          const text2 = document.getElementById("t" + record[step].e2);
           this.renderer.animateExchange(text1,text2);
         }
       }
     }
       
   }
-  
-  /**
-   * Create a new Graph from user input to perform algorithm on
-   * @param {Array} dataset the transformed user input parsed from UI
-   */
-  create(data) {
-    this.record = []
-    this.data = data
-    this.dataset = Common.dataTransform(data);
-    console.log(this.dataset)
-    
-    const result = AnalyzeRuntime('createBST', data, () => {
-      this.dataset.forEach(element => {
-        this._solverStrategy.insert(element, this.record);
-      });     // because this is so specific to each algo, 
-              // encapsulate in solverStrategy run() method
-      this.renderGraph(this.dataset)
-    });
-    console.log(this.record)
-    return result
-  }
-  
+
   /**
    * Insert new elements from user input to existing Graph
    */
-  insert(data) {
-    this.record = []
+  insert(data, record) {
+    record = []
     this.dataset.push({index: data.length, value:Number(data[0]), position: 1})
-    this._solverStrategy.insert(this.dataset[data.length-1], this.record);
-    this.record.push(this.dataset[data.length-1].index)
+    this._solverStrategy.insert(this.dataset[data.length-1], record);
+    record.push(this.dataset[data.length-1].index)
     this.renderGraph(this.dataset);
   }
 
@@ -370,19 +338,19 @@ class GraphRenderer {
    * @param {*} ddata
    * @param {*} k
    */
-  delete(ddata, k) {
+  delete(ddata, k, record) {
     console.log(this.data)
-    this.record = [];
+    record = [];
     //k 被删除，i交换
-    this._solverStrategy.delete(ddata, this.record);
-    let t = this.record[this.record.length - 1];
+    this._solverStrategy.delete(ddata, record);
+    let t = record[record.length - 1];
     for (var i = 0; i < this.dataset.length; i++) {
       if (this.dataset[i].index == t) {
         if (this.dataset[i].value != ddata) {
           console.log(
             "exchange " + this.dataset[i].position + " and " + this.dataset[k].position,
           );
-          this.record.push({
+          record.push({
             e1: this.dataset[i].position,
             e2: this.dataset[k].position,
           });
@@ -390,56 +358,13 @@ class GraphRenderer {
         break;
       }
     }
-    this.record.push({
+    record.push({
       e1: 0,
       e2: this.dataset[k].position,
     });
     this.data.splice(this.dataset[i].index - 1, 1);
     this.renderGraph(this.dataset)
   }
-  
-  // drawLink (svg, sourceNode, targetNode) {
-  //   svg
-  //     .selectAll(".link")
-  //     .data(links)
-  //     .enter()
-  //     .append("line")
-  //     .attr("class", "link")
-  //     .attr("x1", (d) => this._solverStrategy.getx)
-  //     .attr("y1", (d) => nodes.find((node) => node.id === d.source).y)
-  //     .attr("x2", (d) => nodes.find((node) => node.id === d.target).x)
-  //     .attr("y2", (d) => nodes.find((node) => node.id === d.target).y)
-  //     .attr("stroke", "black");
-  // }
-
-  // drawLabel (svg) {
-  //   svg
-  //     .selectAll(".link-label")
-  //     .data(links)
-  //     .enter()
-  //     .append("text")
-  //     .attr("class", "link-label")
-  //     .attr(
-  //       "x",
-  //       (d) =>
-  //         (nodes.find((node) => node.id === d.source).x +
-  //           nodes.find((node) => node.id === d.target).x) /
-  //         2
-  //     )
-  //     .attr(
-  //       "y",
-  //       (d) =>
-  //         (nodes.find((node) => node.id === d.source).y +
-  //           nodes.find((node) => node.id === d.target).y) /
-  //         2
-  //     )
-  //     .text((d) => d.weight);
-  // }
-
-  // drawNodes (svg) {
-
-  // }
-
 }
 
 export default GraphRenderer
