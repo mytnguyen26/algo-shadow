@@ -8,6 +8,7 @@ import BST from "./pages/Algorithm/bst.jsx";
 import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
 import Heap from "./pages/Algorithm/HeapComponent/HeapGraph.jsx"
 import { Dijkstra } from "./pages/Algorithm/DijkstraComponent/Dijkstra.jsx";
+import HashTableVisualization from "./pages/Algorithm/HashComponent/HashTableVisualization.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path={Paths.HEAP} element={<Heap />} />
             <Route path={Paths.BST} element={<BST />} />
             <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
+            <Route path={Paths.HASH} element={<HashTableVisualization />} />
           </Route>
         </Route>
       </Routes>
