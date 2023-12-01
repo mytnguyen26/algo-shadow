@@ -37,33 +37,6 @@ class GraphRenderer {
     }
   }
 
-  /**
-   * A helper function calculate the depth of the node
-   * within the tree
-   * @param {*} node is the position of the node
-   * @returns 
-   */
-  getdepth (node) {
-    return Math.ceil(Math.log2(node + 1)) - 1;
-  }
-
-  /**
-   * Calculate the x coordinate of input node relative to the
-   * position of the node within the graph and React canvas
-   * @param {*} node the input node index or position
-   * @param {*} width 
-   * @returns 
-   */
-  getx (node, width) {
-    const depth = this.getdepth(node);
-    const distance = 2 ** depth;
-    const index = node - distance;
-    return (width / (distance + 1)) * (index + 1);
-  }
-  
-  gety (node) {
-
-  }
   addMove (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
     // Animation for X-axis
     const animateElementX = document.createElementNS(
@@ -104,10 +77,8 @@ class GraphRenderer {
    */
   renderGraph (animationData) {
     const width = this.svgRef.current.clientWidth;
-    console.log("Post Strategy", animationData.dataset)
     const svg = d3.select(this.svgRef.current);
     svg.selectAll("*").remove();
-    console.log("dataset", animationData.dataset)
     const my = 60;
     const p = svg
       .append("g")
@@ -149,63 +120,6 @@ class GraphRenderer {
       .attr("id", (c) => "t" + c[this.position])
       .attr("dx", (c) => animationData.getx1(c, width))
       .attr("dy", (c) => animationData.gety1(c, my) + 5)
-      .text((t) => t.value);
-  }
-
-  /**
-   * Repetive Method to be removed/replaced by the general method
-   * createTree 
-   * @param {*} dataset 
-   * @param {*} svgRef 
-   */
-  finalTree () {
-    const width = this.svgRef.current.clientWidth;
-    const svg = d3.select(this.svgRef.current);
-    //console.log(dataSetToUse)
-    svg.selectAll("*").remove();
-    const my = 60;
-    const p = svg
-      .append("g")
-      .attr("stroke", "black")
-      .attr("stroke-width", "1")
-      .selectAll("line")
-      .data(this.dataset)
-      .enter()
-      .append("line")
-      .attr("id", (c) => "l" + c.index)
-      .attr("x1", (c, i) => (i === 0 ? null : this.getx(i + 1, width)))
-      .attr("y1", (c, i) => (i === 0 ? null : my * (this.getdepth(i + 1) + 1)))
-      .attr("x2", (c, i) =>
-        i === 0 ? null : this.getx(Math.floor((i + 1) / 2), width),
-      )
-      .attr("y2", (c, i) => (i === 0 ? null : my * this.getdepth(i + 1)));
-    const c = svg
-      .append("g")
-      .attr("stroke", "black")
-      .attr("fill", "white")
-      .attr("stroke-width", "1")
-      .selectAll("circle")
-      .data(this.dataset)
-      .enter()
-      .append("circle")
-      .attr("id", (c) => "c" + c.index)
-      .attr("cx", (c, i) => this.getx(i + 1, width))
-      .attr("cy", (c, i) => my * (this.getdepth(i + 1) + 1))
-      .attr("r", 20);
-    const t = svg
-      .append("g")
-      .attr("stroke", "black")
-      .attr("text-anchor", "middle")
-      .attr("text-size", "10px")
-      .selectAll("text")
-      .data(this.dataset)
-      .enter()
-      .append("text")
-      .attr("id", (c) => {
-        return "t" + c.index;
-      })
-      .attr("dx", (c, i) => this.getx(i + 1, width))
-      .attr("dy", (c, i) => my * (this.getdepth(i + 1) + 1) + 5)
       .text((t) => t.value);
   }
 

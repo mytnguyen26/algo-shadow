@@ -1,8 +1,8 @@
 /**
  * This is Dijkstra page component for the UI
  */
-import Box from "@mui/material/Box";
-import { DijkstraGraph } from "../Algorithm/DijkstraComponent/DijkstraGraph";
+// import Box from "@mui/material/Box";
+// import { DijkstraGraph } from "../Algorithm/DijkstraComponent/DijkstraGraph";
 
 // const Dijkstra = () => {
 //   return (
@@ -15,7 +15,7 @@ import { DijkstraGraph } from "../Algorithm/DijkstraComponent/DijkstraGraph";
 //   );
 // };
 
-export default Dijkstra;
+// export default Dijkstra;
 import React, { useState, useEffect , useRef} from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";

@@ -79,7 +79,7 @@ export class TreeAnimationData {
     }
     return my * (this.getdepth(node[this.positionReference]))
   }
-  
+
   /**
    * A helper function calculate the depth of the node
    * within the tree based on the position
@@ -102,10 +102,11 @@ export class TreeAnimationData {
 export class DiGraphAnimationData {
 
 }
+
 export class Node {
   constructor(index, value) {
     this.index = index;
     this.value = Number(value);
-    this.position = 1;
+    this.position = index;
   }
 }
