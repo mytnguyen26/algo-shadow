@@ -108,8 +108,8 @@ const GraphRenderer = {
     const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
     const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
 
-    this.addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-    this.addMove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
+    GraphRenderer.addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
+    GraphRenderer.addMove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
 
     c1.setAttribute("dx", x2);
     c1.setAttribute("dy", y2);
@@ -170,106 +170,6 @@ const GraphRenderer = {
     }
   },
 
-  reset(step, record) {
-    this._solverStrategy.reset()
-    step = 0
-    record.forEach(element => {
-      this.pathDisappear(this.dataset[element-1].position)
-    })
-    console.log(record)
-  },
-
-  nextStep(step, record) {
-    if(step >= record.length)
-    {
-      alert("AnimationB is end!")
-    }
-    else
-    {
-      if(typeof(record[step].e1) == "undefined"){
-        this.pathDisplay(this.dataset[record[step]-1].position);
-      } else {
-        if(record[step].e1==0){
-          this.deleteElement(record[step-1].e2, record[step-1].e1)
-        }
-        else{
-          const text1 = document.getElementById("t" + record[step].e1);
-          const text2 = document.getElementById("t" + record[step].e2);
-          this.animateExchange(text1,text2);
-        }
-      }
-      step++
-    }
-  },
-
-  back(step, record){
-    if(step<1)
-    {
-      alert("This is the first step!")
-    }
-    else
-    {
-      step--
-      if(typeof(record[step].e1) == "undefined"){
-        this.pathDisappear(this.dataset[record[step]-1].position);
-      }
-      else{
-        if(record[step].e1==0){
-          this.renderer.showElement(record[step-1].e2, record[step-1].e1)
-        }
-        else{
-          const text1 = document.getElementById("t" + record[step].e1);
-          const text2 = document.getElementById("t" + record[step].e2);
-          this.renderer.animateExchange(text1,text2);
-        }
-      }
-    }
-      
-  },
-
-  /**
-   * Insert new elements from user input to existing Graph
-   */
-  insert(data, record) {
-    record = []
-    this.dataset.push({index: data.length, value:Number(data[0]), position: 1})
-    this._solverStrategy.insert(this.dataset[data.length-1], record);
-    record.push(this.dataset[data.length-1].index)
-    this.renderGraph(this.dataset);
-  },
-
-  /**
-   * TODO
-   * @param {*} ddata
-   * @param {*} k
-   */
-  delete(ddata, k, record) {
-    console.log(this.data)
-    record = [];
-    //k 被删除，i交换
-    this._solverStrategy.delete(ddata, record);
-    let t = record[record.length - 1];
-    for (var i = 0; i < this.dataset.length; i++) {
-      if (this.dataset[i].index == t) {
-        if (this.dataset[i].value != ddata) {
-          console.log(
-            "exchange " + this.dataset[i].position + " and " + this.dataset[k].position,
-          );
-          record.push({
-            e1: this.dataset[i].position,
-            e2: this.dataset[k].position,
-          });
-        }
-        break;
-      }
-    }
-    record.push({
-      e1: 0,
-      e2: this.dataset[k].position,
-    });
-    this.data.splice(this.dataset[i].index - 1, 1);
-    this.renderGraph(this.dataset)
-  },
 }
 
 export default GraphRenderer
