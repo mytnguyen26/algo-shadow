@@ -1,26 +1,40 @@
+/**
+ * Algorithm Solver that implements the Binary Search Tree
+ */
 import { Node } from "./GraphData.js"
 
-class BSTData {
+/**
+ * BSTData represent a Binary Trees, and used by BSTConcreteStrategy
+ * to insert, delete, search the Binary Tree. From the Root of the tree,
+ * we can navigate the tree using left node and right node
+ */
+export class BSTData {
   // 创建节点
   constructor(nodeData) {
     this.root = this;
-    this.left = null;
+    this.left = null;    // technically, this represent Edges
     this.right = null;
     this.nodeData = nodeData;
-    // this.index = nodeData.index --> this.nodeData.index
-    // this.value = nodeData.value --> this.nodeData.value
-    // this.position = null        --> this.nodeData.position
   }
 }
 
+/**
+ * BSTConcreteStrategy has implementatiosn for Binary Search Tree operations,
+ * including insert, delete, search
+ * The BSTConcreteStrategy has <BSTData> `root` property that keeps reference
+ * to the root of Binary Search Tree
+ */
 class BSTConcreteStrategy {
   constructor() {
     this.root = null
   }
+
   /**
-   * Insert each node parsed from user input to the tree
-   * @param {Node} nodeData 
-   * @param {Array} record 
+   * Insert each node parsed from user input to the tree, then rearrange items
+   * in the `record` array to match the new tree. The `record` array is used for
+   * rendering UI.
+   * @param {Node} data is a new node to be inserted to the tree
+   * @param {Array} record the reference to the `record` array from `bst.jsx`
    */
   insert(data, record) {
     const newNode = new BSTData(data)
@@ -64,6 +78,7 @@ class BSTConcreteStrategy {
       insertNode(this.root, newNode, 1)
     }
   }
+
   // Inorder iterates over all nodes（left root right）
   inOrderTraverse() {
     let backs = []
@@ -80,6 +95,7 @@ class BSTConcreteStrategy {
     inOrderNode(this.root, callback)
     return backs
   }
+
   // Preorder iterates over all nodes（root left right）
   preOrderTraverse() {
     let backs = []
@@ -96,6 +112,7 @@ class BSTConcreteStrategy {
     inOrderNode(this.root, callback)
     return backs
   }
+
   // Postorder iterates over all nodes（left right root）
   postOrderTraverse() {
     let backs = []
@@ -128,10 +145,10 @@ class BSTConcreteStrategy {
   }
 
   /**
-   * TODO
-   * @param {*} data 
-   * @param {*} record 
-   * @returns 
+   * Traverse the tree to find the input `data`
+   * @param {*} data the node value the caller is looking for
+   * @param {*} record the reference to the `record` array from `bst.jsx`
+   * @returns the Node data if it was found
    */
   search(data, record) {
     const searchNode = (node) => {
@@ -145,7 +162,13 @@ class BSTConcreteStrategy {
     }
     return searchNode(this.root, data)
   }
-  //delete
+  
+  /**
+   * TODO
+   * @param {*} dData 
+   * @param {*} localRecord 
+   * @returns 
+   */
   delete(dData, localRecord) {
     const removeNode = (node, dData) => {
       if (node === null) return null

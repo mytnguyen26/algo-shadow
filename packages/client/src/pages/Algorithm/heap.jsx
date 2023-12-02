@@ -188,7 +188,7 @@ function HeapPage() {
 
       <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
       <button onClick={() => {
-            step = Common.nextStep(step, record)}}>Next Step</button>
+            step = Common.next(step, record)}}>Next Step</button>
           <button onClick={() => {
             step = Common.back(step, record)}}>Back</button>
           <button onClick={reset}>Reset</button>
