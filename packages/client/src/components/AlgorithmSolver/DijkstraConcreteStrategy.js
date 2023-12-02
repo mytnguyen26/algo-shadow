@@ -1,4 +1,8 @@
-export default class Graph {
+/**
+ * This module has concrete logic implementation for Dijkstra
+ * TODO: Replace this after refactor DijkstraConcreteStrategy.js in pages
+ */
+export default class DijkstraConcreteStrategy {
   constructor() {
     this.nodes = {};
   }
@@ -7,7 +11,7 @@ export default class Graph {
     this.nodes[name] = neighbors;
   }
 
-  dijkstra(startNode, endNode) {
+  run(startNode, endNode) {
     // Track the distance to each node and the path to reach it
     const distances = {};
     const parents = {};
