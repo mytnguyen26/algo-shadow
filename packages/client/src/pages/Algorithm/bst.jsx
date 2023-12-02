@@ -14,28 +14,29 @@ var record = [];
 var step = 0;
 var tree = null;
 
-// function reset(){
-//   step = 0
-//   dataset.forEach(element => {
-//     AnimationB.Pathdisappear(element.position)
-//   })
-// }
+function reset(){
+  step = 0
+  animationData.dataset.forEach(element => {
+    const c = document.getElementById("c" + element.position);
+    GraphRenderer.pathDisplay(c,"fill","blue;white")
+  })
+}
 
-// function Inorder(){
-//   reset()
-//   record = tree.inOrderTraverse()
-//   console.log(record)
-// }
+function inOrder(){
+  reset()
+  record = tree.inOrderTraverse()
+  console.log(record)
+}
 
-// function Preorder(){
-//   reset()
-//   record = tree.preOrderTraverse()  
-// }
+function preOrder(){
+  reset()
+  record = tree.preOrderTraverse()  
+}
 
-// function Postorder(){
-//   reset()
-//   record = tree.postOrderTraverse()
-// }
+function postOrder(){
+  reset()
+  record = tree.postOrderTraverse()
+}
 
 function searchBST(sdata){
   record = []
@@ -136,14 +137,6 @@ const BST = () => {
     GraphRenderer.reset();
   }
 
-  // function nextStep() {
-  //   GraphRenderer.nextStep();
-  // }
-
-  // function back() {
-  //   GraphRenderer.back();
-  // }
-
   /**
    * TODO
    */
@@ -159,7 +152,7 @@ const BST = () => {
           GraphRenderer.pathDisplay(c, "fill", "white;blue")
           step++
         }else{
-          step = Common.nextStep(step, record)
+          step = Common.next(step, record)
         }
       }
   }
