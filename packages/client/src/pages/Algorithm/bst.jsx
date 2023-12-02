@@ -9,6 +9,7 @@ import BSTConcreteStrategy from "../../components/AlgorithmSolver/BSTConcreteStr
 import { Node, TreeAnimationData } from "../../components/AlgorithmSolver/GraphData.js";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
+var animationData = null;
 var record = [];
 var step = 0;
 var tree = null;
@@ -67,7 +68,7 @@ const BST = () => {
    */
   function createBST() {
     tree = new BSTConcreteStrategy(); // might need to change this to singleton
-    var animationData = new TreeAnimationData(data, "position")
+    animationData = new TreeAnimationData(data, "position")
     record = []
     const result = AnalyzeRuntime('createBST', data, () => {
       animationData.dataset.forEach(element => {
@@ -82,10 +83,15 @@ const BST = () => {
    * TODO
    * @param {*} idata
    */
-  function insertBST(data, record) {
+  function insertBST() {
     try {
       let idata = Common.validOneData("insert");
-      GraphRenderer.insert(idata, record);
+      record = []
+      // reset()
+      animationData.push(new Node(data.length, idata))
+      tree.insert(animationData.dataset[data.length-1], record);
+      record.push(animationData.dataset[data.length-1].index)
+      GraphRenderer.renderGraph(animationData, svgRef);
     } catch (error) {
       alert("Error: " + error.message); // 输出错误消息
     }
@@ -246,6 +252,12 @@ const BST = () => {
               <button onClick={preOrder}>Preorder</button>
               <button onClick={postOrder}>Postorder</button>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
+              <button onClick={next}>Next Step</button>
+              <button onClick={back}>Back</button>
+              <button onClick={reset}>Reset</button>
+              <button onClick={test}>Test</button>
+            </div>
           </div>
           <div>
             <SaveInputToLocalStorage
@@ -253,12 +265,6 @@ const BST = () => {
               inputData={data}
               useHisInput={useHisInput}
             />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-            <button onClick={next}>Next Step</button>
-            <button onClick={back}>Back</button>
-            <button onClick={reset}>Reset</button>
-            <button onClick={test}>Test</button>
           </div>
         </div>
       </Box>

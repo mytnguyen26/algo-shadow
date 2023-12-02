@@ -1,11 +1,8 @@
 /**
  * A GraphRenderer renders the visuals of the data structure for 
- * `algorithm`, as determined by `strategy` property. It is only responsible
+ * `algorithm`. It is only responsible
  * for visualizing data after manipulation or computation by one of the 
  * AlgorithmSolver strategy
- * GraphRenderer uses `strategy` property to set appropriate `AlgorithmSolver`
- * strategy to `solverStrategy` and use the strategy to apply algorithmic
- * logic to the input data
  */
 import * as d3 from "d3";
 
@@ -120,12 +117,22 @@ const GraphRenderer = {
     c2.setAttribute("dy", y1);
   },
 
+  /**
+   * A helper function used in Graph to animate removal of nodes and links
+   * @param {*} e 
+   * @param {*} size 
+   */
   deleteElement (e, size) {
     document.getElementById("t" + e).style.display = "none";
     document.getElementById("c" + size).style.display = "none";
     document.getElementById("l" + size).style.display = "none";
   },
 
+  /**
+   * TODO
+   * @param {*} e 
+   * @param {*} size 
+   */
   showElement (e, size) {
     console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
@@ -133,6 +140,12 @@ const GraphRenderer = {
     document.getElementById("l" + size).style.display = "block";
   },
 
+  /**
+   * TODO
+   * @param {*} circle 
+   * @param {*} attribute 
+   * @param {*} color 
+   */
   pathDisplay(circle, attribute, color) {
     // const circle = document.getElementById("c" + index).getElementsByTagName("ellipse")[0];
     // Set up the circle gradient animation
@@ -146,6 +159,10 @@ const GraphRenderer = {
     circleAnimate.beginElement();
   },
 
+  /**
+   * TODO
+   * @param {*} index 
+   */
   pathDisappear(index) {
     document.getElementById("c"+index).setAttribute("stroke","black")
     if(index!=1){
