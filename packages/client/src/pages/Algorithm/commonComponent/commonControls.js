@@ -22,6 +22,7 @@ const Common = {
             throw new Error("Only select one number");
         }
     },
+
     findInArray(xdata,dataset) {
         for (var i = 0; i < dataset.length; i++) {
           if (dataset[i].value == xdata) {
@@ -31,7 +32,7 @@ const Common = {
         throw new Error(xdata + " is not in heap");
     },
 
-    nextStep(step,record){
+    next(step,record){
       if(step>=record.length)
       {
         alert("Animation ends!")
