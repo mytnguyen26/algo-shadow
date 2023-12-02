@@ -1,25 +1,31 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
+import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
+import Animation from "./HeapComponent/animate";
+import { AnalyzeRuntime } from "./AlgComponent/RuntimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
-import GraphRenderer from "../../components/GraphRenderer.js";
-import BSTConcreteStrategy from "../../components/AlgorithmSolver/BSTConcreteStrategy";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
-// const graphData = new GraphData(data)
 var dataset = [];
 var record = [];
 var step = 0;
 var tree = null;
 
-const renderer = new GraphRenderer();
+function datatran(data) {
+  dataset = [];
+  for (let i = 1; i <= data.length; ++i) {
+    dataset[i - 1] = { index: i, value: Number(data[i - 1]), position: 1 };
+  }
+  return dataset;
+}
 
 function reset() {
   step = 0;
   record.forEach((element) => {
-    AnimationB.pathDisappear(dataset[element - 1].position);
+    AnimationB.Pathdisappear(dataset[element - 1].position);
   });
 }
 
@@ -43,14 +49,14 @@ function nextStep() {
     alert("AnimationB is end!");
   } else {
     if (typeof record[step].e1 == "undefined") {
-      AnimationB.pathDisplay(dataset[record[step] - 1].position);
+      AnimationB.Pathdisplay(dataset[record[step] - 1].position);
     } else {
       if (record[step].e1 == 0) {
-        renderer.deleteElement(record[step - 1].e2, record[step - 1].e1);
+        Animation.deleteelement(record[step - 1].e2, record[step - 1].e1);
       } else {
         const text1 = document.getElementById("t" + record[step].e1);
         const text2 = document.getElementById("t" + record[step].e2);
-        renderer.animateExchange(text1, text2);
+        Animation.animateExchange(text1, text2);
       }
     }
     step++;
@@ -63,14 +69,14 @@ function back() {
   } else {
     step--;
     if (typeof record[step].e1 == "undefined") {
-      AnimationB.pathDisappear(dataset[record[step] - 1].position);
+      AnimationB.Pathdisappear(dataset[record[step] - 1].position);
     } else {
       if (record[step].e1 == 0) {
-        renderer.showElement(record[step - 1].e2, record[step - 1].e1);
+        Animation.showelement(record[step - 1].e2, record[step - 1].e1);
       } else {
         const text1 = document.getElementById("t" + record[step].e1);
         const text2 = document.getElementById("t" + record[step].e2);
-        renderer.animateExchange(text1, text2);
+        Animation.animateExchange(text1, text2);
       }
     }
   }
@@ -78,10 +84,8 @@ function back() {
 
 const BST = () => {
   const svgRef = useRef(null);
-  renderer.svgRef = svgRef;
-
   useEffect(() => {
-    createBST();
+    createbst();
   }, []);
 
   useEffect(() => {
@@ -93,37 +97,33 @@ const BST = () => {
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
-    createBST();
+    createbst();
   };
 
-  /**
-   * TODO
-   */
-  function createBST() {
-    renderer.solverStrategy = new BSTConcreteStrategy()
-    const result = renderer.create(data)
-    setBstResult(result) // Update state
+  function createbst() {
+    record = [];
+    tree = new BinarySearchTree();
+    datatran(data);
+    dataset.forEach((element) => {
+      tree.insert(element, record);
+    });
+    const result = AnalyzeRuntime("createBST", data, () => {
+      AnimationB.createbst(dataset, svgRef);
+      return tree;
+    });
+    setBstResult(result); // Update state
   }
 
-  /**
-   * TODO
-   * @param {*} idata
-   */
-  function insertBST(idata) {
+  function insertbst(idata) {
     record = [];
     data.push(Number(idata[0]));
     dataset.push({ index: data.length, value: Number(idata[0]), position: 1 });
     tree.insert(dataset[data.length - 1], record);
     record.push(dataset[data.length - 1].index);
-    renderer.renderGraph(dataset, svgRef);
+    AnimationB.createbst(dataset, svgRef);
   }
 
-  /**
-   * TODO
-   * @param {*} ddata
-   * @param {*} k
-   */
-  function deleteBST(ddata, k) {
+  function deletebst(ddata, k) {
     record = [];
     //k 被删除，i交换
     tree.delete(ddata, record);
@@ -167,9 +167,9 @@ const BST = () => {
               id="csubmit"
               onClick={() => {
                 try {
-                  let cdata = Common.validData("create");
+                  let cdata = Common.validdata("create");
                   data = cdata.map((item) => Number(item.trim()));
-                  createBST();
+                  createbst();
                 } catch (error) {
                   alert("Error: " + error.message); // 输出错误消息
                 }
@@ -183,8 +183,8 @@ const BST = () => {
               id="isubmit"
               onClick={() => {
                 try {
-                  let idata = Common.validOneData("insert");
-                  insertBST(idata);
+                  let idata = Common.validonedata("insert");
+                  insertbst(idata);
                 } catch (error) {
                   alert("Error: " + error.message); // 输出错误消息
                 }
@@ -198,9 +198,9 @@ const BST = () => {
               id="dsubmit"
               onClick={() => {
                 try {
-                  let ddata = Common.validOneData("delete");
-                  const index = Common.findInArray(ddata, dataset);
-                  deleteBST(ddata, index);
+                  let ddata = Common.validonedata("delete");
+                  const index = Common.findinarray(ddata, dataset);
+                  deletebst(ddata, index);
                 } catch (error) {
                   alert("Error: " + error.message); // 输出错误消息
                 }
@@ -249,9 +249,9 @@ const BST = () => {
                 marginTop: "10px",
               }}
             >
-              <button onClick={renderer.nextStep}>Next Step</button>
-              <button onClick={renderer.back}>Back</button>
-              <button onClick={renderer.reset}>Reset</button>
+              <button onClick={nextStep}>Next Step</button>
+              <button onClick={back}>Back</button>
+              <button onClick={reset}>Reset</button>
               <button onClick={test}>Test</button>
             </div>
           </div>

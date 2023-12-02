@@ -154,7 +154,7 @@ function HeapPage() {
             alert(
               idata.length !== 1
                 ? "Only insert one number"
-                : "Only numbers and commas can be entered"
+                : "Only numbers and commas can be entered",
             );
           }
         }}
@@ -180,7 +180,7 @@ function HeapPage() {
             alert(
               ddata.length !== 1
                 ? "Only delete one number"
-                : "Only numbers and commas can be entered"
+                : "Only numbers and commas can be entered",
             );
           }
         }}

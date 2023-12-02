@@ -1,16 +1,11 @@
-/**
- * TODO: What is this module
- */
 import React, { useState, useEffect, useRef } from "react";
-import GraphRenderer from "../../components/GraphRenderer";
+import Animation from "./HeapComponent/animate";
 import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
-import HeapConcreteStrategy from "../../components/AlgorithmSolver/HeapConcreteStrategy"
 import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
+import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import { common } from "@mui/material/colors";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
 var dataset = [];
@@ -22,15 +17,7 @@ var deletegraph = -1;
 var totallen = dataset.length;
 var state = 0;
 
-const renderer = new GraphRenderer();
-
-/**
- * TODO
- * @param {*} xdata
- * @param {*} dataset
- * @returns
- */
-function findInHeap(xdata, dataset) {
+function findinheap(xdata, dataset) {
   for (var i = 0; i < dataset.length; i++) {
     if (dataset[i].value == xdata) {
       return i;
@@ -39,76 +26,53 @@ function findInHeap(xdata, dataset) {
   throw new Error(xdata + " is not in heap");
 }
 
-/**
- * TODO
- */
 const nextStep = () => {
   if (step >= record.length) {
     alert("Heap is end!");
   } else {
     if (record[step].e1 == 0) {
-      renderer.deleteElement(deletetest + 1, deletegraph);
+      Animation.deleteelement(deletetest + 1, deletegraph);
     } else {
       const text1 = document.getElementById("t" + record[step].e1);
       const text2 = document.getElementById("t" + record[step].e2);
-      renderer.animateExchange(text1, text2);
+      Animation.animateExchange(text1, text2);
     }
     step++;
   }
 };
 
-/**
- * TODO
- */
 function back() {
   if (step < 1) {
     alert("This is the first step!");
   } else {
     step--;
     if (record[step].e1 == 0) {
-      renderer.showElement(deletetest + 1, deletegraph);
+      Animation.showelement(deletetest + 1, deletegraph);
     } else {
       const text1 = document.getElementById("t" + record[step].e1);
       const text2 = document.getElementById("t" + record[step].e2);
-      renderer.animateExchange(text1, text2);
+      Animation.animateExchange(text1, text2);
     }
   }
 }
 
-/**
- * TODO
- * @returns what is it returning
- */
 function HeapPage() {
   const svgRef = useRef(null);
-  renderer.svgRef = svgRef;
   const [resetkey, setResetkey] = useState(0);
   const [heapResult, setHeapResult] = useState(null);
 
-  /**
-   * A Helper function only used in heap
-   */
   function empty() {
     record = [];
     step = 0;
     console.log(state);
-    if (state == 1) {
-      renderer.finalTree();
-    } else {
-      renderer.renderGraph(dataset);
-    }
+    if (state == 1) Animation.fianlTree(tdataset, svgRef);
+    else Animation.createTree(dataset, svgRef);
   }
 
-  /**
-   * TODO
-   */
   function reset() {
     step = 0;
-    if (state == 0) {
-      renderer.renderGraph(dataset);
-    } else {
-      renderer.finalTree();
-    }
+    if (state == 0) Animation.createTree(dataset, svgRef);
+    else Animation.fianlTree(tdataset, svgRef);
   }
 
   useEffect(() => {
@@ -119,12 +83,11 @@ function HeapPage() {
     SaveInputToLocalStorage;
   }, []);
 
-  /**
-   * TODO
-   */
   function createHeap() {
-    dataset = Common.dataTransform(data);
-    renderer.solverStrategy = HeapConcreteStrategy
+    dataset = data.map((value, index) => ({
+      index: index + 1,
+      value: Number(value),
+    }));
     state = 0;
     empty();
     const result = AnalyzeRuntime("createHeap", data, () => {
@@ -134,16 +97,6 @@ function HeapPage() {
     setHeapResult(result);
   }
 
-  // function createHeap() {
-  //   renderer.solverStrategy = new HeapConcreteStrategy()
-  //   const result = renderer.create(data)
-  //   setHeapResult(result); // Update state
-  // }
-
-  /**
-   * TODO
-   * @param {*} idata TODO: what is idata?
-   */
   function insertheap(idata) {
     state = 1;
     data.push(Number(idata));
@@ -157,10 +110,6 @@ function HeapPage() {
     setHeapResult(result);
   }
 
-  /**
-   * TODO
-   * @param {*} i TODO: What is i?
-   */
   function deleteheap(i) {
     state = 1;
     tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
@@ -175,11 +124,6 @@ function HeapPage() {
     data.splice(dataset[i].index - 1, 1);
   }
 
-  /**
-   * TODO
-   * @param {*} i what is i?
-   * @param {*} kdata
-   */
   function increasekey(i, kdata) {
     if (kdata < dataset[i].value) {
       alert("new value is smaller than before");
@@ -191,16 +135,13 @@ function HeapPage() {
     Heapification.increasekey(i + 1, kdata, dataset, record);
   }
 
-  /**
-   * TODO
-   */
-  function extraHeap() {
+  function extraheap() {
     state = 1;
     tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
     deletetest = tdataset[0].index - 1;
     deletegraph = tdataset[tdataset.length - 1].index;
     empty();
-    Heapification.extraHeap(dataset, record);
+    Heapification.extraheap(dataset, record);
     record.push({
       e1: 0,
       e2: totallen + 1,
@@ -220,7 +161,7 @@ function HeapPage() {
           id="csubmit"
           onClick={() => {
             try {
-              let cdata = Common.validData("create");
+              let cdata = Common.validdata("create");
               data = cdata.map((item) => Number(item.trim()));
               createHeap();
             } catch (error) {
@@ -236,7 +177,7 @@ function HeapPage() {
           id="isubmit"
           onClick={() => {
             try {
-              let idata = Common.validOneData("insert");
+              let idata = Common.validonedata("insert");
               insertheap(idata);
             } catch (error) {
               alert("Error: " + error.message); // 输出错误消息
@@ -251,8 +192,8 @@ function HeapPage() {
           id="dsubmit"
           onClick={() => {
             try {
-              let ddata = Common.validOneData("delete");
-              const index = Common.findInArray(ddata, dataset);
+              let ddata = Common.validonedata("delete");
+              const index = Common.findinarray(ddata, dataset);
               deleteheap(index);
             } catch (error) {
               alert("Error: " + error.message); // 输出错误消息
@@ -268,9 +209,9 @@ function HeapPage() {
           id="ksubmit"
           onClick={() => {
             try {
-              let sdata = Common.validOneData("select");
-              let idata = Common.validOneData("increase");
-              const index = Common.findInArray(sdata, dataset);
+              let sdata = Common.validonedata("select");
+              let idata = Common.validonedata("increase");
+              const index = Common.findinarray(sdata, dataset);
               increasekey(index, idata);
             } catch (error) {
               alert("Error: " + error.message); // 输出错误消息
@@ -315,18 +256,18 @@ function HeapPage() {
             marginTop: "10px",
           }}
         >
-          <button onClick={renderer.nextStep}>Next Step</button>
-          <button onClick={renderer.back}>Back</button>
-          <button onClick={renderer.reset}>Reset</button>
+          <button onClick={nextStep}>Next Step</button>
+          <button onClick={back}>Back</button>
+          <button onClick={reset}>Reset</button>
           <button
             onClick={() => {
-              renderer.finalTree();
+              Animation.fianlTree(dataset, svgRef);
               step = record.length;
             }}
           >
             Final Heap
           </button>
-          <button onClick={extraHeap}>extra heap</button>
+          <button onClick={extraheap}>extra heap</button>
         </div>
       </div>
       <div>
