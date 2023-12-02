@@ -60,7 +60,7 @@ function reset(){
 function Inorder(){
   reset()
   record = tree.inOrderTraverse()
-  console.log(record)
+  //console.log(record)
 }
 
 function Preorder(){

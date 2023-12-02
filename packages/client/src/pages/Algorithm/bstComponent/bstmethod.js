@@ -1,4 +1,4 @@
-class Node {  // 创建节点
+class Node {  // create node
   constructor(data) {
       this.root = this;
       this.data = data.value;
