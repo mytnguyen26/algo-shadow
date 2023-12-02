@@ -2,105 +2,12 @@ import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
 import Graph from "../../../components/AlgorithmSolver/algorithm.js";
-import Animation from "../../../components/GraphRenderer/animate";
-
+import { useNodes } from "./useNodes.jsx";
+import { useLinks } from "./useLinks.jsx";
 
 export const DijkstraGraph = () => {
-  const [nodes, setNodes] = useState([
-    {
-      id: "A",
-      x: 50,
-      y: 50,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "B",
-      x: 400,
-      y: 50,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "C",
-      x: 150,
-      y: -50,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "D",
-      x: 300,
-      y: -50,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "E",
-      x: 250,
-      y: 50,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "F",
-      x: 150,
-      y: 150,
-      weight: 0,
-      isStart: true,
-      isFinish: false,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-    {
-      id: "G",
-      x: 300,
-      y: 150,
-      weight: 0,
-      isStart: false,
-      isFinish: true,
-      distance: Infinity,
-      isVisited: false,
-      previousNode: null,
-    },
-  ]);
-
-  const [links, setLinks] = useState([
-    { source: "A", target: "C", weight: 3 },
-    { source: "A", target: "F", weight: 2 },
-    { source: "C", target: "F", weight: 2 },
-    { source: "C", target: "E", weight: 1 },
-    { source: "F", target: "E", weight: 3 },
-    { source: "E", target: "B", weight: 2 },
-    { source: "C", target: "D", weight: 4 },
-    { source: "D", target: "B", weight: 1 },
-    { source: "F", target: "B", weight: 6 },
-    { source: "F", target: "G", weight: 5 },
-    { source: "G", target: "B", weight: 2 },
-    // Add more links as needed
-  ]);
-
+  const [nodes, setNodes] = useNodes();
+  const [links, setLinks] = useLinks();
   const [shortestPath, setShortestPath] = useState([]);
   const [orderedVisitedPath, setOrderedVisitedPath] = useState([]);
   const svgRef = React.createRef();
@@ -149,14 +56,14 @@ export const DijkstraGraph = () => {
         (d) =>
           (nodes.find((node) => node.id === d.source).x +
             nodes.find((node) => node.id === d.target).x) /
-          2
+          2,
       )
       .attr(
         "y",
         (d) =>
           (nodes.find((node) => node.id === d.source).y +
             nodes.find((node) => node.id === d.target).y) /
-          2
+          2,
       )
       .text((d) => d.weight);
 
@@ -241,7 +148,7 @@ export const DijkstraGraph = () => {
           .filter((d) => shortestPath.includes(d.id))
           .style(
             "fill",
-            () => step === orderedVisitedPath.length - 1 && "green"
+            () => step === orderedVisitedPath.length - 1 && "green",
           );
       }
 

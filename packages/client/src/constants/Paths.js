@@ -8,7 +8,6 @@ export const Paths = {
   BST: "/algorithm/bst",
   LOGOUT: "/logout",
   CALLBACK: "/Auth/callback",
-  ABOUT: "/about",
   CONTACT: "/contact",
   LOGIN: "/login",
 };
