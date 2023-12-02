@@ -42,9 +42,15 @@ const AboutPage = () => {
         About Us
       </Typography>
 
+
       {members.map((member, index) => (
         <Box key={index} marginBottom={3}>
           <Stack direction="row" spacing={2} alignItems="center">
+            <Avatar
+              src={member.imageUrl}
+              alt={member.name}
+              sx={{ width: 100, height: 100 }}
+            />
             <Avatar
               src={member.imageUrl}
               alt={member.name}

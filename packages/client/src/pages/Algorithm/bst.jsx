@@ -96,6 +96,7 @@ const BST = () => {
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
+    data = input;
     createbst();
   };
 

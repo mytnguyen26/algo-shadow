@@ -13,6 +13,11 @@ var dataset = [];
 var tdataset = [];
 var record = [];
 var step = 0;
+var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+var dataset = [];
+var tdataset = [];
+var record = [];
+var step = 0;
 var deletetest = -1;
 var deletegraph = -1;
 var totallen = dataset.length;
@@ -261,8 +266,14 @@ function HeapPage() {
           <button onClick={reset}>Reset</button>
           <button
             onClick={() => {
+          <button
+            onClick={() => {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
+            }}
+          >
+            Final Heap
+          </button>
             }}
           >
             Final Heap

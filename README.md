@@ -67,3 +67,60 @@ The client will start at local host
 
 ## Contribution
 Everyone is welcomed to contribute to this project. To start contribution, either Create an Issue, or Create a Pull Request. All new enhancements should be cloned from `dev`, and PR to `dev` before release. As features, enhancements, and bug fixes are ready for release, 
+
+## Running Authentication Service
+
+### Front-End
+1. create .env file in the client directory
+2. add the following to the .env file
+```
+# your backend url
+VITE_AUTH_SERVICE=http://localhost:3001/graphql
+
+# your google client id 
+VITE_GOOGLE_CLIENT_ID=
+```
+3. install dependencies by running `npm install` in the client directory
+3. run `npm run dev` in the client directory
+
+### Back-End
+1. install PostgresSQL in your local machine
+2. create .env file in the server directory
+3. add the following to the .env file
+```
+# your local database url
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+
+# JWT experation time
+JWT_EXPIRATION="18h"
+
+# JWT Refresh Token experation time
+REFRESH_EXPIRATION="48h"
+
+PRIVATE_KEY=""
+PUBLIC_KEY=""
+PUBLIC_KEY_1=""
+```
+4. run `npm install` in the server directory
+5. run `npm run prisma:generate` to initialize the database
+6. run `npm run prosma:migrate` to migrate the database
+7. run `npm run dev` to start the server
+8. go to `http://localhost:3001/graphql` to access the graphql playground 
+9. add your first project by running the following mutation
+```
+mutation {
+  createProject(
+    project: {
+      name: "test",
+      description: "test",
+      displayProjectName: true,
+      allowSignup: true,
+      googleAuth: true,
+      emailAuth: true
+    }
+  ) {
+    id,
+    name
+  }
+}
+```
