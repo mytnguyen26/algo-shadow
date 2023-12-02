@@ -14,4 +14,3 @@ export const AnalyzeRuntime = (algorithm, input, func, ...args) => {
 
   return { input, output, runtime: averageTime };
 };
-  
