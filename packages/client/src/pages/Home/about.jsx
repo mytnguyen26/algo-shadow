@@ -1,39 +1,37 @@
 import React from "react";
 import { Box, Typography, Avatar, Stack, Divider } from "@mui/material";
-import * as images from '../../images';
-
-
+import * as images from "../../images";
 
 const members = [
   {
     name: "My Nguyen​",
     role: "Product Manager​",
     bio: "I created the product roadmap, implemented developer workflow and ensure product quality.​",
-    imageUrl: images.image1
+    imageUrl: images.image1,
   },
   {
     name: "Fengyun​",
     role: "UI/UX​",
     bio: "I created UI design, and implement our Web UI to make sure our customers have an seamless and comprehensive experience.",
-    imageUrl: images.image2
+    imageUrl: images.image2,
   },
   {
     name: "Xinyue",
     role: "Full Stack Engineer​​",
     bio: "I selected the web framework for our app, and implemented our Web UI. Also, I implemented Dijkstra algorithm.​",
-    imageUrl: images.image3
+    imageUrl: images.image3,
   },
   {
     name: "Junyi​",
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Hash and Bellman algorithms, ensuring their effective implementation and optimal performance.​",
-    imageUrl: images.image4
+    imageUrl: images.image4,
   },
   {
     name: "Yutong",
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Heap and BST algorithms, ensuring their effective implementation and optimal performance.​",
-    imageUrl: images.image5
+    imageUrl: images.image5,
   },
 ];
 
@@ -43,11 +41,15 @@ const AboutPage = () => {
       <Typography variant="h3" marginBottom={3}>
         About Us
       </Typography>
-    
+
       {members.map((member, index) => (
         <Box key={index} marginBottom={3}>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Avatar src={member.imageUrl} alt={member.name} sx={{ width: 100, height: 100 }} />
+            <Avatar
+              src={member.imageUrl}
+              alt={member.name}
+              sx={{ width: 100, height: 100 }}
+            />
             <Box>
               <Typography variant="h5">{member.name}</Typography>
               <Typography variant="subtitle1" color="text.secondary">
