@@ -7,7 +7,7 @@ import Animation from "./HeapComponent/animate";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./Common/common";
-import ResultsTable from "./AlgComponent/tableCreater";
+import ResultsTable from "./AlgComponent/tableCreater.jsx";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
 var dataset = [];
