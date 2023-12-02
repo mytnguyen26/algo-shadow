@@ -176,14 +176,14 @@ class Graph {
         const distances = new Map();
         const visited = new Set();
 
-        // 初始化距离和路径信息
+        // Initialize the distance and path information
         for (const node of this.nodes) {
             distances.set(node, node === startNode ? 0 : Infinity);
         }
         while (visited.size < this.nodes.length) {
-            // 从未访问过的节点中选择距离最小的节点
+            // The node with the smallest distance is selected among the nodes that have never been visited
             const currentNode = this.getMinDistanceNode(distances, visited);
-            // 将选定的节点标记为已访问
+            // Mark the selected node as visited
             visited.add(currentNode);
             let t = []
             this.edges.get(currentNode).forEach(e=>{
@@ -193,7 +193,7 @@ class Graph {
             record.push({node:currentNode,change:"stroke"})
             record.push({node:t,change:"stroke"})
             record.push({node:currentNode,change:"fill"})
-            // 更新与当前节点相邻节点的距离和路径信息
+            // Update the distance and path information of the nodes adjacent to the current node
             for (const neighbor of this.edges.get(currentNode)) {
                 const totalDistance = distances.get(currentNode) + neighbor.weight;
 
