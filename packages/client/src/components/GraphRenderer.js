@@ -8,34 +8,8 @@
  * logic to the input data
  */
 import * as d3 from "d3";
-import Common from "../pages/Algorithm/Common/common"
-import { AnalyzeRuntime } from "../pages/Algorithm/AlgComponent/analyzeRuntime.jsx"
 
-class GraphRenderer {
-  constructor() {
-    this._solverStrategy = null
-    this.position = null
-    this.svgRef = null
-  }
-  
-  set solverStrategy (strategy) {
-    this._solverStrategy = strategy
-    switch(strategy.constructor.name) {
-      case "DijkstraConcreteStrategy":
-        this.position = "index"
-        break;
-      case "BSTConcreteStrategy":
-        this.position = "position"
-        break;
-      case "HeapConcreteStrategy":
-        this.position = "index"
-        break;
-      default:
-        this.position = "index"
-        console.log("No algorithm solver found")
-        break;
-    }
-  }
+const GraphRenderer = {
 
   addMove (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
     // Animation for X-axis
@@ -65,7 +39,7 @@ class GraphRenderer {
     animateElementY.setAttribute("fill", "freeze");
     c1.appendChild(animateElementY);
     animateElementY.beginElement();
-  }
+  },
 
   /**
    * Renders the Graph from input dataset with D3 and svgRef
@@ -75,9 +49,9 @@ class GraphRenderer {
    * @param {*} svgRef [description]
    * 
    */
-  renderGraph (animationData) {
-    const width = this.svgRef.current.clientWidth;
-    const svg = d3.select(this.svgRef.current);
+  renderGraph (animationData, svgRef) {
+    const width = svgRef.current.clientWidth;
+    const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     const my = 60;
     const p = svg
@@ -103,7 +77,7 @@ class GraphRenderer {
       .data(animationData.dataset)
       .enter()
       .append("circle")
-      .attr("id", (c) => "c" + c[this.position])
+      .attr("id", (c) => "c" + c.position)
       .attr("cx", (c) => animationData.getx1(c, width))
       .attr("cy", (c) => animationData.gety1(c, my))
       .attr("r", 20);
@@ -117,11 +91,11 @@ class GraphRenderer {
       .data(animationData.dataset)
       .enter()
       .append("text")
-      .attr("id", (c) => "t" + c[this.position])
+      .attr("id", (c) => "t" + c.position)
       .attr("dx", (c) => animationData.getx1(c, width))
       .attr("dy", (c) => animationData.gety1(c, my) + 5)
       .text((t) => t.value);
-  }
+  },
 
   /**
    * A helper function used in Graph to animate movement between 2 nodes
@@ -144,20 +118,20 @@ class GraphRenderer {
     c1.setAttribute("dy", y2);
     c2.setAttribute("dx", x1);
     c2.setAttribute("dy", y1);
-  }
+  },
 
   deleteElement (e, size) {
     document.getElementById("t" + e).style.display = "none";
     document.getElementById("c" + size).style.display = "none";
     document.getElementById("l" + size).style.display = "none";
-  }
+  },
 
   showElement (e, size) {
     console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
-  }
+  },
 
   pathDisplay(circle, attribute, color) {
     // const circle = document.getElementById("c" + index).getElementsByTagName("ellipse")[0];
@@ -170,14 +144,14 @@ class GraphRenderer {
       
     circle.appendChild(circleAnimate);
     circleAnimate.beginElement();
-  }
+  },
 
   pathDisappear(index) {
     document.getElementById("c"+index).setAttribute("stroke","black")
     if(index!=1){
       document.getElementById("l"+index).setAttribute("stroke","black")
     }
-  }
+  },
 
   reset(step, record) {
     this._solverStrategy.reset()
@@ -186,7 +160,7 @@ class GraphRenderer {
       this.pathDisappear(this.dataset[element-1].position)
     })
     console.log(record)
-  }
+  },
 
   nextStep(step, record) {
     if(step >= record.length)
@@ -209,7 +183,7 @@ class GraphRenderer {
       }
       step++
     }
-  }
+  },
 
   back(step, record){
     if(step<1)
@@ -234,7 +208,7 @@ class GraphRenderer {
       }
     }
       
-  }
+  },
 
   /**
    * Insert new elements from user input to existing Graph
@@ -245,7 +219,7 @@ class GraphRenderer {
     this._solverStrategy.insert(this.dataset[data.length-1], record);
     record.push(this.dataset[data.length-1].index)
     this.renderGraph(this.dataset);
-  }
+  },
 
   /**
    * TODO
@@ -278,7 +252,7 @@ class GraphRenderer {
     });
     this.data.splice(this.dataset[i].index - 1, 1);
     this.renderGraph(this.dataset)
-  }
+  },
 }
 
 export default GraphRenderer

@@ -13,8 +13,6 @@ var record = [];
 var step = 0;
 var tree = null;
 
-const renderer = new GraphRenderer();
-
 // function reset(){
 //   step = 0
 //   dataset.forEach(element => {
@@ -47,7 +45,6 @@ function searchBST(sdata){
 
 const BST = () => {
   const svgRef = useRef(null);
-  renderer.svgRef = svgRef;
 
   useEffect(() => {
     createBST();
@@ -70,14 +67,13 @@ const BST = () => {
    */
   function createBST() {
     tree = new BSTConcreteStrategy(); // might need to change this to singleton
-    renderer.solverStrategy = tree;
     var animationData = new TreeAnimationData(data, "position")
     record = []
     const result = AnalyzeRuntime('createBST', data, () => {
       animationData.dataset.forEach(element => {
         tree.insert(element, record);
       });
-      renderer.renderGraph(animationData);
+      GraphRenderer.renderGraph(animationData, svgRef);
     });
     setBstResult(result); // Update state
   }
@@ -89,7 +85,7 @@ const BST = () => {
   function insertBST(data, record) {
     try {
       let idata = Common.validOneData("insert");
-      renderer.insert(idata, record);
+      GraphRenderer.insert(idata, record);
     } catch (error) {
       alert("Error: " + error.message); // 输出错误消息
     }
@@ -103,8 +99,8 @@ const BST = () => {
   function deleteBST() {
     try {
       let ddata = Common.validOneData("delete");
-      const index = Common.findInArray(ddata, renderer.dataset);
-      record = renderer.delete(ddata, index, record);
+      const index = Common.findInArray(ddata, GraphRenderer.dataset);
+      record = GraphRenderer.delete(ddata, index, record);
     } catch (error) {
       alert("Error: " + error.message); // 输出错误消息
     }
@@ -116,30 +112,30 @@ const BST = () => {
   }
 
   function inOrder() {
-    renderer.reset(step, record);
+    GraphRenderer.reset(step, record);
     record = tree.inOrderTraverse();
   }
 
   function preOrder() {
-    renderer.reset();
+    GraphRenderer.reset();
     record = tree.preOrderTraverse();
   }
 
   function postOrder() {
-    renderer.reset();
+    GraphRenderer.reset();
     record = tree.postOrderTraverse();
   }
 
   function reset() {
-    renderer.reset();
+    GraphRenderer.reset();
   }
 
   // function nextStep() {
-  //   renderer.nextStep();
+  //   GraphRenderer.nextStep();
   // }
 
   // function back() {
-  //   renderer.back();
+  //   GraphRenderer.back();
   // }
 
   /**
@@ -154,7 +150,7 @@ const BST = () => {
       {
         if(typeof(record[step].e1) == "undefined"){
           const c = document.getElementById("c" + record[step]);
-          renderer.pathDisplay(c, "fill", "white;blue")
+          GraphRenderer.pathDisplay(c, "fill", "white;blue")
           step++
         }else{
           step = Common.nextStep(step, record)
@@ -175,7 +171,7 @@ const BST = () => {
       if(typeof(record[step-1].e1) == "undefined"){
         step--
         const c = document.getElementById("c" + record[step]);
-        renderer.pathDisplay(c, "fill", "blue;white")
+        GraphRenderer.pathDisplay(c, "fill", "blue;white")
       }
       else{
         step = Common.back(step, record)
@@ -212,7 +208,7 @@ const BST = () => {
           <button id="ssubmit" onClick={() => {
             try {
               let sdata = Common.validOneData("search");
-              Searchbst(sdata)
+              searchBST(sdata)
             } catch (error) {
               alert("Error: " + error.message); 
             }

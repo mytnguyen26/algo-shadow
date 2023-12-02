@@ -1,7 +1,7 @@
-import AnimationB from "../bstComponent/bstanimate.jsx";
-import CAnimation from "./Canimate";
+import { text } from "d3";
+import GraphRenderer from "../../../components/GraphRenderer.js";
 
-const Common= {
+const Common = {
     width : 900,
     height : 300,
     validData(valuename){
@@ -30,28 +30,22 @@ const Common= {
         }
         throw new Error(xdata + " is not in heap");
     },
-    dataTransform(data) {
-      var dataset = []
-      for (let i = 1; i <= data.length; ++i) {
-        dataset[i-1] = { index: i, value: Number(data[i-1]), position: 1};
-      }
-      return dataset
-    },
+
     nextStep(step,record){
       if(step>=record.length)
       {
-        alert("Animation is end!")
+        alert("Animation ends!")
         
       }
       else
       {
         if(record[step].e1==0){
-          CAnimation.deleteelement(record[step].e2[1],record[step].e2[0])
+          GraphRenderer.deleteElement(record[step].e2[1],record[step].e2[0])
         }
         else{
           const text1 = document.getElementById("t" + record[step].e1);
           const text2 = document.getElementById("t" + record[step].e2);
-          CAnimation.animateExchange(text1,text2);
+          GraphRenderer.animateExchange(text1,text2);
         }
         ++step
       }
@@ -67,16 +61,16 @@ const Common= {
       {
         step--
         if(typeof(record[step].e1) == "undefined"){
-          AnimationB.Pathdisappear(record[step]);
+          GraphRenderer.pathDisappear(record[step]);
         }
         else{
           if(record[step].e1==0){
-            CAnimation.showelement(record[step].e2[1],record[step].e2[0])
+            GraphRenderer.showElement(record[step].e2[1],record[step].e2[0])
           }
           else{
             const text1 = document.getElementById("t" + record[step].e1);
             const text2 = document.getElementById("t" + record[step].e2);
-            CAnimation.animateExchange(text1,text2);
+            GraphRenderer.animateExchange(text1,text2);
           }
         }
       }
