@@ -1,68 +1,73 @@
-import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
-import BST from '../src/pages/Algorithm/bst'; 
+import BinarySearchTree from '../src/pages/Algorithm/bstComponent/bstmethod';
 
-// Mock 全局的 alert
-window.alert = jest.fn();
+describe('BinarySearchTree', () => {
+  let bst;
+  let record;
 
-// Mock CAnimation 对象和它的方法
-jest.mock('../src/pages/Algorithm/Common/Canimate', () => ({
-  Pathdisplay: jest.fn(),
-  // 添加更多你需要模拟的 Canimate 方法
-}));
-
-// Mock Common 对象和它的方法
-jest.mock('../src/pages/Algorithm/Common/Canimate', () => ({
-  validdata: jest.fn(),
-  validonedata: jest.fn(),
-  nextStep: jest.fn(),
-  back: jest.fn(),
-  findinarray: jest.fn().mockImplementation((value, array) => array.findIndex(item => item.value === value)),
-}));
-
-describe('BST Component', () => {
-  afterEach(cleanup);
-
-  test('renders correctly', () => {
-    render(<BST />);
-    expect(screen.getByText('Binary Search Tree')).toBeInTheDocument();
+  beforeEach(() => {
+    bst = new BinarySearchTree();
+    record = [];
   });
 
-  test('allows user to insert a number', async () => {
-    render(<BST />);
-    const insertInput = screen.getByPlaceholderText('Enter a number');
-    fireEvent.change(insertInput, { target: { value: '5' } });
-
-    const insertButton = screen.getByText('Insert');
-    fireEvent.click(insertButton);
-
-    // Replace the following with your actual DOM updates or alert checks
-    expect(window.alert).toHaveBeenCalledWith('Node inserted');
+  test('should insert nodes correctly', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    expect(bst.root).not.toBeNull();
+    expect(bst.root.data).toBe(5);
+    expect(bst.root.left.data).toBe(3);
+    expect(bst.root.right.data).toBe(7);
+    expect(record).toEqual([1, 2, 1, 3]);
   });
 
-  test('allows user to search for a number', async () => {
-    render(<BST />);
-    const searchInput = screen.getByPlaceholderText('Enter a number');
-    fireEvent.change(searchInput, { target: { value: '5' } });
-
-    const searchButton = screen.getByText('Search');
-    fireEvent.click(searchButton);
-
-    // Replace the following with your actual DOM updates or alert checks
-    expect(window.alert).toHaveBeenCalledWith('Value found!');
+  test('should handle inorder traversal', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    const inorder = bst.inOrderTraverse();
+    expect(inorder).toEqual([2, 1, 3]);
   });
 
-  test('allows user to delete a number', async () => {
-    render(<BST />);
-    const deleteInput = screen.getByPlaceholderText('Enter a number');
-    fireEvent.change(deleteInput, { target: { value: '5' } });
-
-    const deleteButton = screen.getByText('Delete');
-    fireEvent.click(deleteButton);
-
-    // Replace the following with your actual DOM updates or alert checks
-    expect(window.alert).toHaveBeenCalledWith('Node deleted');
+  test('should handle preorder traversal', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    const preorder = bst.preOrderTraverse();
+    expect(preorder).toEqual([1, 2, 3]);
   });
 
-  // Add more tests as needed for other interactions
+  test('should handle postorder traversal', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    const postorder = bst.postOrderTraverse();
+    expect(postorder).toEqual([2, 3, 1]);
+  });
+
+  test('should find the minimum value', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }, { value: 2, index: 4 }];
+    data.forEach(item => bst.insert(item, record));
+    const min = bst.min();
+    expect(min.data).toBe(2);
+  });
+
+  test('should find the maximum value', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }, { value: 6, index: 4 }];
+    data.forEach(item => bst.insert(item, record));
+    const max = bst.max();
+    expect(max.data).toBe(7);
+  });
+
+  test('should search for a value correctly', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    const foundNode = bst.search(7, record);
+    expect(foundNode).not.toBeNull();
+    expect(foundNode.data).toBe(7);
+    expect(record).toContain(foundNode.position);
+  });
+
+  test('should delete a value correctly', () => {
+    const data = [{ value: 5, index: 1 }, { value: 3, index: 2 }, { value: 7, index: 3 }];
+    data.forEach(item => bst.insert(item, record));
+    bst.delete(3, record);
+    expect(bst.root.left).toBeNull();
+    expect(record).toContain(2);
+  });
 });

@@ -5,8 +5,8 @@ import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis';
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
-import Common from "./Common/common";
-import CAnimation from "./Common/Canimate";
+import Common from "./Common/common.js";
+import CAnimation from "./Common/Canimate.js";
 var data = [4,7,8,2,1,3,5,9]
 var dataset = []
 var record = []

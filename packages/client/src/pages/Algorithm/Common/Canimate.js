@@ -19,6 +19,7 @@ const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
       "http://www.w3.org/2000/svg",
       "animate",
     );
+    
     animateElementY.setAttribute("attributeName", attributeNameY);
     animateElementY.setAttribute("from", y1);
     animateElementY.setAttribute("to", y2);
