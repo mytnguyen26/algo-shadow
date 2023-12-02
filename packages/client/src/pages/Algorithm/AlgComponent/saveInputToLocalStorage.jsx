@@ -1,3 +1,16 @@
+/**
+ * `SaveInputToLocalStorage` is a React component that provides functionality to save and retrieve input values associated with a specific algorithm to/from the local storage. It allows the user to store the current input, view a list of recent inputs, and select from these inputs.
+
+ * Props:
+ * - `algorithm`: A string identifier for the algorithm. Used as a part of the key to store and retrieve data from localStorage.
+ * - `inputData`: The current input value that needs to be stored in the local storage.
+ * - `useHisInput`: A function that is called with the selected input value when the user chooses to use a historical input.
+
+ * The component provides a text field for input, a button to save the current input, and a dropdown list to display and select from recent inputs. It maintains an internal state to manage the current input value, the list of recent inputs, and the visibility of the history dropdown.
+
+ * The recent inputs are stored in the local storage in an array format, with a maximum of 5 recent entries kept.
+ */
+
 import React, { useState, useEffect } from "react";
 import {
   Box,

@@ -13,6 +13,7 @@ import { Logout } from "./pages/Auth/logout.jsx";
 import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
 
+
 function App() {
   return (
     <Router>
@@ -26,6 +27,7 @@ function App() {
                 <Route path={Paths.HEAP} element={<Heap />} />
                 <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
                 <Route path={Paths.BST} element={<BST />} />
+                
               </Route>
             </Route>
             <Route path={Paths.ABOUT} element={<About />} />

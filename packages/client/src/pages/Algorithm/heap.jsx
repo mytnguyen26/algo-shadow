@@ -5,7 +5,13 @@ import Heapification from "./HeapComponent/heapmethod";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import ResultsTable from "./AlgComponent/tableCreater";
 
+var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+var dataset = [];
+var tdataset = [];
+var record = [];
+var step = 0;
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
 var dataset = [];
 var tdataset = [];
@@ -58,7 +64,23 @@ function back() {
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey, setResetkey] = useState(0);
-  const [heapResult, setHeapResult] = useState(null);
+  const [heapResults, setHeapResults] = useState(() => {
+    const savedResults = localStorage.getItem("heapResults");
+    return savedResults ? JSON.parse(savedResults) : [];
+  });
+
+  const addResult = (newResult) => {
+    setHeapResults((prevResults) => {
+      const updatedResults = [...prevResults, newResult];
+      if (updatedResults.length > 10) {
+        updatedResults.shift(); // Remove the oldest result
+      }
+
+      // Save updated results to localStorage
+      localStorage.setItem("heapResults", JSON.stringify(updatedResults));
+      return updatedResults;
+    });
+  };
 
   function empty() {
     record = [];
@@ -93,7 +115,7 @@ function HeapPage() {
       Heapification.buildmaxheap(dataset, record);
       return dataset;
     });
-    setHeapResult(result);
+    addResult(result);
   }
 
   function insertheap(idata) {
@@ -106,7 +128,6 @@ function HeapPage() {
       Heapification.insertheap(dataset, record);
       return dataset;
     });
-    setHeapResult(result);
   }
 
   function deleteheap(i) {
@@ -231,22 +252,6 @@ function HeapPage() {
           {/* the graph will be rendered inside the AlgorithmSpace component */}
         </AlgorithmSpace>
 
-        {heapResult && (
-          <div>
-            <h3>Heap Result:</h3>
-            <div>
-              <strong>Input:</strong> [{heapResult.input.join(", ")}]
-            </div>
-            <div>
-              <strong>Output:</strong> [
-              {heapResult.output.map((item) => item.value).join(", ")}]
-            </div>
-            <div>
-              <strong>Runtime:</strong> {heapResult.runtime} ms
-            </div>
-          </div>
-        )}
-
         <div
           style={{
             display: "flex",
@@ -260,14 +265,21 @@ function HeapPage() {
           <button onClick={reset}>Reset</button>
           <button
             onClick={() => {
+          <button
+            onClick={() => {
               Animation.fianlTree(dataset, svgRef);
               step = record.length;
             }}
           >
             Final Heap
           </button>
+            }}
+          >
+            Final Heap
+          </button>
           <button onClick={extraheap}>extra heap</button>
         </div>
+        <ResultsTable results={heapResults} />
       </div>
       <div>
         <SaveInputToLocalStorage

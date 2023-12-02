@@ -7,31 +7,31 @@ const members = [
     name: "My Nguyen​",
     role: "Product Manager​",
     bio: "I created the product roadmap, implemented developer workflow and ensure product quality.​",
-    imageUrl: images.image1,
+    imageUrl: images.MY,
   },
   {
     name: "Fengyun​",
     role: "UI/UX​",
     bio: "I created UI design, and implement our Web UI to make sure our customers have an seamless and comprehensive experience.",
-    imageUrl: images.image2,
+    imageUrl: images.Fengyun,
   },
   {
     name: "Xinyue",
     role: "Full Stack Engineer​​",
     bio: "I selected the web framework for our app, and implemented our Web UI. Also, I implemented Dijkstra algorithm.​",
-    imageUrl: images.image3,
+    imageUrl: images.Xinyue,
   },
   {
     name: "Junyi​",
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Hash and Bellman algorithms, ensuring their effective implementation and optimal performance.​",
-    imageUrl: images.image4,
+    imageUrl: images.Junyi,
   },
   {
     name: "Yutong",
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Heap and BST algorithms, ensuring their effective implementation and optimal performance.​",
-    imageUrl: images.image5,
+    imageUrl: images.Yutong,
   },
 ];
 
