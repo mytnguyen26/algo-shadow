@@ -33,38 +33,13 @@ const exchanegdata = (index1, index2, localDataset, localRecord) => {
   localDataset[index2 - 1] = temp;
 };
 
-const extraheap = (localDataset, localRecord) => {
-  if (localDataset.length < 1) {
-    throw new Error("heap unflow");
-  }
-  //delete
-  exchanegdata(1, localDataset.length, localDataset, localRecord);
-  localDataset.pop();
-  maxheap(localDataset, 1, localRecord);
-  return { dataset: localDataset, record: localRecord };
-};
 
 const getparent = (i) => {
   return Math.floor(i / 2);
 };
 
-const increasekey = (i, key, localDataset, localRecord) => {
-  if (key < localDataset[i - 1].value) {
-    throw new Error("new value is smaller than before");
-  }
-  localDataset[i - 1].value = key;
-  while (
-    i > 1 &&
-    localDataset[getparent(i) - 1].value < localDataset[i - 1].value
-  ) {
-    console.log("exchange:" + i + "," + getparent(i));
-    exchanegdata(getparent(i), i, localDataset, localRecord);
-    i = getparent(i);
-  }
-  return { dataset: localDataset, record: localRecord };
-};
 
-const Heapification = {
+const HeapConcreteStrategy = {
   buildmaxheap: (dataset, record) => {
     let result = 0;
     for (var i = Math.floor(dataset.length / 2); i > 0; i--) {
@@ -101,9 +76,36 @@ const Heapification = {
 
   deleteheap: (index, localDataset, localRecord) => {
     let max = localDataset[0].value + 1;
-    increasekey(index, max, localDataset, localRecord);
-    extraheap(localDataset, localRecord);
+    Heapification.increasekey(index, max, localDataset, localRecord);
+    Heapification.extraheap(localDataset, localRecord);
   },
+
+  increasekey:(i, key, localDataset, localRecord)=>{
+    if (key < localDataset[i - 1].value) {
+      throw new Error("new value is smaller than before");
+    }
+    localDataset[i - 1].value = key;
+    while (
+      i > 1 &&
+      localDataset[getparent(i) - 1].value < localDataset[i - 1].value
+    ) {
+      exchanegdata(getparent(i), i, localDataset, localRecord);
+      i = getparent(i);
+    }
+    return { dataset: localDataset, record: localRecord };
+  },
+
+  extraheap:(localDataset, localRecord) => {
+    if (localDataset.length < 1) {
+      throw new Error("heap unflow");
+    }
+    //delete
+    exchanegdata(1, localDataset.length, localDataset, localRecord);
+    localDataset.pop();
+    maxheap(localDataset, 1, localRecord);
+    return { dataset: localDataset, record: localRecord };
+  }
+
 };
 
-export default Heapification;
+export default HeapConcreteStrategy;

@@ -1,18 +1,26 @@
-import * as React from "react";
+/**
+ * React Component for Navigation Bar, comprises of links to
+ * Algorithm Page
+ * About Page
+ * Contact Us Page
+ */
 import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Alert } from "@mui/material";
 import { Paths } from "../../../constants/Paths.js";
 import Contact from "../contact";
 import { useAuth } from "../../../context/auth.context.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Snackbar from '@mui/material/Snackbar';
 
 export const Navbar = () => {
   const { token } = useAuth();
   const [openContact, setOpenContact] = useState(false);
+  const [snackBar, setSnackBar] = useState(false);
+  
   const configs = [
     {
       name: "Home",
@@ -39,6 +47,23 @@ export const Navbar = () => {
   const handleCloseContact = () => {
     setOpenContact(false);
   };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackBar(false);
+  };
+
+  useEffect(() => {
+    if(!token) {
+      setSnackBar(true);
+    } else {
+      setSnackBar(false);
+    }
+    
+  }, [token])
 
   return (
     <Box>
@@ -79,6 +104,16 @@ export const Navbar = () => {
         </Stack>
       </Box>
       <Contact open={openContact} onClose={handleCloseContact} />
+      <Snackbar
+        open={snackBar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
+      >
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+        Please Login your account to access algorith page!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

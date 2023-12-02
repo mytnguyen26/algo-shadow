@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Animation from "./HeapComponent/animate";
 import Common from "./Common/common";
 import Heapification from "./HeapComponent/heapmethod";
-import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
+import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];

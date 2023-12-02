@@ -1,9 +1,9 @@
 import { expect, it, describe } from "vitest";
-import Graph from "../src/components/AlgorithmSolver/algorithm.js";
+import DijkstraConcreteStrategy from "../src/components/AlgorithmSolver/DijkstraConcreteStrategy.js";
 
 describe("DijkstraAlgorithm", () => {
   it("should get correct shortest path", () => {
-    const graph = new Graph();
+    const graph = new DijkstraConcreteStrategy();
 
     const startNode = "A";
     const endNode = "B";
@@ -15,13 +15,13 @@ describe("DijkstraAlgorithm", () => {
     graph.addNode("E", { C: 1, F: 3, B: 2 });
     graph.addNode("F", { A: 2, C: 2, E: 3, G: 5 });
 
-    const { shortestPath } = graph.dijkstra(startNode, endNode);
+    const { shortestPath } = graph.run(startNode, endNode);
 
     expect(shortestPath).toEqual(["A", "C", "E", "B"]);
   });
 
   it("should get correct ordered visited nodes", () => {
-    const graph = new Graph();
+    const graph = new DijkstraConcreteStrategy();
 
     const startNode = "A";
     const endNode = "B";
@@ -33,7 +33,7 @@ describe("DijkstraAlgorithm", () => {
     graph.addNode("E", { C: 1, F: 3, B: 2 });
     graph.addNode("F", { A: 2, C: 2, E: 3, G: 5 });
 
-    const { orderedVisitedNodes } = graph.dijkstra(startNode, endNode);
+    const { orderedVisitedNodes } = graph.run(startNode, endNode);
 
     expect(orderedVisitedNodes).toEqual(["A", "F", "C", "E", "B"]);
   });

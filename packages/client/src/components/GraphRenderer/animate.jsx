@@ -96,7 +96,7 @@ const Animation = {
       .attr("cx", (c) => getx(c.index, width))
       .attr("cy", (c) => my * (getdepth(c.index) + 1))
       .attr("r", 20);
-
+    
     // draw label
     const t = svg
       .append("g")
@@ -112,8 +112,7 @@ const Animation = {
       .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
       .text((t) => t.value);
   },
-
-  finalTree: (dataSetToUse, svgRef) => {
+  fianlTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -137,8 +136,8 @@ const Animation = {
         i === 0 ? null : getx(Math.floor((i + 1) / 2), width),
       )
       .attr("y2", (c, i) => (i === 0 ? null : my * getdepth(i + 1)));
-    //
-
+      //
+    
     // draw node
     const c = svg
       .append("g")
@@ -196,7 +195,6 @@ const Animation = {
   },
 
   showelement: (e, size) => {
-    console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
