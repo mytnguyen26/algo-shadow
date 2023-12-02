@@ -1,5 +1,5 @@
 import { text } from "d3";
-import GraphRenderer from "../../../components/GraphRenderer.js";
+import GraphRenderer from "./Canimate";
 
 const Common = {
     width : 900,

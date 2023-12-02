@@ -6,7 +6,7 @@ function createTableCell(content) {
 
 class Graph {
     constructor() {
-        this.kind = "Directed"//Undirected Directed
+        this.kind = "Directed"     //Undirected Directed. Dijkstra only use Directed
         this.nodes = [];
         this.edges = new Map();
     }
@@ -15,13 +15,23 @@ class Graph {
         this.kind = kind
     }
 
+    /**
+     * Add new Node to the graph
+     * @param {*} node 
+     */
     addNode(node) {
         this.nodes.push(node);
         this.edges.set(node, []);
     }
 
+    /**
+     * Add new Edge to the graph
+     * @param {*} node1 
+     * @param {*} node2 
+     * @param {*} weight 
+     */
     addEdge(node1, node2, weight) {
-        if(this.kind==="Undirected"){
+        if(this.kind==="Undirected"){   // change this to BiDirectional to avoid confusion
             this.edges.get(node1).push({ node: node2, weight: weight });
             this.edges.get(node2).push({ node: node1, weight: weight });
         }else{
@@ -30,6 +40,11 @@ class Graph {
         
     }
 
+    /**
+     * Create a new DiGraph from AdjancencyMatrix
+     * @param {*} matrix 
+     * @param {*} k 
+     */
     fromAdjacencyMatrix(matrix,k) {
         this.kind = k
         const numNodes = matrix.length;
@@ -50,7 +65,11 @@ class Graph {
         }
     }
 
-    // Method to create a graph from an edge list
+    /**
+     * Method to create a graph from an edge list
+     * @param {*} edgeList 
+     * @param {*} k 
+     */
     fromEdgeList(edgeList,k) {
         this.kind = k
         // Add nodes to the graph  
@@ -69,6 +88,11 @@ class Graph {
         }
     }
 
+    /**
+     * Not belong here?
+     * @param {*} startNode 
+     * @returns 
+     */
     bfs(startNode) {
         const visited = {};
         const queue = [];
@@ -111,6 +135,10 @@ class Graph {
         return matrix;
     }
 
+    /**
+     * Get a list of edges to for svg Rendering
+     * @returns 
+     */
     EdgeList(){
         const edgeList = [];
         const addedEdges = new Set();
@@ -146,6 +174,10 @@ class Graph {
         return edgeList;
     }
 
+    /**
+     * (NEED TO MOVE TO RENDERER MODULE)
+     * Renders a matrix on UI
+     */
     displayAdjacencyMatrix() {
         const matrixDiv = document.getElementById('adjacencyMatrix');
         matrixDiv.innerHTML = '';

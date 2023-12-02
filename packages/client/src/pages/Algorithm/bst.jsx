@@ -3,10 +3,10 @@ import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import Common from "./Common/common";
-import GraphRenderer from "../../components/GraphRenderer.js";
-import BSTConcreteStrategy from "../../components/AlgorithmSolver/BSTConcreteStrategy";
-import { Node, TreeAnimationData } from "../../components/AlgorithmSolver/GraphData.js";
+import Common from "./commonComponent/commonControls.js";
+import GraphRenderer from "./commonComponent/Canimate";
+import BSTConcreteStrategy from "./commonComponent/AlgorithmSolver/BSTConcreteStrategy.js"
+import { Node, TreeAnimationData } from "./commonComponent/AlgorithmSolver/GraphData.js";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
 var animationData = null;
@@ -39,7 +39,7 @@ var tree = null;
 
 function searchBST(sdata){
   record = []
-  reset()
+  // reset()
   let node = tree.search(sdata,record)
   console.log(node)
 }

@@ -2,17 +2,15 @@
  * TODO: What is this module
  */
 import React, { useState, useEffect, useRef } from "react";
-import GraphRenderer from "../../components/GraphRenderer";
-import HeapConcreteStrategy from "../../components/AlgorithmSolver/HeapConcreteStrategy";
+import GraphRenderer from "./commonComponent/Canimate";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Heapification from "./HeapComponent/heapmethod";
-import Animation from "../../components/GraphRenderer/animate";
-import Common from "./Common/common";
+import Common from "./commonComponent/commonControls";
 import { common } from "@mui/material/colors";
-import { TreeAnimationData, Node } from "../../components/AlgorithmSolver/GraphData";
+import { TreeAnimationData, Node } from "./commonComponent/AlgorithmSolver/GraphData";
 
 var data = [18, 4, 10, 13, ] //7, 9, 3, 2, 8, 1]
 var animationData = null

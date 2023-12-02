@@ -20,16 +20,18 @@ import React, { useState, useEffect , useRef} from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
-import Common from "./Common/common";
-import CAnimation from "./Common/Canimate";
+import Common from "./commonComponent/commonControls.js";
+import GraphRenderer from "./commonComponent/Canimate";
 import Graph from "./DijkstraComponent/Graph"
 import AnimationG from "./DijkstraComponent/graphanimate.js"
+
 var data = [[0, 10, 0, 5, 0],[0, 0, 1, 2, 0],[0, 0, 0, 0, 4],
 [0, 3, 9, 0, 0],[7, 0, 6, 0, 0]]
-//var dataset = []
+var animationData = null
 var record = []
 var step = 0
 var graph = null
+
 function next(){
   if(step>=record.length)
       {
@@ -42,15 +44,15 @@ function next(){
           const c = document.getElementById("c" + t.node).getElementsByTagName("ellipse")[0];
           if(t.change=="stroke"){
             
-            CAnimation.Pathdisplay(c,t.change,"black;blue")
+            GraphRenderer.Pathdisplay(c,t.change,"black;blue")
           }else{
-            CAnimation.Pathdisplay(c,t.change,"white;blue")
+            GraphRenderer.Pathdisplay(c,t.change,"white;blue")
           }
         }
         else{
           record[step].node.forEach(element => {
             const c = document.getElementById("c" + element).getElementsByTagName("ellipse")[0];
-            CAnimation.Pathdisplay(c,"stroke","black;green")
+            GraphRenderer.Pathdisplay(c,"stroke","black;green")
           });
         }
         step++
@@ -69,15 +71,15 @@ function back(){
         if(typeof(t.node)=="string"){
           const c = document.getElementById("c" + t.node).getElementsByTagName("ellipse")[0];
           if(t.change=="stroke"){
-            CAnimation.Pathdisplay(c,t.change,"blue;black")
+            GraphRenderer.Pathdisplay(c,t.change,"blue;black")
           }else{
-            CAnimation.Pathdisplay(c,t.change,"blue;white")
+            GraphRenderer.Pathdisplay(c,t.change,"blue;white")
           }
         }
         else{
           record[step].node.forEach(element => {
             const c = document.getElementById("c" + element).getElementsByTagName("ellipse")[0];
-            CAnimation.Pathdisplay(c,"stroke","green;black")
+            GraphRenderer.Pathdisplay(c,"stroke","green;black")
           });
         }
       }
@@ -91,6 +93,7 @@ const Dijkstra = () => {
   const [createData, setCreateData] = useState('');
 
   const svgRef = useRef(null);
+
   useEffect(() => {
     creategraph(data);
   },[]);
@@ -149,8 +152,12 @@ const Dijkstra = () => {
     graph.dijkstra("A",record);
   }
 
-
-  function validmatrix(valuename){
+  /**
+   * Validate user input and create matrix for DiGraph
+   * @param {*} valuename 
+   * @returns 
+   */
+  function validMatrix(valuename){
     let tdata = document.getElementById(valuename).value
     // Split the input into rows based on line breaks
     const rows = tdata.trim().split('\n');
@@ -185,17 +192,30 @@ const Dijkstra = () => {
     return matrix
   }
 
-const GraphKindChange = (event) => {
+/**
+ * TODO
+ * @param {*} event 
+ */
+const graphKindChange = (event) => {
   const selectedValue = event.target.value;
   setGraphKind(selectedValue);
   setCreateKindVisible(selectedValue !== '');
 };
 
-const CreateKindChange = (event) => {
+/**
+ * TODO
+ * @param {*} event 
+ */
+const createKindChange = (event) => {
   const selectedValue = event.target.value;
   setCreateKind(selectedValue);
 };
 
+/**
+ * TODO
+ * @param {*} valuename 
+ * @returns 
+ */
 const validateEdgeList = (valuename) => {
   let tdata = document.getElementById(valuename).value
   const lines = tdata.split('\n');
@@ -233,7 +253,7 @@ const validateEdgeList = (valuename) => {
         <div style={{ display: 'flex' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label>Select Graph Kind:</label>
-            <select id="graph-kind" value={graphKind} onChange={GraphKindChange}>
+            <select id="graph-kind" value={graphKind} onChange={graphKindChange}>
               <option value="">--Please choose graph kind--</option>
               <option value="Directed">Directed</option>
               <option value="Undirected">Undirected</option>
@@ -241,7 +261,7 @@ const validateEdgeList = (valuename) => {
             {createKindVisible && (
             <>
               <label htmlFor="create-kind">Select Create Kind:</label>
-              <select id="create-kind" value={createKind} onChange={CreateKindChange}>
+              <select id="create-kind" value={createKind} onChange={createKindChange}>
                 <option value="">--Please choose create kind--</option>
                 <option value="AdjacencyMatrix">Adjacency Matrix</option>
                 <option value="EdgeList">Edge List</option>
@@ -253,7 +273,7 @@ const validateEdgeList = (valuename) => {
                 <textarea id="create" rows="5" placeholder="Enter comma-separated numbers"></textarea>
                 <button id="csubmit" onClick={() => {
                   try {
-                    let cdata = validmatrix("create");
+                    let cdata = validMatrix("create");
                     creategraph(cdata)
                   } catch (error) {
                     alert("Error: " + error.message); 

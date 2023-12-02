@@ -127,6 +127,12 @@ class BSTConcreteStrategy {
     return maxNode(node || this.root)
   }
 
+  /**
+   * TODO
+   * @param {*} data 
+   * @param {*} record 
+   * @returns 
+   */
   search(data, record) {
     const searchNode = (node) => {
       if (node === null) return false
