@@ -1,3 +1,15 @@
+/**
+ * Algorithm Solver that implements the Heap (Tree)
+ */
+import { Node } from "./GraphData";
+
+/**
+ * a process of creating a max heap from an array of dataset.
+ * @param {*} localDataset 
+ * @param {*} i 
+ * @param {*} localRecord 
+ * @returns 
+ */
 const maxHeap = (localDataset, i, localRecord) => {
   const n = localDataset.length;
   const left = 2 * i;
@@ -39,7 +51,6 @@ const exchangeData = (index1, index2, localDataset, localRecord) => {
 const getParent = (i) => {
   return Math.floor(i / 2);
 };
-
 
 const Heapification = {
   /**
