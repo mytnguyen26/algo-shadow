@@ -8,7 +8,7 @@ import GraphRenderer from "./commonComponent/Canimate";
 import BSTConcreteStrategy from "./commonComponent/AlgorithmSolver/BSTConcreteStrategy.js"
 import { Node, TreeAnimationData } from "./commonComponent/AlgorithmSolver/GraphData.js";
 
-var data = [4, 7, 8, 2, 1, 3, 5, 9];
+var data = [4, 7, 8, 2,] // 1, 3, 5, 9];
 var animationData = null;
 var record = [];
 var step = 0;
@@ -40,7 +40,7 @@ function postOrder(){
 
 function searchBST(sdata){
   record = []
-  // reset()
+  reset()
   let node = tree.search(sdata,record)
   console.log(node)
 }
@@ -106,8 +106,24 @@ const BST = () => {
   function deleteBST() {
     try {
       let ddata = Common.validOneData("delete");
-      const index = Common.findInArray(ddata, GraphRenderer.dataset);
-      record = GraphRenderer.delete(ddata, index, record);
+      console.log("Deleting", ddata)
+      const index = Common.findInArray(ddata, animationData.dataset);
+      record = []
+      // k delete，t exchange
+      tree.delete(ddata, record)
+      let t = record[record.length-1]
+      if(animationData.dataset[index].position!=t){
+        record.push({
+          e1: t,
+          e2: animationData.dataset[index].position
+        })
+      }
+      record.push({
+        e1: 0,
+        e2: [t, animationData.dataset[index].position]
+      })
+      data.splice(animationData.dataset[index].index-1, 1);
+      reset()
     } catch (error) {
       alert("Error: " + error.message); // 输出错误消息
     }
@@ -116,25 +132,6 @@ const BST = () => {
   function test() {
     console.log(record[0].e1);
     //AnimationB.addGradients(dataset,svgRef)
-  }
-
-  function inOrder() {
-    GraphRenderer.reset(step, record);
-    record = tree.inOrderTraverse();
-  }
-
-  function preOrder() {
-    GraphRenderer.reset();
-    record = tree.preOrderTraverse();
-  }
-
-  function postOrder() {
-    GraphRenderer.reset();
-    record = tree.postOrderTraverse();
-  }
-
-  function reset() {
-    GraphRenderer.reset();
   }
 
   /**
