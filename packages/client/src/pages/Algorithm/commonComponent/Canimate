@@ -59,7 +59,7 @@ const GraphRenderer = {
       .data(animationData.dataset)
       .enter()
       .append("line")
-      .attr("id", (c) => "l" + c.index)
+      .attr("id", (c) => "l" + c.position)
       .attr("x1", (c) => (animationData.getx1(c, width, "line")))
       .attr("y1", (c) => (animationData.gety1(c, my, "line")))
       .attr("x2", (c) => (animationData.getx2(c, width)))
