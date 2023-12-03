@@ -18,7 +18,7 @@ import Heap from "./pages/Algorithm/HeapComponent/HeapGraph.jsx";
 function App() {
   return (
     <Router>
-      <AuthProvider>
+      {/* <AuthProvider> */}
         <Routes>
           <Route path={Paths.HOME} element={<Layout />}>
             <Route index element={<Home />} />
@@ -28,6 +28,7 @@ function App() {
                 <Route path={Paths.HEAP} element={<Heap />} />
                 <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
                 <Route path={Paths.BST} element={<BST />} />
+                <Route path={Paths.HASH} element={<HashTableVisualization />} />
               </Route>
             </Route>
             <Route path={Paths.ABOUT} element={<About />} />
@@ -36,7 +37,7 @@ function App() {
             <Route path={Paths.LOGIN} element={<AuthGuard />} />
           </Route>
         </Routes>
-      </AuthProvider>
+      {/* </AuthProvider> */}
     </Router>
   );
 }

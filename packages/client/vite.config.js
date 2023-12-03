@@ -9,10 +9,15 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
+    transformMode: {
+      web: [/.[tj]sx$/],
+    },
+    css: true,
     coverage: {
       provider: "istanbul", // or 'v8',
       reporter: ["text", "json", "html"],
     },
+    setupFiles: "./setupTests.js",
   },
   resolve: {
     alias: {
