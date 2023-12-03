@@ -81,17 +81,20 @@ class BSTConcreteStrategy {
 
   // Inorder iterates over all nodes（left root right）
   inOrderTraverse() {
+    console.log()
     let backs = []
     const callback = (data) => {
       return data
     }
     const inOrderNode = (node, callback) => {
+      console.log("Node", node)
       if (node !== null) {
         inOrderNode(node.left, callback) // 递归遍历出左节点
         backs.push(callback(node.position)) // 将值push到数组里
         inOrderNode(node.right, callback) // 递归遍历出右节点
       }
     }
+    console.log("Root", this.root)
     inOrderNode(this.root, callback)
     return backs
   }
