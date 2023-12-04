@@ -1,5 +1,5 @@
 import AnimationB from "../bstComponent/bstanimate.jsx";
-import CAnimation from "./Canimate";
+import CAnimation from "./Canimate.js";
 
 const Common= {
     width : 900,
