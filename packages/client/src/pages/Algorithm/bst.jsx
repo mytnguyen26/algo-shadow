@@ -260,7 +260,6 @@ const BST = () => {
               <button onClick={next}>Next Step</button>
               <button onClick={back}>Back</button>
               <button onClick={reset}>Reset</button>
-              <button onClick={test}>Test</button>
             </div>
             <div>
               <ResultsTable results={bstResults} />
