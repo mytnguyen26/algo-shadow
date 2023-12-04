@@ -1,7 +1,6 @@
 /**
  * Algorithm Solver that implements the Binary Search Tree
  */
-import { Node } from "./GraphData.js";
 
 /**
  * This class represent a Binary Trees, and used by BSTConcreteStrategy

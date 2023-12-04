@@ -6,7 +6,7 @@ import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage"
 import HeapConcreteStrategy from "./HeapComponent/heapmethod";
 import Common from "./Common/common";
 import TreeGraphRenderer from "./Common/Canimate.js";
-import { TreeAnimationData, Node } from "./commonComponent/AlgorithmSolver/GraphData";
+import { TreeAnimationData, Node } from "./Common/AnimationData"
 import ResultsTable from "./AlgComponent/tableCreater";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];

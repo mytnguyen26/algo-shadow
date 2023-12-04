@@ -96,8 +96,6 @@ const BST = () => {
 
   function createBST() {
     record = [];
-    reset();
-
     const result = AnalyzeRuntime("createBST", data, () => {
       tree = new BSTConcreteStrategy();
       animationData = new TreeAnimationData(data, "position");
@@ -106,6 +104,7 @@ const BST = () => {
       });
     });
     TreeGraphRenderer.renderGraph(animationData, svgRef);
+    reset();
     addResult(result); // Correctly add the result
   }
 
