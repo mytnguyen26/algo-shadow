@@ -95,7 +95,6 @@ const BST = () => {
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
-    data = input;
     createbst();
   };
 
@@ -111,7 +110,7 @@ const BST = () => {
       });
     });
     AnimationB.createbst(dataset,svgRef);
-    setBstResult(result); // Update state
+    addResult(result); // Correctly add the result
   }
 
   function insertbst(idata){
@@ -162,55 +161,6 @@ const BST = () => {
       return updatedResults;
     });
   };
-
-  function createbst() {
-    record = [];
-    const result = AnalyzeRuntime("createBST", data, () => {
-      tree = new BinarySearchTree();
-      datatran(data);
-      dataset.forEach((element) => {
-        tree.insert(element, record);
-      });
-    });
-    AnimationB.createbst(dataset, svgRef);
-    addResult(result); // Correctly add the result
-  }
-
-  function insertbst(idata) {
-    record = [];
-    data.push(Number(idata[0]));
-    dataset.push({ index: data.length, value: Number(idata[0]), position: 1 });
-    tree.insert(dataset[data.length - 1], record);
-    record.push(dataset[data.length - 1].index);
-    AnimationB.createbst(dataset, svgRef);
-  }
-
-  function deletebst(ddata, k) {
-    record = [];
-    //k 被删除，i交换
-    tree.delete(ddata, record);
-    //tree.inOrderTraverse()
-    let t = record[record.length - 1];
-    for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {
-        if (dataset[i].value != ddata) {
-          console.log(
-            "exchange " + dataset[i].position + " and " + dataset[k].position,
-          );
-          record.push({
-            e1: dataset[i].position,
-            e2: dataset[k].position,
-          });
-        }
-        break;
-      }
-    }
-    record.push({
-      e1: 0,
-      e2: dataset[k].position,
-    });
-    data.splice(dataset[i].index - 1, 1);
-  }
 
   function test() {
     console.log(record[0].e1);
