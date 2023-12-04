@@ -155,7 +155,18 @@ const TreeGraphRenderer = {
       .attr("dx", (c) => animationData.getx1(c, width))
       .attr("dy", (c) => animationData.gety1(c, my) + 5)
       .text((t) => t.value);
-  }
+  },
+  
+  /**
+   * TODO
+   * @param {*} index 
+   */
+  pathDisappear(index) {
+    document.getElementById("c"+index).setAttribute("stroke","black")
+    if(index!=1){
+      document.getElementById("l"+index).setAttribute("stroke","black")
+    }
+  },
 }
 
 export default TreeGraphRenderer;
