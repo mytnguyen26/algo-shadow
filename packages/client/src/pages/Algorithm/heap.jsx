@@ -139,7 +139,7 @@ function HeapPage() {
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
           try {
-            let cdata = Common.validdata("create");
+            let cdata = Common.validData("create");
             data = cdata.map(item => Number(item.trim()))
             createHeap()
           } catch (error) {
@@ -150,7 +150,7 @@ function HeapPage() {
         <input id="insert" placeholder="Insert a number" />
         <button id="isubmit" onClick={() => {
           try {
-            let idata = Common.validonedata("insert");
+            let idata = Common.validOneData("insert");
             insertheap(idata)
           } catch (error) {
             alert("Error: " + error.message); 
@@ -160,8 +160,8 @@ function HeapPage() {
         <input id="delete" placeholder="Delete a number" />
         <button id="dsubmit" onClick={() => {
           try {
-            let ddata = Common.validonedata("delete");
-            const index = Common.findinarray(ddata,dataset);
+            let ddata = Common.validOneData("delete");
+            const index = Common.findInArray(ddata,dataset);
             deleteheap(index)
           } catch (error) {
             alert("Error: " + error.message); 
@@ -172,9 +172,9 @@ function HeapPage() {
         <input id="increase" placeholder="increase a number" />
         <button id="ksubmit" onClick={() => {
           try {
-            let sdata = Common.validonedata("select");
-            let idata = Common.validonedata("increase");
-            const index = Common.findinarray(sdata,dataset);
+            let sdata = Common.validOneData("select");
+            let idata = Common.validOneData("increase");
+            const index = Common.findInArray(sdata,dataset);
             increasekey(index,idata);
           } catch (error) {
             alert("Error: " + error.message); 
