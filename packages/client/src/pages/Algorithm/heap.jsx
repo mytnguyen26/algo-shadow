@@ -70,7 +70,6 @@ function HeapPage() {
       return dataset;
     });
     totallen = dataset.length
-    setHeapResults(result);
     addResult(result);
   }
 
