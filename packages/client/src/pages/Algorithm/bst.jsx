@@ -6,7 +6,7 @@ import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import BSTConcreteStrategy from "./bstComponent/bstmethod.js";
+import BSTConcreteStrategy from "./AlgorithmSolver/bstsolver.js";
 import Common from "./Common/common";
 import { TreeAnimationData } from "./Common/AnimationData.js";
 import TreeGraphRenderer from "./Common/Canimate";
