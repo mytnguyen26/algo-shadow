@@ -5,9 +5,9 @@ const getdepth = (c) => {
 
 /**
  * Helper function
- * @param {*} c 
- * @param {*} width 
- * @returns 
+ * @param {*} c
+ * @param {*} width
+ * @returns
  */
 const getx = (c, width) => {
   const depth = getdepth(c);
@@ -18,13 +18,13 @@ const getx = (c, width) => {
 
 /**
  * Helper function for animateExchange
- * @param {*} c1 
- * @param {*} x1 
- * @param {*} x2 
- * @param {*} y1 
- * @param {*} y2 
- * @param {*} attributeNameX 
- * @param {*} attributeNameY 
+ * @param {*} c1
+ * @param {*} x1
+ * @param {*} x2
+ * @param {*} y1
+ * @param {*} y2
+ * @param {*} attributeNameX
+ * @param {*} attributeNameY
  */
 const addmove = (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) => {
   // Animation for X-axis
@@ -65,7 +65,7 @@ const Animation = {
 
     // draw links
     const p = svg
-      .append("g")              // "g" is used to group SVG shape together
+      .append("g") // "g" is used to group SVG shape together
       .attr("stroke", "black")
       .attr("stroke-width", "1")
       .selectAll("line")
@@ -112,8 +112,7 @@ const Animation = {
       .attr("dy", (c) => my * (getdepth(c.index) + 1) + 5)
       .text((t) => t.value);
   },
-
-  finalTree: (dataSetToUse, svgRef) => {
+  fianlTree: (dataSetToUse, svgRef) => {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -196,7 +195,6 @@ const Animation = {
   },
 
   showelement: (e, size) => {
-    console.log(document.getElementById("t" + e));
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";

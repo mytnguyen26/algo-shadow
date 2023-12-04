@@ -1,4 +1,8 @@
+// sum.test.js
+import { expect, it, describe } from "vitest";
 
-test('adds 1 + 2 to equal 3', () => {
-    expect(1+2).toBe(3);
+describe("adds 1 + 2 to equal 3", () => {
+  it("should render correctly", () => {
+    expect(1 + 2).toBe(3);
+  });
 });

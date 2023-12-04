@@ -143,8 +143,6 @@ const AnimationB = {
   // Insert the circles group before layer2
   svg.node().insertBefore(circles.node(), layer2.nextSibling);
   }
-}
-
-
+};
 
 export default AnimationB;

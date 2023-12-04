@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from './AlgComponent/runtimeAnalysis.jsx';
@@ -7,12 +7,13 @@ import BinarySearchTree from "./bstComponent/bstmethod.js";
 import AnimationB from "./bstComponent/bstanimate.jsx";
 import Common from "./Common/common";
 import CAnimation from "./Common/Canimate";
+import ResultsTable from "./AlgComponent/tableCreater.jsx";
 
-var data = [4,7,8,2,1,3,5,9]
-var dataset = []
-var record = []
-var step = 0
-var tree = null
+var data = [4, 7, 8, 2, 1, 3, 5, 9];
+var dataset = [];
+var record = [];
+var step = 0;
+var tree = null;
 
 function next(){
   if(step>=record.length)
@@ -64,14 +65,14 @@ function Inorder(){
   //console.log(record)
 }
 
-function Preorder(){
-  reset()
-  record = tree.preOrderTraverse()  
+function Preorder() {
+  reset();
+  record = tree.preOrderTraverse();
 }
 
-function Postorder(){
-  reset()
-  record = tree.postOrderTraverse()
+function Postorder() {
+  reset();
+  record = tree.postOrderTraverse();
 }
 
 function Searchbst(sdata){
@@ -85,17 +86,16 @@ const BST = () => {
   const svgRef = useRef(null);
   useEffect(() => {
     createbst();
-  },[]);
+  }, []);
 
   useEffect(() => {
-    SaveInputToLocalStorage
-  },[]);
-
-  const [bstResult, setBstResult] = useState(null);
+    SaveInputToLocalStorage;
+  }, []);
 
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
-    data = input
+    data = input;
+    data = input;
     createbst();
   };
 
@@ -142,9 +142,79 @@ const BST = () => {
     data.splice(dataset[k].index-1, 1); 
   }
 
-  function test(){
-    console.log(record)
-    console.log(tree)
+  const [bstResults, setBstResults] = useState(() => {
+    const savedResults = localStorage.getItem("bstResults");
+    return savedResults ? JSON.parse(savedResults) : [];
+  });
+
+  const addResult = (newResult) => {
+    setBstResults((prevResults) => {
+      // Ensure prevResults is always an array
+      const updatedResults = Array.isArray(prevResults)
+        ? [...prevResults, newResult]
+        : [newResult];
+
+      if (updatedResults.length > 10) {
+        updatedResults.shift(); // Remove the oldest result
+      }
+
+      localStorage.setItem("bstResults", JSON.stringify(updatedResults));
+      return updatedResults;
+    });
+  };
+
+  function createbst() {
+    record = [];
+    const result = AnalyzeRuntime("createBST", data, () => {
+      tree = new BinarySearchTree();
+      datatran(data);
+      dataset.forEach((element) => {
+        tree.insert(element, record);
+      });
+    });
+    AnimationB.createbst(dataset, svgRef);
+    addResult(result); // Correctly add the result
+  }
+
+  function insertbst(idata) {
+    record = [];
+    data.push(Number(idata[0]));
+    dataset.push({ index: data.length, value: Number(idata[0]), position: 1 });
+    tree.insert(dataset[data.length - 1], record);
+    record.push(dataset[data.length - 1].index);
+    AnimationB.createbst(dataset, svgRef);
+  }
+
+  function deletebst(ddata, k) {
+    record = [];
+    //k 被删除，i交换
+    tree.delete(ddata, record);
+    //tree.inOrderTraverse()
+    let t = record[record.length - 1];
+    for (var i = 0; i < dataset.length; i++) {
+      if (dataset[i].index == t) {
+        if (dataset[i].value != ddata) {
+          console.log(
+            "exchange " + dataset[i].position + " and " + dataset[k].position,
+          );
+          record.push({
+            e1: dataset[i].position,
+            e2: dataset[k].position,
+          });
+        }
+        break;
+      }
+    }
+    record.push({
+      e1: 0,
+      e2: dataset[k].position,
+    });
+    data.splice(dataset[i].index - 1, 1);
+  }
+
+  function test() {
+    console.log(record[0].e1);
+    //AnimationB.addGradients(dataset,svgRef)
   }
 
   return (
@@ -194,38 +264,81 @@ const BST = () => {
           }}>Search</button>
         </div>
 
-        <div style={{ flexGrow: 1 }}>
-          <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
+            <input id="insert" placeholder="Insert a number" />
+            <button
+              id="isubmit"
+              onClick={() => {
+                try {
+                  let idata = Common.validonedata("insert");
+                  insertbst(idata);
+                } catch (error) {
+                  alert("Error: " + error.message); // 输出错误消息
+                }
+              }}
+            >
+              Insert
+            </button>
 
-          {bstResult && (
-            <div>
-              <h3>BST Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )}
-
-          <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={Inorder}>Inorder</button>
-          <button onClick={Preorder}>Preorder</button>
-          <button onClick={Postorder}>Postorder</button>
+            <input id="delete" placeholder="Insert a number" />
+            <button
+              id="dsubmit"
+              onClick={() => {
+                try {
+                  let ddata = Common.validonedata("delete");
+                  const index = Common.findinarray(ddata, dataset);
+                  deletebst(ddata, index);
+                } catch (error) {
+                  alert("Error: " + error.message); // 输出错误消息
+                }
+              }}
+            >
+              Delete
+            </button>
           </div>
-        <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
-          <button onClick={next}>Next Step</button>
-          <button onClick={back}>Back</button>
-          <button onClick={reset}>Reset</button>
-          <button onClick={test}>Test</button>
+
+          <div style={{ flexGrow: 1 }}>
+            <AlgorithmSpace
+              svgRef={svgRef}
+              width={Common.width}
+              height={Common.height}
+            />
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "middle",
+                gap: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <button onClick={Inorder}>Inorder</button>
+              <button onClick={Preorder}>Preorder</button>
+              <button onClick={Postorder}>Postorder</button>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "middle",
+                gap: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <button onClick={next}>Next Step</button>
+              <button onClick={back}>Back</button>
+              <button onClick={reset}>Reset</button>
+              <button onClick={test}>Test</button>
+            </div>
+          <div>
+            <ResultsTable results={bstResults} />
+          </div>
+          <div>
+            <SaveInputToLocalStorage
+              algorithm="bst"
+              inputData={data}
+              useHisInput={useHisInput}
+            />
           </div>
         </div>
-        <div><SaveInputToLocalStorage algorithm="bst" inputData={data} useHisInput={useHisInput}/>
-          </div>
-        
-
-      </div>
       </Box>
     </Container>
   );

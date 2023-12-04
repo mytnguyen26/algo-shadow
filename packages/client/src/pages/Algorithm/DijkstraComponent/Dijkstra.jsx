@@ -1,5 +1,8 @@
+/**
+ * This is Dijkstra page component for the UI
+ */
 import Box from "@mui/material/Box";
-import { DijkstraGraph } from "./DijkstraGraph.jsx";
+import { DijkstraGraph } from "../../components/dijkstra/DijkstraGraph.jsx";
 
 var EdgeList = [
   [7,10],
