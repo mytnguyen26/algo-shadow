@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import HeapConcreteStrategy from "./AlgorithmSolver/heapsolver.js";
+import HeapConcreteStrategy from "../../algorithm-solver/heapsolver.js";
 import Common from "./Common/common";
 import TreeGraphRenderer from "./Common/Canimate.js";
 import { TreeAnimationData, Node } from "./Common/AnimationData"
