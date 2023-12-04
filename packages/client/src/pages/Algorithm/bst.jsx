@@ -174,7 +174,7 @@ const BST = () => {
         <input id="create" placeholder="Enter comma separated numbers" />
         <button id="csubmit" onClick={() => {
           try {
-            let cdata = Common.validdata("create");
+            let cdata = Common.validData("create");
             data = cdata.map(item => Number(item.trim()))
             createbst()
           } catch (error) {
@@ -185,7 +185,7 @@ const BST = () => {
         <input id="insert" placeholder="Insert a number" />
         <button id="isubmit" onClick={() => {
           try {
-            let idata = Common.validonedata("insert");
+            let idata = Common.validOneData("insert");
             insertbst(idata)
           } catch (error) {
             alert("Error: " + error.message); 
@@ -195,8 +195,8 @@ const BST = () => {
         <input id="delete" placeholder="Insert a number" />
         <button id="dsubmit" onClick={() => {
           try {
-            let ddata = Common.validonedata("delete");
-            const index = Common.findinarray(ddata,dataset);
+            let ddata = Common.validOneData("delete");
+            const index = Common.findInArray(ddata,dataset);
             deletebst(ddata,index)
           } catch (error) {
             alert("Error: " + error.message); 
@@ -206,52 +206,19 @@ const BST = () => {
         <input id="search" placeholder="Insert a number" />
         <button id="ssubmit" onClick={() => {
           try {
-            let sdata = Common.validonedata("search");
+            let sdata = Common.validOneData("search");
             Searchbst(sdata)
           } catch (error) {
             alert("Error: " + error.message); 
           }
           }}>Search</button>
-        </div>
-
-            <input id="insert" placeholder="Insert a number" />
-            <button
-              id="isubmit"
-              onClick={() => {
-                try {
-                  let idata = Common.validonedata("insert");
-                  insertbst(idata);
-                } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
-                }
-              }}
-            >
-              Insert
-            </button>
-
-            <input id="delete" placeholder="Insert a number" />
-            <button
-              id="dsubmit"
-              onClick={() => {
-                try {
-                  let ddata = Common.validonedata("delete");
-                  const index = Common.findinarray(ddata, dataset);
-                  deletebst(ddata, index);
-                } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
-                }
-              }}
-            >
-              Delete
-            </button>
-          </div>
-
-          <div style={{ flexGrow: 1 }}>
-            <AlgorithmSpace
-              svgRef={svgRef}
-              width={Common.width}
-              height={Common.height}
-            />
+      </div>
+        <div style={{ flexGrow: 1 }}>
+          <AlgorithmSpace
+            svgRef={svgRef}
+            width={Common.width}
+            height={Common.height}
+          />
 
             <div
               style={{
@@ -289,6 +256,7 @@ const BST = () => {
             />
           </div>
         </div>
+      </div>
       </Box>
     </Container>
   );
