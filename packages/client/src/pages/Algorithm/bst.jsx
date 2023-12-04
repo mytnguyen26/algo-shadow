@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
+import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Common from "./commonComponent/commonControls.js";
 import GraphRenderer from "./commonComponent/Canimate";

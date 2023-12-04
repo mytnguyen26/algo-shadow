@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import GraphRenderer from "./commonComponent/Canimate";
 import { Button, TextField } from '@mui/material';
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
+import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import Heapification from "./HeapComponent/heapmethod";
 import Common from "./commonComponent/commonControls";

@@ -304,18 +304,6 @@ const validateEdgeList = (valuename) => {
         <div style={{ flexGrow: 1 }}>
         <div id="graph-container"></div>
           <AlgorithmSpace svgRef={svgRef} width={Common.width} height={Common.height} />
-          
-          {/* {bstResult && (
-            <div>
-              <h3>Dijkstra Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )} */}
         <div style={{ display: 'flex', justifyContent: 'middle', gap: '10px', marginTop: '10px' }}>
         <button onClick={next}>Next Step</button>
         <button onClick={back}>Back</button>
