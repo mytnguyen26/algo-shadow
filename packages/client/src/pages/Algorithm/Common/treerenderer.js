@@ -6,8 +6,8 @@
  */
 import * as d3 from "d3";
 
-const TreeGraphRenderer = {
-  addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
+class TreeGraphRenderer {
+  static addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
     // Animation for X-axis
     const animateElementX = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -35,7 +35,7 @@ const TreeGraphRenderer = {
     animateElementY.setAttribute("fill", "freeze");
     c1.appendChild(animateElementY);
     animateElementY.beginElement();
-  },
+  }
 
   /**
    * A helper function used in Graph to animate movement between 2 nodes
@@ -43,7 +43,7 @@ const TreeGraphRenderer = {
    * @param {*} c1 is the first node
    * @param {*} c2 is the second node
    */
-  animateExchange: (c1, c2) => {
+  static animateExchange (c1, c2) {
     let x1 = c1.getAttribute("dx") || c1.getAttribute("cx");
     let y1 = c1.getAttribute("dy") || c1.getAttribute("cy");
     let x2 = c2.getAttribute("dx") || c2.getAttribute("cx");
@@ -74,29 +74,29 @@ const TreeGraphRenderer = {
     c1.setAttribute("dy", y2);
     c2.setAttribute("dx", x1);
     c2.setAttribute("dy", y1);
-  },
+  }
 
   /**
    * A helper function used in Graph to animate removal of nodes and links
    * @param {*} e
    * @param {*} size
    */
-  deleteElement(e, size) {
+  static deleteElement(e, size) {
     document.getElementById("t" + e).style.display = "none";
     document.getElementById("c" + size).style.display = "none";
     document.getElementById("l" + size).style.display = "none";
-  },
+  }
 
   /**
    * TODO
    * @param {*} e
    * @param {*} size
    */
-  showElement(e, size) {
+  static showElement(e, size) {
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
-  },
+  }
 
   /**
    * TODO
@@ -104,7 +104,7 @@ const TreeGraphRenderer = {
    * @param {*} attribute
    * @param {*} color
    */
-  pathDisplay(circle, attribute, color) {
+  static pathDisplay(circle, attribute, color) {
     //const circle = document.getElementById("c" + index).getElementsByTagName("ellipse")[0];
     // Set up the circle gradient animation
     const circleAnimate = document.createElementNS(
@@ -118,7 +118,7 @@ const TreeGraphRenderer = {
 
     circle.appendChild(circleAnimate);
     circleAnimate.beginElement();
-  },
+  }
 
   /**
    * Renders the Graph from input dataset with D3 and svgRef
@@ -128,7 +128,7 @@ const TreeGraphRenderer = {
    * @param {*} svgRef [description]
    *
    */
-  renderGraph(animationData, svgRef) {
+  static renderGraph(animationData, svgRef) {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -174,18 +174,18 @@ const TreeGraphRenderer = {
       .attr("dx", (c) => animationData.getx1(c, width))
       .attr("dy", (c) => animationData.gety1(c, my) + 5)
       .text((t) => t.value);
-  },
+  }
 
   /**
    * TODO
    * @param {*} index
    */
-  pathDisappear(index) {
+  static pathDisappear(index) {
     document.getElementById("c" + index).setAttribute("stroke", "black");
     if (index != 1) {
       document.getElementById("l" + index).setAttribute("stroke", "black");
     }
-  },
-};
+  }
+}
 
 export default TreeGraphRenderer;

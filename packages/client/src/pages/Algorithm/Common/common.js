@@ -1,7 +1,7 @@
 /**
  * TODO
  */
-import TreeGraphRenderer from "./Canimate.js";
+import TreeGraphRenderer from "./treerenderer.js";
 
 const Common = {
   width: 900,

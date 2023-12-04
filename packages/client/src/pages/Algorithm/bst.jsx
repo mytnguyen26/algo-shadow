@@ -9,7 +9,7 @@ import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage"
 import BSTConcreteStrategy from "../../algorithm-solver/bstsolver.js";
 import Common from "./Common/common";
 import { TreeAnimationData } from "./Common/animationdata.js";
-import TreeGraphRenderer from "./Common/Canimate";
+import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];

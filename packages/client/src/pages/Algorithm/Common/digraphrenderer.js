@@ -1,8 +1,11 @@
 import * as d3 from "d3";
 import Viz from "viz.js";
 import { Module, render } from "viz.js/full.render";
-const AnimationG = {
-  creategraph(graph, svgRef) {
+import TreeGraphRenderer from "./treerenderer";
+
+class DiGraphRenderer extends TreeGraphRenderer {
+
+  static renderGraph(graph, svgRef) {
     const viz = new Viz({ Module, render });
 
     var graphvizCode = `
@@ -44,7 +47,7 @@ const AnimationG = {
       .catch((error) => {
         console.error(error);
       });
-  },
-};
+  }
+}
 
-export default AnimationG;
+export default DiGraphRenderer;
