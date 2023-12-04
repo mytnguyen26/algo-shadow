@@ -8,7 +8,7 @@ import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import BSTConcreteStrategy from "../../algorithm-solver/bstsolver.js";
 import Common from "./Common/common";
-import { TreeAnimationData } from "./Common/AnimationData.js";
+import { TreeAnimationData } from "./Common/animationdata.js";
 import TreeGraphRenderer from "./Common/Canimate";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
 
