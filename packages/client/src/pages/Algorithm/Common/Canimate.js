@@ -1,13 +1,13 @@
 /**
- * A TreeGraphRenderer renders the visuals of the data structure for 
+ * A TreeGraphRenderer renders the visuals of the data structure for
  * `algorithm`. It is only responsible
- * for visualizing data after manipulation or computation by one of the 
+ * for visualizing data after manipulation or computation by one of the
  * AlgorithmSolver strategy
  */
 import * as d3 from "d3";
 
 const TreeGraphRenderer = {
-  addMove (c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
+  addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY) {
     // Animation for X-axis
     const animateElementX = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -21,7 +21,7 @@ const TreeGraphRenderer = {
     animateElementX.setAttribute("fill", "freeze");
     c1.appendChild(animateElementX);
     animateElementX.beginElement();
-  
+
     // Animation for Y-axis
     const animateElementY = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -50,53 +50,72 @@ const TreeGraphRenderer = {
     let y2 = c2.getAttribute("dy") || c2.getAttribute("cy");
     const attributeNameX = c1.tagName.toLowerCase() === "text" ? "dx" : "cx";
     const attributeNameY = c1.tagName.toLowerCase() === "text" ? "dy" : "cy";
-    
-    TreeGraphRenderer.addMove(c1, x1, x2, y1, y2, attributeNameX, attributeNameY);
-    TreeGraphRenderer.addMove(c2, x2, x1, y2, y1, attributeNameX, attributeNameY);
-    
+
+    TreeGraphRenderer.addMove(
+      c1,
+      x1,
+      x2,
+      y1,
+      y2,
+      attributeNameX,
+      attributeNameY,
+    );
+    TreeGraphRenderer.addMove(
+      c2,
+      x2,
+      x1,
+      y2,
+      y1,
+      attributeNameX,
+      attributeNameY,
+    );
+
     c1.setAttribute("dx", x2);
     c1.setAttribute("dy", y2);
     c2.setAttribute("dx", x1);
     c2.setAttribute("dy", y1);
   },
-  
+
   /**
    * A helper function used in Graph to animate removal of nodes and links
-   * @param {*} e 
-   * @param {*} size 
+   * @param {*} e
+   * @param {*} size
    */
   deleteElement(e, size) {
     document.getElementById("t" + e).style.display = "none";
     document.getElementById("c" + size).style.display = "none";
     document.getElementById("l" + size).style.display = "none";
   },
-  
+
   /**
    * TODO
-   * @param {*} e 
-   * @param {*} size 
+   * @param {*} e
+   * @param {*} size
    */
   showElement(e, size) {
     document.getElementById("t" + e).style.display = "block";
     document.getElementById("c" + size).style.display = "block";
     document.getElementById("l" + size).style.display = "block";
   },
-  
+
   /**
    * TODO
-   * @param {*} circle 
-   * @param {*} attribute 
-   * @param {*} color 
+   * @param {*} circle
+   * @param {*} attribute
+   * @param {*} color
    */
-  pathDisplay(circle, attribute, color){
+  pathDisplay(circle, attribute, color) {
     //const circle = document.getElementById("c" + index).getElementsByTagName("ellipse")[0];
     // Set up the circle gradient animation
-    const circleAnimate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+    const circleAnimate = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "animate",
+    );
     circleAnimate.setAttribute("attributeName", attribute);
     circleAnimate.setAttribute("values", color);
     circleAnimate.setAttribute("dur", "1s");
     circleAnimate.setAttribute("fill", "freeze");
-      
+
     circle.appendChild(circleAnimate);
     circleAnimate.beginElement();
   },
@@ -107,9 +126,9 @@ const TreeGraphRenderer = {
    * between a source node and target nodes.
    * @param {*} dataset [description]
    * @param {*} svgRef [description]
-   * 
+   *
    */
-  renderGraph (animationData, svgRef) {
+  renderGraph(animationData, svgRef) {
     const width = svgRef.current.clientWidth;
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -123,10 +142,10 @@ const TreeGraphRenderer = {
       .enter()
       .append("line")
       .attr("id", (c) => "l" + c.position)
-      .attr("x1", (c) => (animationData.getx1(c, width, "line")))
-      .attr("y1", (c) => (animationData.gety1(c, my, "line")))
-      .attr("x2", (c) => (animationData.getx2(c, width)))
-      .attr("y2", (c) => (animationData.gety2(c, my)))
+      .attr("x1", (c) => animationData.getx1(c, width, "line"))
+      .attr("y1", (c) => animationData.gety1(c, my, "line"))
+      .attr("x2", (c) => animationData.getx2(c, width))
+      .attr("y2", (c) => animationData.gety2(c, my));
     // append circle for node
     const c = svg
       .append("g")
@@ -156,17 +175,17 @@ const TreeGraphRenderer = {
       .attr("dy", (c) => animationData.gety1(c, my) + 5)
       .text((t) => t.value);
   },
-  
+
   /**
    * TODO
-   * @param {*} index 
+   * @param {*} index
    */
   pathDisappear(index) {
-    document.getElementById("c"+index).setAttribute("stroke","black")
-    if(index!=1){
-      document.getElementById("l"+index).setAttribute("stroke","black")
+    document.getElementById("c" + index).setAttribute("stroke", "black");
+    if (index != 1) {
+      document.getElementById("l" + index).setAttribute("stroke", "black");
     }
   },
-}
+};
 
 export default TreeGraphRenderer;

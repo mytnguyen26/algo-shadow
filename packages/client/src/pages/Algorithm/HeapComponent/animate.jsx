@@ -15,12 +15,20 @@ const Animation = {
       .enter()
       .append("line")
       .attr("id", (c) => "l" + c.index)
-      .attr("x1", (c) => (c.index === 1 ? null : CAnimation.getx(c.index, width)))
-      .attr("y1", (c) => (c.index === 1 ? null : CAnimation.my * (CAnimation.getdepth(c.index) + 1)))
+      .attr("x1", (c) =>
+        c.index === 1 ? null : CAnimation.getx(c.index, width),
+      )
+      .attr("y1", (c) =>
+        c.index === 1
+          ? null
+          : CAnimation.my * (CAnimation.getdepth(c.index) + 1),
+      )
       .attr("x2", (c) =>
         c.index === 1 ? null : CAnimation.getx(Math.floor(c.index / 2), width),
       )
-      .attr("y2", (c) => (c.index === 1 ? null : CAnimation.my * CAnimation.getdepth(c.index)));
+      .attr("y2", (c) =>
+        c.index === 1 ? null : CAnimation.my * CAnimation.getdepth(c.index),
+      );
     const c = svg
       .append("g")
       .attr("stroke", "black")
@@ -64,11 +72,15 @@ const Animation = {
       .append("line")
       .attr("id", (c) => "l" + c.index)
       .attr("x1", (c, i) => (i === 0 ? null : CAnimation.getx(i + 1, width)))
-      .attr("y1", (c, i) => (i === 0 ? null : CAnimation.my * (CAnimation.getdepth(i + 1) + 1)))
+      .attr("y1", (c, i) =>
+        i === 0 ? null : CAnimation.my * (CAnimation.getdepth(i + 1) + 1),
+      )
       .attr("x2", (c, i) =>
         i === 0 ? null : CAnimation.getx(Math.floor((i + 1) / 2), width),
       )
-      .attr("y2", (c, i) => (i === 0 ? null : CAnimation.my * CAnimation.getdepth(i + 1)));
+      .attr("y2", (c, i) =>
+        i === 0 ? null : CAnimation.my * CAnimation.getdepth(i + 1),
+      );
     const c = svg
       .append("g")
       .attr("stroke", "black")
@@ -95,7 +107,10 @@ const Animation = {
         return "t" + c.index;
       })
       .attr("dx", (c, i) => CAnimation.getx(i + 1, width))
-      .attr("dy", (c, i) => CAnimation.my * (CAnimation.getdepth(i + 1) + 1) + 5)
+      .attr(
+        "dy",
+        (c, i) => CAnimation.my * (CAnimation.getdepth(i + 1) + 1) + 5,
+      )
       .text((t) => t.value);
   },
 };
