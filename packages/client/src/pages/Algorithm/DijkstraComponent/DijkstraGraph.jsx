@@ -6,7 +6,7 @@ import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
 import { useNodes } from "./useNodes.jsx";
 import { useLinks } from "./useLinks.jsx";
-import DijkstraConcreteStrategy from "../../../components/AlgorithmSolver/DijkstraConcreteStrategy.js";
+import DijkstraConcreteStrategy from "../AlgorithmSolver/dijkstrasolver.js";
 
 export const DijkstraGraph = () => {
   const [nodes, setNodes] = useNodes();
