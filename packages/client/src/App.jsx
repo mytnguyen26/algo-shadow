@@ -16,25 +16,25 @@ import BST from "./pages/Algorithm/bst.jsx";
 function App() {
   return (
     <Router>
-      {/*<AuthProvider>*/}
-      <Routes>
-        <Route path={Paths.HOME} element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route element={<AuthGuard />}>
-            <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
-              <Route index element={<Algorithm />} />
-              <Route path={Paths.HEAP} element={<Heap />} />
-              <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
-              <Route path={Paths.BST} element={<BST />} />
+      <AuthProvider>
+        <Routes>
+          <Route path={Paths.HOME} element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route element={<AuthGuard />}>
+              <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
+                <Route index element={<Algorithm />} />
+                <Route path={Paths.HEAP} element={<Heap />} />
+                <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
+                <Route path={Paths.BST} element={<BST />} />
+              </Route>
             </Route>
+            <Route path={Paths.ABOUT} element={<About />} />
+            <Route path={Paths.LOGOUT} element={<Logout />} />
+            <Route path={Paths.CALLBACK} element={<Callback />} />
+            <Route path={Paths.LOGIN} element={<AuthGuard />} />
           </Route>
-          <Route path={Paths.ABOUT} element={<About />} />
-          <Route path={Paths.LOGOUT} element={<Logout />} />
-          <Route path={Paths.CALLBACK} element={<Callback />} />
-          <Route path={Paths.LOGIN} element={<AuthGuard />} />
-        </Route>
-      </Routes>
-      {/*</AuthProvider>*/}
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
