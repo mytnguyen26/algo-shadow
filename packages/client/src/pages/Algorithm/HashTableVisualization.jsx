@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./HashTableVisualization.css";
-import { djb2Hash, hashFunc } from "./HashTableLogic";
+import "./HashComponent/HashTableVisualization.css";
+import { djb2Hash, hashFunc } from "./HashComponent/HashTableLogic";
 
 const MAX = 20;
 const HashTableVisualization = () => {

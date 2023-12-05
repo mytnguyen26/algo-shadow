@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/auth.context.jsx";
 import { Logout } from "./pages/Auth/logout.jsx";
 import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
+import HASH from "./pages/Algorithm/HashTableVisualization.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path={Paths.HEAP} element={<Heap />} />
               <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
               <Route path={Paths.BST} element={<BST />} />
+              <Route path={Paths.HASH} element={<HASH />} />
             </Route>
           </Route>
           <Route path={Paths.ABOUT} element={<About />} />

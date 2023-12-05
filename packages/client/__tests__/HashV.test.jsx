@@ -1,7 +1,7 @@
 
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import HashTableVisualization from '../src/pages/Algorithm/HashComponent/HashTableVisualization';
+import HashTableVisualization from '../src/pages/Algorithm/HashTableVisualization';
 import { djb2Hash, hashFunc } from '../src/pages/Algorithm/HashComponent/HashTableLogic';
 
 const mockedAlert = vi.fn();
