@@ -96,7 +96,7 @@ const Animation = {
       .attr("cx", (c) => getx(c.index, width))
       .attr("cy", (c) => my * (getdepth(c.index) + 1))
       .attr("r", 20);
-    
+
     // draw label
     const t = svg
       .append("g")
@@ -136,8 +136,8 @@ const Animation = {
         i === 0 ? null : getx(Math.floor((i + 1) / 2), width),
       )
       .attr("y2", (c, i) => (i === 0 ? null : my * getdepth(i + 1)));
-      //
-    
+    //
+
     // draw node
     const c = svg
       .append("g")

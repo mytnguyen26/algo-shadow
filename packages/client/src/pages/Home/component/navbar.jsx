@@ -9,7 +9,7 @@ import { Paths } from "../../../constants/Paths.js";
 import Contact from "../contact";
 import { useAuth } from "../../../context/auth.context.jsx";
 import { useState, useEffect } from "react";
-import Snackbar from '@mui/material/Snackbar';
+import Snackbar from "@mui/material/Snackbar";
 
 export const Navbar = () => {
   const { token } = useAuth();
@@ -25,7 +25,7 @@ export const Navbar = () => {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackBar(false); // This line was missing its closing bracket.
@@ -61,13 +61,24 @@ export const Navbar = () => {
     <Box>
       {/* Grey navbar section */}
       <Box sx={{ bgcolor: "grey.200", paddingX: 2 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography variant="h5">Algo-Shadow</Typography>
           <Stack direction="row">
             <SideList sx={{ display: "flex", direction: "row" }}>
               {configs.map((config) => (
                 <ListItem disablePadding key={config.name}>
-                  <ListItemButton onClick={config.action || (() => { window.location.href = config.path })}>
+                  <ListItemButton
+                    onClick={
+                      config.action ||
+                      (() => {
+                        window.location.href = config.path;
+                      })
+                    }
+                  >
                     <ListItemText primary={config.name} />
                   </ListItemButton>
                 </ListItem>
@@ -96,9 +107,9 @@ export const Navbar = () => {
         open={snackBar}
         autoHideDuration={6000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: "100%" }}>
           Please Login your account to access algorithm page!
         </Alert>
       </Snackbar>
