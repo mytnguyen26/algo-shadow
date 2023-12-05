@@ -19,7 +19,7 @@ var state = 0;
 
 function findinheap(xdata, dataset) {
   for (var i = 0; i < dataset.length; i++) {
-    if (dataset[i].value == xdata) {
+    if (dataset[i].value === xdata) {
       return i;
     }
   }
@@ -30,7 +30,7 @@ const nextStep = () => {
   if (step >= record.length) {
     alert("Heap is end!");
   } else {
-    if (record[step].e1 == 0) {
+    if (record[step].e1 === 0) {
       Animation.deleteelement(deletetest + 1, deletegraph);
     } else {
       const text1 = document.getElementById("t" + record[step].e1);
@@ -46,7 +46,7 @@ function back() {
     alert("This is the first step!");
   } else {
     step--;
-    if (record[step].e1 == 0) {
+    if (record[step].e1 === 0) {
       Animation.showelement(deletetest + 1, deletegraph);
     } else {
       const text1 = document.getElementById("t" + record[step].e1);
@@ -88,13 +88,13 @@ function HeapPage() {
   function empty() {
     record = [];
     step = 0;
-    if (state == 1) Animation.fianlTree(tdataset, svgRef);
+    if (state === 1) Animation.fianlTree(tdataset, svgRef);
     else Animation.createTree(dataset, svgRef);
   }
 
   function reset() {
     step = 0;
-    if (state == 0) Animation.createTree(dataset, svgRef);
+    if (state === 0) Animation.createTree(dataset, svgRef);
     else Animation.fianlTree(tdataset, svgRef);
   }
 
