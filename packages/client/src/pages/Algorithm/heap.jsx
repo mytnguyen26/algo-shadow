@@ -61,13 +61,15 @@ function back() {
   }
 }
 
+const getInitialHeapResults = () => {
+  const savedResults = localStorage.getItem("heapResults");
+  return savedResults ? JSON.parse(savedResults) : [];
+};
+
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetkey, setResetkey] = useState(0);
-  const [heapResults, setHeapResults] = useState(() => {
-    const savedResults = localStorage.getItem("heapResults");
-    return savedResults ? JSON.parse(savedResults) : [];
-  });
+  const [heapResults, setHeapResults] = useState([]);
 
   const addResult = (newResult) => {
     setHeapResults((prevResults) => {
@@ -75,17 +77,22 @@ function HeapPage() {
       if (updatedResults.length > 10) {
         updatedResults.shift(); // Remove the oldest result
       }
-
-      // Save updated results to localStorage
-      localStorage.setItem("heapResults", JSON.stringify(updatedResults));
       return updatedResults;
     });
   };
 
+  useEffect(() => {
+    // Save updated results to localStorage
+    localStorage.setItem("heapResults", JSON.stringify(heapResults));
+  }, [heapResults]);
+
+  useEffect(() => {
+    setHeapResults(getInitialHeapResults());
+  }, []);
+
   function empty() {
     record = [];
     step = 0;
-    console.log(state);
     if (state == 1) Animation.fianlTree(tdataset, svgRef);
     else Animation.createTree(dataset, svgRef);
   }
@@ -98,10 +105,6 @@ function HeapPage() {
 
   useEffect(() => {
     createHeap();
-  }, []);
-
-  useEffect(() => {
-    SaveInputToLocalStorage;
   }, []);
 
   function createHeap() {
@@ -265,14 +268,14 @@ function HeapPage() {
           <button onClick={reset}>Reset</button>
           <button
             onClick={() => {
-          <button
-            onClick={() => {
-              Animation.fianlTree(dataset, svgRef);
-              step = record.length;
-            }}
-          >
-            Final Heap
-          </button>
+              <button
+                onClick={() => {
+                  Animation.fianlTree(dataset, svgRef);
+                  step = record.length;
+                }}
+              >
+                Final Heap
+              </button>;
             }}
           >
             Final Heap
