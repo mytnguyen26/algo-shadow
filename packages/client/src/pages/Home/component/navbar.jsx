@@ -4,33 +4,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { SideList } from "./SideList.jsx";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Alert } from "@mui/material";
 import { Paths } from "../../../constants/Paths.js";
 import Contact from "../contact";
 import { useAuth } from "../../../context/auth.context.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Snackbar from "@mui/material/Snackbar";
 
 export const Navbar = () => {
   const { token } = useAuth();
   const [openContact, setOpenContact] = useState(false);
-  const configs = [
-    {
-      name: "Home",
-      path: Paths.HOME,
-    },
-    {
-      name: "Algorithm",
-      path: Paths.ALGORITHM,
-    },
-    {
-      name: "About",
-      path: Paths.ABOUT,
-    },
-    {
-      name: "Contact",
-      path: Paths.CONTACT,
-    },
-  ];
+  const [snackBar, setSnackBar] = useState(false);
 
   const handleOpenContact = () => {
     setOpenContact(true);
@@ -39,6 +23,39 @@ export const Navbar = () => {
   const handleCloseContact = () => {
     setOpenContact(false);
   };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackBar(false); // This line was missing its closing bracket.
+  };
+
+  const configs = [
+    {
+      name: "Home",
+      path: Paths.HOME,
+      action: null,
+    },
+    {
+      name: "Algorithm",
+      path: Paths.ALGORITHM,
+      action: null,
+    },
+    {
+      name: "About",
+      path: Paths.ABOUT,
+      action: null,
+    },
+    {
+      name: "Contact",
+      action: handleOpenContact,
+    },
+  ];
+
+  useEffect(() => {
+    setSnackBar(!token);
+  }, [token]);
 
   return (
     <Box>
@@ -54,7 +71,14 @@ export const Navbar = () => {
             <SideList sx={{ display: "flex", direction: "row" }}>
               {configs.map((config) => (
                 <ListItem disablePadding key={config.name}>
-                  <ListItemButton href={config.path}>
+                  <ListItemButton
+                    onClick={
+                      config.action ||
+                      (() => {
+                        window.location.href = config.path;
+                      })
+                    }
+                  >
                     <ListItemText primary={config.name} />
                   </ListItemButton>
                 </ListItem>
@@ -79,6 +103,16 @@ export const Navbar = () => {
         </Stack>
       </Box>
       <Contact open={openContact} onClose={handleCloseContact} />
+      <Snackbar
+        open={snackBar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="warning" sx={{ width: "100%" }}>
+          Please Login your account to access algorithm page!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
