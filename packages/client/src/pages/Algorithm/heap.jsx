@@ -10,8 +10,8 @@ import { TreeAnimationData, Node } from "./Common/animationdata.js"
 import ResultsTable from "./AlgComponent/tableCreater";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
-var animationData = null
-var tDataset = [];
+var animationData = null;
+var tDataset = null;
 var record = [];
 var step = 0;
 var deleteGraph = -1;
@@ -60,6 +60,7 @@ function HeapPage() {
 
   function createHeap() {
     animationData = new TreeAnimationData(data, "position")
+    tDataset = new TreeAnimationData(data, "position")
     state = 0;
     empty();    // render tree before maxheap
     const result = AnalyzeRuntime("createHeap", data, () => {
@@ -74,19 +75,19 @@ function HeapPage() {
     state = 1;
     data.push(Number(idata));
     animationData.dataset.push(new Node(data.length, idata));
-    tDataset = JSON.parse(JSON.stringify(animationData)); // save data before sort
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); // save data before sort
     empty();
     const result = AnalyzeRuntime("insertNewNodeToHeap", data, () => {
       HeapConcreteStrategy.insert(animationData.dataset, record);
       return animationData.dataset;
     });
     totallen = animationData.dataset.length;
-    setHeapResults(result);
+    addResult(result);
   }
 
   function deleteNodeFromHeap(i) {
     state = 1;
-    tDataset = JSON.parse(JSON.stringify(animationData)); //save data before sort
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty();                                              // render graphs before removing node from heap
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
     HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
@@ -103,14 +104,14 @@ function HeapPage() {
     }
     state = 1;
     animationData.dataset[i].value = kdata;
-    tDataset = JSON.parse(JSON.stringify(animationData)); //save data before sort
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty();
     HeapConcreteStrategy.increaseKey(i + 1, kdata, animationData.dataset, record);
   }
 
   function extraHeap() {
     state = 1;
-    tDataset = JSON.parse(JSON.stringify(animationData)); //save data before sort
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
     empty();
     HeapConcreteStrategy.extraHeap(animationData.dataset, record);
@@ -214,7 +215,7 @@ function HeapPage() {
         >
           <button
             onClick={() => {
-              step = Common.nextStep(step, record);
+              step = Common.next(step, record);
             }}
           >
             Next Step

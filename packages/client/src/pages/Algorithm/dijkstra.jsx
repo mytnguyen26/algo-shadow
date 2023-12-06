@@ -4,6 +4,7 @@ import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
 import Graph from "./DijkstraComponent/Graph";
+import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
 
 var data = [
@@ -91,7 +92,7 @@ const Dijkstra = () => {
 
   function creategraph(cdata) {
     step = 0;
-    graph = new Graph();
+    graph = new DijkstraConcreteStrategy();
     data = cdata;
     if (createKind === "EdgeList") {
       graph.fromEdgeList(cdata, graphKind);
@@ -99,29 +100,8 @@ const Dijkstra = () => {
       graph.fromAdjacencyMatrix(cdata, graphKind);
     }
     DiGraphRenderer.renderGraph(graph, svgRef);
-    graph.displayAdjacencyMatrix();
-  }
-
-  function test() {
-    //   graph.setkind("Undirected")
-    // graph.addNode('A');
-    // graph.addNode('B');
-    // graph.addNode('C');
-    // graph.addNode('D');
-    // graph.addNode('E');
-    // graph.addNode('F');
-    // graph.addNode('G');
-    // graph.addEdge('A', 'C', 3);
-    // graph.addEdge('A', 'F', 2);
-    // graph.addEdge('C', 'F', 2);
-    // graph.addEdge('C', 'E', 1);
-    // graph.addEdge('F', 'E', 3);
-    // graph.addEdge('E', 'B', 2);
-    // graph.addEdge('C', 'D', 4);
-    // graph.addEdge('D', 'B', 1);
-    // graph.addEdge('F', 'B', 6);
-    // graph.addEdge('F', 'G', 5);
-    // graph.addEdge('G', 'B', 2);
+    DiGraphRenderer.displayAdjacencyMatrix(graph.nodes, graph.edges)
+    // graph.displayAdjacencyMatrix();
   }
 
   const useHisInput = (input) => {
@@ -130,8 +110,8 @@ const Dijkstra = () => {
     creategraph(data);
   };
 
-  function dijkstra() {
-    graph.dijkstra("A", record);
+  function run() {
+    graph.run("A", record);
   }
 
   function validmatrix(valuename) {
@@ -330,8 +310,7 @@ const Dijkstra = () => {
               <button onClick={next}>Next Step</button>
               <button onClick={back}>Back</button>
               <button onClick={reset}>Reset</button>
-              <button onClick={dijkstra}>Dijkstra</button>
-              <button onClick={test}>Test</button>
+              <button onClick={run}>Fast Forward</button>
             </div>
           </div>
           <div>

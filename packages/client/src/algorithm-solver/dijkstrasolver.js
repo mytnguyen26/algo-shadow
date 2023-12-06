@@ -4,64 +4,154 @@
  */
 export default class DijkstraConcreteStrategy {
   constructor() {
-    this.nodes = {};
+    this.nodes = [];
+    this.edges = new Map();
+    this.kind = "Directed"; //Undirected Directed
   }
 
-  addNode(name, neighbors) {
-    this.nodes[name] = neighbors;
+  setKind(kind) {
+    this.kind = kind;
   }
 
-  run(startNode, endNode) {
-    // Track the distance to each node and the path to reach it
-    const distances = {};
-    const parents = {};
-    const visited = new Set();
-    const orderedVisitedNodes = [];
+  addNode(node) {
+    this.nodes.push(node);
+    this.edges.set(node, []);
+  }
 
-    // Initialize distances and parents
-    Object.keys(this.nodes).forEach((node) => {
-      distances[node] = Infinity;
-      parents[node] = null;
-    });
+  addEdge(node1, node2, weight) {
+    if (this.kind === "Undirected") {
+      this.edges.get(node1).push({ node: node2, weight: weight });
+      this.edges.get(node2).push({ node: node1, weight: weight });
+    } else {
+      this.edges.get(node1).push({ node: node2, weight: weight });
+    }
+  }
 
-    distances[startNode] = 0;
+  fromAdjacencyMatrix(matrix, k) {
+    this.kind = k;
+    const numNodes = matrix.length;
 
-    while (!visited.has(endNode)) {
-      const currentNode = minDistanceNode(distances, visited);
-      visited.add(currentNode);
-      orderedVisitedNodes.push(currentNode);
+    // Add nodes to the graph
+    for (let i = 0; i < numNodes; i++) {
+      this.addNode(String.fromCharCode("A".charCodeAt(0) + i));
+    }
 
-      for (const neighbor in this.nodes[currentNode]) {
-        const distance =
-          distances[currentNode] + this.nodes[currentNode][neighbor];
-
-        if (distance < distances[neighbor]) {
-          distances[neighbor] = distance;
-          parents[neighbor] = currentNode;
+    // Add edges based on the parsed matrix
+    for (let i = 0; i < numNodes; i++) {
+      for (let j = 0; j < numNodes; j++) {
+        if (matrix[i][j] !== 0) {
+          this.addEdge(
+            String.fromCharCode("A".charCodeAt(0) + i),
+            String.fromCharCode("A".charCodeAt(0) + j),
+            matrix[i][j],
+          );
         }
       }
     }
-
-    const shortestPath = buildPath(endNode, parents);
-
-    return { distances, shortestPath, orderedVisitedNodes };
   }
-}
 
-function minDistanceNode(distances, visited) {
-  let minDistance = Infinity;
-  let minNode = null;
-
-  for (const node in distances) {
-    const distance = distances[node];
-
-    if (distance < minDistance && !visited.has(node)) {
-      minDistance = distance;
-      minNode = node;
+  fromEdgeList(edgeList, k) {
+    this.kind = k;
+    // Add nodes to the graph
+    for (const edge of edgeList) {
+      console.log(edge);
+      if (this.nodes.indexOf(edge.node1) == -1) {
+        this.addNode(edge.node1);
+      }
+      if (this.nodes.indexOf(edge.node2) == -1) {
+        this.addNode(edge.node2);
+      }
+    }
+    // Add edges based on the edge list
+    for (const edge of edgeList) {
+      this.addEdge(edge.node1, edge.node2, edge.weight);
     }
   }
 
-  return minNode;
+  run(startNode, record) {
+    // Track the distance to each node and the path to reach it
+    const distances = new Map();
+    const visited = new Set();
+
+    // Initialize distances and parents
+    for (const node of this.nodes) {
+      distances.set(node, node === startNode ? 0 : Infinity);
+    }
+
+    while (visited.size < this.nodes.length) {
+      console.log("visited", visited)
+      console.log("all nodes", distances)
+      const currentNode = this.getMinDistanceNode(distances, visited);  // The node with the smallest distance is selected among the nodes that have never been visited
+      visited.add(currentNode);     // Mark the selected node as visited
+      let t = [];
+      this.edges.get(currentNode).forEach((e) => {
+        if (!visited.has(e.node)) t.push(e.node);
+      });
+      record.push({ node: currentNode, change: "stroke" });
+      record.push({ node: t, change: "stroke" });
+      record.push({ node: currentNode, change: "fill" });
+      // Update the distance and path information of the nodes adjacent to the current node
+      for (const neighbor of this.edges.get(currentNode)) {
+        const totalDistance = distances.get(currentNode) + neighbor.weight;
+
+        if (totalDistance < distances.get(neighbor.node)) {
+          distances.set(neighbor.node, totalDistance);
+        }
+      }
+    }
+    return distances;
+  }
+
+  getMinDistanceNode(distances, visited) {
+    let minDistance = Infinity;
+    let minNode = null;
+  
+    for (const [node, distance] of distances.entries()) {
+      console.log("for loop node ", node)
+      console.log("for loop distance", distance)
+      if (!visited.has(node) && distance < minDistance) {
+        minDistance = distance;
+        minNode = node;
+      }
+    }
+    console.log("Min Node", minNode)
+    return minNode;
+  }
+
+  getEdgeList() {
+    const edgeList = [];
+    const addedEdges = new Set();
+    if (this.kind == "Undirected") {
+      for (const [node, neighbors] of this.edges.entries()) {
+        for (const neighbor of neighbors) {
+          // 为了确保不会添加重复的边，检查边是否已经被添加过
+          const edgeKey1 = `${node}-${neighbor.node}`;
+          const edgeKey2 = `${neighbor.node}-${node}`;
+
+          if (!addedEdges.has(edgeKey1) && !addedEdges.has(edgeKey2)) {
+            edgeList.push({
+              node1: node,
+              node2: neighbor.node,
+              weight: neighbor.weight,
+            });
+            addedEdges.add(edgeKey1);
+            addedEdges.add(edgeKey2);
+          }
+        }
+      }
+    } else {
+      for (const [node, neighbors] of this.edges.entries()) {
+        for (const neighbor of neighbors) {
+          edgeList.push({
+            node1: node,
+            node2: neighbor.node,
+            weight: neighbor.weight,
+          });
+        }
+      }
+    }
+    return edgeList;
+  }
 }
 
 function buildPath(endNode, parents) {

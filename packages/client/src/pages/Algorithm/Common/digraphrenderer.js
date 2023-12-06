@@ -18,7 +18,7 @@ class DiGraphRenderer extends TreeGraphRenderer {
       graphvizCode += `edge [dir=""];`;
     }
     const nodes = graph.nodes;
-    const edges = graph.EdgeList();
+    const edges = graph.getEdgeList();
 
     edges.forEach((e) => {
       graphvizCode +=
@@ -47,6 +47,38 @@ class DiGraphRenderer extends TreeGraphRenderer {
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  static displayAdjacencyMatrix(nodes, edges) {
+    const matrixDiv = document.getElementById("adjacencyMatrix");
+    matrixDiv.innerHTML = "";
+    const table = document.createElement("table");
+    // Header row
+    const headerRow = document.createElement("tr");
+    headerRow.appendChild(DiGraphRenderer.createTableCell_(""));
+    for (const node of nodes) {
+      headerRow.appendChild(DiGraphRenderer.createTableCell_(node));
+    }
+    table.appendChild(headerRow);
+
+    // Data rows
+    for (const node1 of nodes) {
+      const row = document.createElement("tr");
+      row.appendChild(DiGraphRenderer.createTableCell_(node1));
+      for (const node2 of nodes) {
+        const edge = edges.get(node1).find((e) => e.node === node2);
+        row.appendChild(DiGraphRenderer.createTableCell_(edge ? edge.weight : "0"));
+      }
+      table.appendChild(row);
+    }
+
+    matrixDiv.appendChild(table);
+  }
+
+  static createTableCell_(content) {
+    const cell = document.createElement("td");
+    cell.textContent = content;
+    return cell;
   }
 }
 
