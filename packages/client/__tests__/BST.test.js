@@ -1,4 +1,4 @@
-import BinarySearchTree from '../src/pages/Algorithm/bstComponent/bstmethod';
+import BinarySearchTree from '../src/algorithm-solver/bstsolver';
 
 describe('BinarySearchTree', () => {
   let bst;

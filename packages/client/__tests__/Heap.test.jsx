@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import Heap from '../src/pages/Algorithm/heap';
-import Heapification from '../src/pages/Algorithm/HeapComponent/heapmethod';
+import Heapification from '../src/algorithm-solver/heapsolver';
 
 vi.stubGlobal('alert', vi.fn());
 globalThis.alert = vi.fn();
