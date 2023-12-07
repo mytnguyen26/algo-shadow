@@ -13,12 +13,6 @@ export const BarChart = ({ data }) => {
     const margin = { top: 20, right: 10, bottom: 30, left: 30 };
     const width = 1000 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
-    // svg
-    //   .attr("width", width)
-    //   .attr("height", height)
-    //   .style("overflow", "visible")
-    //   .styled("marginTop", "75px");
-    //
 
     // Create axes
     const xScale = d3

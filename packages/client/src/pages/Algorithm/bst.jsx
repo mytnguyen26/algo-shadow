@@ -208,7 +208,7 @@ const BST = () => {
                   let ddata = Common.validOneData("delete");
                   const index = Common.findInArray(
                     ddata,
-                    animationData.dataset
+                    animationData.dataset,
                   );
                   deleteBST(ddata, index);
                 } catch (error) {

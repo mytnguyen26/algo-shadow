@@ -16,12 +16,12 @@ let tDataset = null;
 let record = [];
 let step = 0;
 let deleteGraph = -1;
-let totallen = data.length;
+let totalLength = data.length;
 let state = 0;
 
 function HeapPage() {
   const svgRef = useRef(null);
-  const [resetkey] = useState(0);
+  const [resetKey] = useState(0);
   const [heapResults, setHeapResults] = useState(() => {
     const savedResults = localStorage.getItem("heapResults");
     return savedResults ? JSON.parse(savedResults) : [];
@@ -68,7 +68,7 @@ function HeapPage() {
       HeapConcreteStrategy.buildMaxHeap(animationData.dataset, record);
       return animationData.dataset;
     });
-    totallen = animationData.dataset.length;
+    totalLength = animationData.dataset.length;
     addResult(result);
   }
 
@@ -82,7 +82,7 @@ function HeapPage() {
       HeapConcreteStrategy.insert(animationData.dataset, record);
       return animationData.dataset;
     });
-    totallen = animationData.dataset.length;
+    totalLength = animationData.dataset.length;
     addResult(result);
   }
 
@@ -114,7 +114,7 @@ function HeapPage() {
       i + 1,
       kdata,
       animationData.dataset,
-      record
+      record,
     );
   }
 
@@ -213,7 +213,7 @@ function HeapPage() {
           svgRef={svgRef}
           width={Common.width}
           height={Common.height}
-          resetkey={resetkey}
+          resetKey={resetKey}
         >
           {/* the graph will be rendered inside the AlgorithmSpace component */}
         </AlgorithmSpace>
