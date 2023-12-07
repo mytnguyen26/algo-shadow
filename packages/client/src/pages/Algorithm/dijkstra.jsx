@@ -100,7 +100,7 @@ const Dijkstra = () => {
       graph.fromAdjacencyMatrix(cdata, graphKind);
     }
     DiGraphRenderer.renderGraph(graph, svgRef);
-    DiGraphRenderer.displayAdjacencyMatrix(graph.nodes, graph.edges)
+    DiGraphRenderer.displayAdjacencyMatrix(graph.nodes, graph.edges);
     // graph.displayAdjacencyMatrix();
   }
 
