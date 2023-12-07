@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
@@ -11,23 +10,22 @@ import ResultsTable from "./AlgComponent/tableCreater";
 import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
 
-var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
-var animationData = null;
-var tDataset = null;
-var record = [];
-var step = 0;
-var deleteGraph = -1;
-var totallen = data.length;
-var state = 0;
+let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+let animationData = null;
+let tDataset = null;
+let record = [];
+let step = 0;
+let deleteGraph = -1;
+let totallen = data.length;
+let state = 0;
 
 function HeapPage() {
   const svgRef = useRef(null);
-  const [resetkey, setResetkey] = useState(0);
+  const [resetkey] = useState(0);
   const [heapResults, setHeapResults] = useState(() => {
     const savedResults = localStorage.getItem("heapResults");
     return savedResults ? JSON.parse(savedResults) : [];
   });
-  const [chartData] = useState([200, 250, 60, 150, 100, 175]);
 
   const addResult = (newResult) => {
     setHeapResults((prevResults) => {
@@ -116,7 +114,7 @@ function HeapPage() {
       i + 1,
       kdata,
       animationData.dataset,
-      record,
+      record
     );
   }
 

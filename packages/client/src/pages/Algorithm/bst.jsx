@@ -2,7 +2,7 @@
  * TODO
  */
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
@@ -126,7 +126,7 @@ const BST = () => {
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
     let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
-    if (animationData.dataset[index].position != prevSuccessorNodePosition) {
+    if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
       record.push({
         e1: prevSuccessorNodePosition,
         e2: animationData.dataset[index].position,
@@ -208,7 +208,7 @@ const BST = () => {
                   let ddata = Common.validOneData("delete");
                   const index = Common.findInArray(
                     ddata,
-                    animationData.dataset,
+                    animationData.dataset
                   );
                   deleteBST(ddata, index);
                 } catch (error) {

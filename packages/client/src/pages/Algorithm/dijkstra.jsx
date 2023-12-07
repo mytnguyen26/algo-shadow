@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
-import Graph from "./DijkstraComponent/Graph";
 import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
 
@@ -27,7 +26,7 @@ function next() {
       const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
+      if (t.change === "stroke") {
         DiGraphRenderer.pathDisplay(c, t.change, "black;blue");
       } else {
         DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
@@ -54,7 +53,7 @@ function back() {
       const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
+      if (t.change === "stroke") {
         DiGraphRenderer.pathDisplay(c, t.change, "blue;black");
       } else {
         DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
@@ -74,8 +73,8 @@ const Dijkstra = () => {
   const [graphKind, setGraphKind] = useState("");
   const [createKindVisible, setCreateKindVisible] = useState(false);
   const [createKind, setCreateKind] = useState("");
-  const [p_adj, setP] = useState("0 1\n1 0");
-  const [p_edge, setE] = useState("A B 3\nC B 2");
+  const [p_adj] = useState("0 1\n1 0");
+  const [p_edge] = useState("A B 3\nC B 2");
 
   const svgRef = useRef(null);
   useEffect(() => {
@@ -172,7 +171,7 @@ const Dijkstra = () => {
       // Check if there are exactly three components on each line
       if (components.length !== 3) {
         throw new Error(
-          "Invalid edge list with weights. Each line should contain exactly source node, target node, and weight.",
+          "Invalid edge list with weights. Each line should contain exactly source node, target node, and weight."
         );
       }
 
@@ -182,7 +181,7 @@ const Dijkstra = () => {
       // For simplicity, this example assumes any non-empty string is a valid node, and the weight is a valid number
       if (!sourceNode.trim() || !targetNode.trim() || isNaN(Number(weight))) {
         throw new Error(
-          "Invalid component in the edge list with weights. Nodes should be non-empty strings, and the weight should be a valid number.",
+          "Invalid component in the edge list with weights. Nodes should be non-empty strings, and the weight should be a valid number."
         );
       } else {
         edgeList.push({
