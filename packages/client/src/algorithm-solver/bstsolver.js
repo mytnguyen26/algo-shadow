@@ -4,11 +4,13 @@
 
 /**
  * This class represent a Binary Trees, and used by BSTConcreteStrategy
- * to insert, delete, search the Binary Tree. From the Root of the tree,
+ * to insert, delete, search the Binary Tree. The left and right property
+ * if a reference to other TreeNode objects, which represents
+ * left node and right node of the Binary Tree. From the Root of the tree,
  * we can navigate the tree using left node and right node
+ * @param {TreeAnimationData} nodeData
  */
 class TreeNode {
-  // create node
   constructor(nodeData) {
     this.root = this;
     this.left = null;
@@ -89,6 +91,7 @@ class BSTConcreteStrategy {
       }
     };
     inOrderNode(this.root, callback);
+    console.log(backs)
     return backs;
   }
 
@@ -159,8 +162,8 @@ class BSTConcreteStrategy {
   /**
    * Traverse the tree to find the input `data`, then record the position
    * of the node stored in nodeData.position to the `record` array
-   * @param {*} data the node value the caller is looking for
-   * @param {*} record the reference to the `record` array from `bst.jsx`
+   * @param {number} data the node value the caller is looking for
+   * @param {Array} record the reference to the `record` array from `bst.jsx`
    * to store the new node position order
    * @returns the Node data if it was found
    */
@@ -181,36 +184,80 @@ class BSTConcreteStrategy {
   }
 
   /**
-   * TODO
-   * @param {*} dData
-   * @param {*} localRecord
-   * @returns
+   * Find the node to be deleted from the tree. The node to be deleted
+   * is the node with nodeData.value == dData. As the tree is traversed,
+   * visited node position will be recorded to the input `record` array
+   * for animation purpose later.
+   * At the end, 
+   * @param {number} dData the value of the node to be deleted
+   * For example: 5
+   * @param {Array} record the reference to the animation `record`
+   * passed from `bst.jsx`. 
+   * @returns inOrderSuccessor, which is the successor node that replace the position
+   * of the deleted node
    */
-  delete(dData, localRecord) {
+  delete(dData, record) {
+    let deleteNode = null;
+    let inOrderSuccessorNode = null;
+    console.log("deleting", dData)
     const removeNode = (node, dData) => {
+      console.log("Start", node)
       if (node === null) return null;
-      if (node.nodeData.value === dData) {
-        if (node.left === null && node.right === null) return null;
-        if (node.left === null) return node.right;
-        if (node.right === null) return node.left;
-        if (node.left !== null && node.right !== null) {
+      if (node.nodeData.value == dData) {   // We found a node to be deleted
+        deleteNode = node;
+        if (node.left === null && node.right === null) return null;  // case 1: the node has no child
+        if (node.left === null) return node.right;        // case 2: the node has right child
+        if (node.right === null) return node.left;        // case 3: the node has only left child
+        if (node.left !== null && node.right !== null) {  // case 4: the node has both child,
+          // in this case, to correctly render the graph animation,
+          // we need to first find the inOrderSuccessorNode to update its
+          // position. Then, right child node of the successor node will also
+          // need position update.
           let _node = this.min(node.right);
-          node.nodeData.value = _node.data;
-          localRecord.push(node.nodeData.position);
+          inOrderSuccessorNode = _node;
+          node.nodeData.value = _node.nodeData.value;
+          record.push(node.nodeData.position); 
           node.right = removeNode(node.right, dData);
           return node;
         }
       } else if (dData < node.nodeData.value) {
-        localRecord.push(node.nodeData.position);
+        // This branch handles the subtree that is to the right of deleting node
+        record.push(node.nodeData.position);
         node.left = removeNode(node.left, dData);
         return node;
       } else {
-        localRecord.push(node.nodeData.position);
+        // This branch handles the node or subtree that is to the left of deleting node
+        record.push(node.nodeData.position);
         node.right = removeNode(node.right, dData);
         return node;
       }
     };
-    return removeNode(this.root, dData);
+    removeNode(this.root, dData, this.root.nodeData.position);
+    console.log("Final node", inOrderSuccessorNode) // This node is the inorder successor of our deleting node
+    this._updateSuccessorSubTreePositions(inOrderSuccessorNode, deleteNode);
+    return inOrderSuccessorNode;
+  }
+
+  /**
+   * A private method to update positions of all nodes impact by the delete()
+   * We will consider 2 cases
+   * - case 1: if the node has no child then no successor, hence no update
+   * - case 2: if inOrderSuccessorNode has right nodes,
+   * then right node position = inOrderSuccessorNode position
+   * Finally, switch inOrderSuccessorNode's position and deletingNode position
+   * @param {*} inOrderSuccessorNode is the successor node replacing the position of
+   * the `deleteNode`, found by delete() method
+   * @param {*} deleteNode is the node to be deleted
+   * @returns 
+   */
+  _updateSuccessorSubTreePositions(inOrderSuccessorNode, deleteNode) {
+    if (inOrderSuccessorNode !== null) {
+      if (inOrderSuccessorNode.right !== null) {
+        inOrderSuccessorNode.right.nodeData.position = inOrderSuccessorNode.nodeData.position;
+      }
+      inOrderSuccessorNode.nodeData.position = deleteNode.nodeData.position;
+      return inOrderSuccessorNode;
+    }
   }
 }
 

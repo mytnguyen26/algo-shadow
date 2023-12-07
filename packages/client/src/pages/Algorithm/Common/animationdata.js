@@ -28,7 +28,7 @@ export class TreeAnimationData {
     if (type === "line" && node[this.positionReference] === 1) {
       return null;
     }
-    const depth = this.getdepth(node[this.positionReference]);
+    const depth = this.getDepth(node[this.positionReference]);
     const distance = 2 ** depth;
     const index = node[this.positionReference] - distance;
     return (width / (distance + 1)) * (index + 1);
@@ -45,7 +45,7 @@ export class TreeAnimationData {
     if (type === "line" && node[this.positionReference] === 1) {
       return null;
     }
-    return my * (this.getdepth(node[this.positionReference]) + 1);
+    return my * (this.getDepth(node[this.positionReference]) + 1);
   }
 
   /**
@@ -60,7 +60,7 @@ export class TreeAnimationData {
     if (node[this.positionReference] === 1) {
       return null;
     }
-    const depth = this.getdepth(targetPosition);
+    const depth = this.getDepth(targetPosition);
     const distance = 2 ** depth;
     const index = targetPosition - distance;
     return (width / (distance + 1)) * (index + 1);
@@ -77,7 +77,7 @@ export class TreeAnimationData {
     if (node[this.positionReference] === 1) {
       return null;
     }
-    return my * this.getdepth(node[this.positionReference]);
+    return my * this.getDepth(node[this.positionReference]);
   }
 
   /**
@@ -87,7 +87,7 @@ export class TreeAnimationData {
    * @param {*} position is the position of the node in the tree
    * @returns
    */
-  getdepth(position) {
+  getDepth(position) {
     return Math.ceil(Math.log2(position + 1)) - 1;
   }
 
