@@ -6,8 +6,10 @@ import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage"
 import HeapConcreteStrategy from "../../algorithm-solver/heapsolver.js";
 import Common from "./Common/common";
 import TreeGraphRenderer from "./Common/treerenderer.js";
-import { TreeAnimationData, Node } from "./Common/animationdata.js"
+import { TreeAnimationData, Node } from "./Common/animationdata.js";
 import ResultsTable from "./AlgComponent/tableCreater";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
 
 var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
 var animationData = null;
@@ -25,6 +27,7 @@ function HeapPage() {
     const savedResults = localStorage.getItem("heapResults");
     return savedResults ? JSON.parse(savedResults) : [];
   });
+  const [chartData] = useState([200, 250, 60, 150, 100, 175]);
 
   const addResult = (newResult) => {
     setHeapResults((prevResults) => {
@@ -46,7 +49,7 @@ function HeapPage() {
 
   function reset() {
     step = 0;
-    if (state == 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
+    if (state === 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
     else TreeGraphRenderer.renderGraph(tDataset, svgRef);
   }
 
@@ -59,10 +62,10 @@ function HeapPage() {
   }, []);
 
   function createHeap() {
-    animationData = new TreeAnimationData(data, "position")
-    tDataset = new TreeAnimationData(data, "position")
+    animationData = new TreeAnimationData(data, "position");
+    tDataset = new TreeAnimationData(data, "position");
     state = 0;
-    empty();    // render tree before maxheap
+    empty(); // render tree before maxheap
     const result = AnalyzeRuntime("createHeap", data, () => {
       HeapConcreteStrategy.buildMaxHeap(animationData.dataset, record);
       return animationData.dataset;
@@ -88,14 +91,17 @@ function HeapPage() {
   function deleteNodeFromHeap(i) {
     state = 1;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
-    empty();                                              // render graphs before removing node from heap
+    empty(); // render graphs before removing node from heap
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
     HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
     record.push({
       e1: 0,
-      e2: [tDataset.dataset[tDataset.dataset.length - 1].index, tDataset.dataset[i].index],
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[i].index,
+      ],
     });
-    data.splice(animationData.dataset[i].index - 1, 1);  // delete 1 element from data
+    data.splice(animationData.dataset[i].index - 1, 1); // delete 1 element from data
   }
 
   function increaseKey(i, kdata) {
@@ -106,7 +112,12 @@ function HeapPage() {
     animationData.dataset[i].value = kdata;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty();
-    HeapConcreteStrategy.increaseKey(i + 1, kdata, animationData.dataset, record);
+    HeapConcreteStrategy.increaseKey(
+      i + 1,
+      kdata,
+      animationData.dataset,
+      record,
+    );
   }
 
   function extraHeap() {
@@ -117,9 +128,13 @@ function HeapPage() {
     HeapConcreteStrategy.extraHeap(animationData.dataset, record);
     record.push({
       e1: 0,
-      e2: [tDataset.dataset[tDataset.dataset.length - 1].index, tDataset.dataset[0].index - 1],
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[0].index - 1,
+      ],
     });
   }
+
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
@@ -240,6 +255,7 @@ function HeapPage() {
           <button onClick={extraHeap}>extra heap</button>
         </div>
         <ResultsTable results={heapResults} />
+        <BarChart data={getBarChartData(heapResults).reverse()} />
       </div>
       <div>
         <SaveInputToLocalStorage
