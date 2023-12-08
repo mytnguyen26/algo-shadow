@@ -123,6 +123,7 @@ const BST = () => {
     reset();
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
+    console.log(record)
     let prevSuccessorNodePosition = record[record.length - 1];    // exchange position to position found at index
     if (animationData.dataset[index].position != prevSuccessorNodePosition) {
       record.push({
@@ -132,7 +133,7 @@ const BST = () => {
     }
     record.push({
       e1: 0,
-      e2: [animationData.dataset[index].position,prevSuccessorNodePosition],
+      e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
     console.log("Removing from animationData dataset index", index)

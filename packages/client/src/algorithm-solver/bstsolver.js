@@ -205,9 +205,11 @@ class BSTConcreteStrategy {
       if (node === null) return null;
       if (node.nodeData.value == dData) {   // We found a node to be deleted
         deleteNode = node;
-        if (node.left === null && node.right === null) return null;  // case 1: the node has no child
-        if (node.left === null) return node.right;        // case 2: the node has right child
-        if (node.right === null) return node.left;        // case 3: the node has only left child
+        if (node.left === null && node.right === null) {
+          record.push(node.nodeData.position); 
+          return null;}  // case 1: the node has no child
+        if (node.left === null){ return node.right;}        // case 2: the node has right child
+        if (node.right === null) {return node.left;}    // case 3: the node has only left child
         if (node.left !== null && node.right !== null) {  // case 4: the node has both child,
           // in this case, to correctly render the graph animation,
           // we need to first find the inOrderSuccessorNode to update its
