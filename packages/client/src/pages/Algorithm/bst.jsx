@@ -132,10 +132,11 @@ const BST = () => {
     }
     record.push({
       e1: 0,
-      e2: [prevSuccessorNodePosition, animationData.dataset[index].position],
+      e2: [animationData.dataset[index].position,prevSuccessorNodePosition],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
     console.log("Removing from animationData dataset index", index)
+    //console.log(prevSuccessorNodePosition+","+animationData.dataset[index].position)
     animationData.dataset.splice(index,1)
   }
 
