@@ -2,7 +2,7 @@
  * TODO
  */
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
@@ -11,11 +11,13 @@ import Common from "./Common/common";
 import { TreeAnimationData, Node } from "./Common/animationdata.js";
 import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 
 var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
 var animationData = null;
-var record = [];            // this array saves all animation steps that needs to happen
-                            // allow users to have next and back functionality
+var record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 var step = 0;
 var tree = null;
 function back() {
@@ -82,7 +84,7 @@ const BST = () => {
 
   function next() {
     if (step >= record.length) {
-      TreeGraphRenderer.renderGraph(animationData, svgRef)
+      TreeGraphRenderer.renderGraph(animationData, svgRef);
       alert("Animation ends!");
     } else {
       if (typeof record[step].e1 == "undefined") {
@@ -94,7 +96,7 @@ const BST = () => {
       }
     }
   }
-  
+
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {
@@ -123,9 +125,8 @@ const BST = () => {
     reset();
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
-    console.log(record)
-    let prevSuccessorNodePosition = record[record.length - 1];    // exchange position to position found at index
-    if (animationData.dataset[index].position != prevSuccessorNodePosition) {
+    let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
+    if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
       record.push({
         e1: prevSuccessorNodePosition,
         e2: animationData.dataset[index].position,
@@ -136,9 +137,8 @@ const BST = () => {
       e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-    console.log("Removing from animationData dataset index", index)
-    //console.log(prevSuccessorNodePosition+","+animationData.dataset[index].position)
-    animationData.dataset.splice(index,1)
+    console.log("Removing from animationData dataset index", index);
+    animationData.dataset.splice(index, 1);
   }
 
   const [bstResults, setBstResults] = useState(() => {
@@ -233,6 +233,11 @@ const BST = () => {
             >
               Search
             </button>
+            <SaveInputToLocalStorage
+              algorithm="bst"
+              inputData={data}
+              useHisInput={useHisInput}
+            />
           </div>
           <div style={{ flexGrow: 1 }}>
             <AlgorithmSpace
@@ -267,13 +272,7 @@ const BST = () => {
             </div>
             <div>
               <ResultsTable results={bstResults} />
-            </div>
-            <div>
-              <SaveInputToLocalStorage
-                algorithm="bst"
-                inputData={data}
-                useHisInput={useHisInput}
-              />
+              <BarChart data={getBarChartData(bstResults).reverse()} />
             </div>
           </div>
         </div>
