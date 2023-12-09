@@ -77,19 +77,29 @@ export default class DijkstraConcreteStrategy {
     for (const node of this.nodes) {
       distances.set(node, node === startNode ? 0 : Infinity);
     }
-
+    let lastNode
     while (visited.size < this.nodes.length) {
       // console.log("visited", visited)
       // console.log("all nodes", distances)
       const currentNode = this.getMinDistanceNode(distances, visited);  // The node with the smallest distance is selected among the nodes that have never been visited
       visited.add(currentNode);     // Mark the selected node as visited
       let t = [];
+      let edge;
       this.edges.get(currentNode).forEach((e) => {
-        if (!visited.has(e.node)) t.push(e.node);
+        if (!visited.has(e.node)){ 
+          edge = e
+          t.push(e.node);
+        }
       });
+      if(lastNode!=null){
+        let k = this.findEdgeId(currentNode,lastNode)
+        record.push({ node: k, change: "stroke" });
+      }
       record.push({ node: currentNode, change: "stroke" });
       record.push({ node: t, change: "stroke" });
       record.push({ node: currentNode, change: "fill" });
+      
+      lastNode = currentNode
       // Update the distance and path information of the nodes adjacent to the current node
       for (const neighbor of this.edges.get(currentNode)) {
         const totalDistance = distances.get(currentNode) + neighbor.weight;
@@ -99,7 +109,20 @@ export default class DijkstraConcreteStrategy {
         }
       }
     }
+    
     return distances;
+  }
+
+  findEdgeId(currentNode,lastNode){
+    let edges = document.getElementsByClassName("edge")
+    for(let j = 0;j<edges.length;j++){
+      let title = edges[j].getElementsByTagName("title")[0].innerHTML
+      // console.log(title.charAt(0))
+      // console.log(title.charAt(title.length-1))
+      if(lastNode==title.charAt(0)&&currentNode==title.charAt(title.length-1)){
+        return edges[j].id
+      }
+    }
   }
 
   getMinDistanceNode(distances, visited) {
@@ -114,7 +137,7 @@ export default class DijkstraConcreteStrategy {
         minNode = node;
       }
     }
-    console.log("Min Node", minNode)
+    //console.log("Min Node", minNode)
     return minNode;
   }
 

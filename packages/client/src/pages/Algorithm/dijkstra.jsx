@@ -27,20 +27,28 @@ function next() {
   } else {
     let t = record[step];
     if (typeof t.node == "string") {
-      const c = document
+      if(t.node.indexOf("edge") != -1 ){
+        const p = document
+        .getElementById(t.node)
+        .getElementsByTagName("path")[0];
+        DiGraphRenderer.pathDisplay(p, t.change, "black;blue");
+      }else{
+        const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
-      } else {
-        DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+        if (t.change == "stroke") {
+          DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
+        } else {
+          DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+        }
       }
+      
     } else {
       record[step].node.forEach((element) => {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "black;yellow");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#4fd2dd;#235fa7");
       });
     }
     step++;
@@ -53,21 +61,29 @@ function back() {
   } else {
     step--;
     let t = record[step];
+    
     if (typeof t.node == "string") {
-      const c = document
+      if(t.node.indexOf("edge") != -1 ){
+        const p = document
+        .getElementById(t.node)
+        .getElementsByTagName("path")[0];
+        DiGraphRenderer.pathDisplay(p, t.change, "blue;black");
+      }else{
+        const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "blue;black");
-      } else {
-        DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+        if (t.change == "stroke") {
+          DiGraphRenderer.pathDisplay(c, t.change, "blue;yellow");
+        } else {
+          DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+        }
       }
     } else {
       record[step].node.forEach((element) => {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "green;black");
+        DiGraphRenderer.pathDisplay(c, "stroke", "yellow;black");
       });
     }
   }
@@ -117,6 +133,7 @@ const Dijkstra = () => {
     let d = graph.run("A", record);
     DiGraphRenderer.wordcolor("A")
     DiGraphRenderer.displaydistance(d)
+    console.log(record)
   }
 
   function validmatrix(valuename) {
