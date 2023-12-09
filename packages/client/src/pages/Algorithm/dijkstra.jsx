@@ -97,6 +97,8 @@ const Dijkstra = () => {
   const [p_adj] = useState("0 1\n1 0");
   const [p_edge] = useState("A B 3\nC B 2");
 
+  const [savedata, setSavedata] = useState(data); // Initialize cdata with the default data
+
   //create table for dijk
   const { tableData, addTableRow } = useTableData('dijkResults');
 
@@ -114,6 +116,9 @@ const Dijkstra = () => {
   function creategraph(cdata) {
     step = 0;
     graph = new DijkstraConcreteStrategy();
+
+    setSavedata(cdata);
+     
     data = cdata;
     if (createKind === "EdgeList") {
       graph.fromEdgeList(cdata, graphKind);
@@ -360,7 +365,7 @@ const Dijkstra = () => {
           <div>
             <SaveInputToLocalStorage
               algorithm="dij"
-              inputData={data}
+              inputData={savedata}
               useHisInput={useHisInput}
             />
           </div>
