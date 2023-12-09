@@ -21,6 +21,7 @@ var record = []; // this array saves all animation steps that needs to happen
 // allow users to have next and back functionality
 var step = 0;
 var tree = null;
+var temptree = null;
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -201,6 +202,7 @@ const BST = () => {
 
     let startTime = performance.now();  // Start the timer
 
+    //temptree = tree
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
 
