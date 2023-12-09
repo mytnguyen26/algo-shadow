@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box, Paper, tabScrollButtonClasses } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
 import Graph from "./DijkstraComponent/Graph";
 import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
+import { dark } from "@mui/material/styles/createPalette.js";
 
 var data = [
   [0, 10, 0, 5, 0],
@@ -111,7 +112,8 @@ const Dijkstra = () => {
   };
 
   function run() {
-    graph.run("A", record);
+    let d = graph.run("A", record);
+    DiGraphRenderer.displaydistance(d)
   }
 
   function validmatrix(valuename) {
@@ -277,6 +279,7 @@ const Dijkstra = () => {
                 )}
               </>
             )}
+            <div id="distance"></div>
             <div id="adjacencyMatrix"></div>
           </div>
 
