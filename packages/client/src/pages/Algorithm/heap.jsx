@@ -1,28 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
 import HeapConcreteStrategy from "../../algorithm-solver/heapsolver";
 import Common from "./Common/common";
 import TreeGraphRenderer from "./Common/treerenderer";
-import { TreeAnimationData, Node } from "./Common/animationdata"
+import { TreeAnimationData, Node } from "./Common/animationdata";
 import ResultsTable from "./AlgComponent/tableCreater";
 import useTableData  from "./AlgComponent/useTableData";
 
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
 
-var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
-var animationData = null;
-var tDataset = null;
-var record = [];
-var step = 0;
-var deleteGraph = -1;
-var totallen = data.length;
-var state = 0;
+let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+let animationData = null;
+let tDataset = null;
+let record = [];
+let step = 0;
+let deleteGraph = -1;
+let totalLength = data.length;
+let state = 0;
 
 function HeapPage() {
   const svgRef = useRef(null);
-  const [resetkey, setResetkey] = useState(0);
+  const [resetKey] = useState(0);
 
   //add table
   const { tableData, addTableRow } = useTableData('heapResults');
@@ -34,7 +35,7 @@ function HeapPage() {
 
   function reset() {
     step = 0;
-    if (state == 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
+    if (state === 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
     else TreeGraphRenderer.renderGraph(tDataset, svgRef);
   }
 
@@ -47,16 +48,16 @@ function HeapPage() {
   }, []);
 
   function createHeap() {
-    animationData = new TreeAnimationData(data, "position")
-    tDataset = new TreeAnimationData(data, "position")
+    animationData = new TreeAnimationData(data, "position");
+    tDataset = new TreeAnimationData(data, "position");
     state = 0;
-    empty();    // render tree before maxheap
+    empty(); // render tree before maxheap
     const result = AnalyzeRuntime("createHeap", data, () => {
       HeapConcreteStrategy.buildMaxHeap(animationData.dataset, record);
       return animationData.dataset;
     });
     
-    totallen = animationData.dataset.length;
+    totalLength = animationData.dataset.length;
 
     // addTableRow('Create new tree', result.input, result.output, result.runtime);
 
@@ -79,7 +80,7 @@ function HeapPage() {
       HeapConcreteStrategy.insert(animationData.dataset, record);
       return animationData.dataset;
     });
-    totallen = animationData.dataset.length;
+    totalLength = animationData.dataset.length;
     // Find the position of the inserted node
     const insertedNodePosition = animationData.dataset[animationData.dataset.length - 1].position;
 
@@ -98,18 +99,21 @@ function HeapPage() {
   function deleteNodeFromHeap(i, ddata) {
     state = 1;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
-    empty();                                              // render graphs before removing node from heap
+    empty(); // render graphs before removing node from heap
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
     const result = AnalyzeRuntime("deleteNodeFromHeap", ddata, () => {
       HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
       record.push({
         e1: 0,
-        e2: [tDataset.dataset[tDataset.dataset.length - 1].index, tDataset.dataset[i].index],
+        e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[i].index,
+      ],
       });
       return animationData.dataset;
     });
 
-    data.splice(animationData.dataset[i].index - 1, 1);  // delete 1 element from data
+    data.splice(animationData.dataset[i].index - 1, 1); // delete 1 element from data
 
     addTableRow({
       operation: 'Delete node',
@@ -128,7 +132,12 @@ function HeapPage() {
     animationData.dataset[i].value = kdata;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty();
-    HeapConcreteStrategy.increaseKey(i + 1, kdata, animationData.dataset, record);
+    HeapConcreteStrategy.increaseKey(
+      i + 1,
+      kdata,
+      animationData.dataset,
+      record,
+    );
   }
 
   function extraHeap() {
@@ -139,9 +148,13 @@ function HeapPage() {
     HeapConcreteStrategy.extraHeap(animationData.dataset, record);
     record.push({
       e1: 0,
-      e2: [tDataset.dataset[tDataset.dataset.length - 1].index, tDataset.dataset[0].index - 1],
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[0].index - 1,
+      ],
     });
   }
+
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
@@ -222,7 +235,7 @@ function HeapPage() {
           svgRef={svgRef}
           width={Common.width}
           height={Common.height}
-          resetkey={resetkey}
+          resetKey={resetKey}
         >
           {/* the graph will be rendered inside the AlgorithmSpace component */}
         </AlgorithmSpace>
@@ -262,6 +275,7 @@ function HeapPage() {
           <button onClick={extraHeap}>extra heap</button>
         </div>
         <ResultsTable tableData={tableData} />
+        {/* <BarChart data={getBarChartData(heapResults).reverse()} /> */}
       </div>
       <div>
         <SaveInputToLocalStorage

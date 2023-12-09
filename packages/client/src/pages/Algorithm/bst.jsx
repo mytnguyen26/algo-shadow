@@ -2,7 +2,7 @@
  * TODO
  */
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
@@ -12,11 +12,13 @@ import { TreeAnimationData, Node } from "./Common/animationdata";
 import TreeGraphRenderer from "./Common/treerenderer";
 import ResultsTable from "./AlgComponent/tableCreater";
 import useTableData  from "./AlgComponent/useTableData";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 
 var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
 var animationData = null;
-var record = [];            // this array saves all animation steps that needs to happen
-                            // allow users to have next and back functionality
+var record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 var step = 0;
 var tree = null;
 function back() {
@@ -84,7 +86,7 @@ const BST = () => {
 
     let node = tree.search(sdata, record);
 
-    let endTime = performance.now();  // Start the timer
+    let endTime = performance.now();  // end the timer
 
     console.log(node);
   
@@ -120,7 +122,8 @@ const BST = () => {
 
   function next() {
     if (step >= record.length) {
-      TreeGraphRenderer.renderGraph(animationData, svgRef)
+      TreeGraphRenderer.renderGraph(animationData, svgRef);
+      createBST();
       alert("Animation ends!");
     } else {
       if (typeof record[step].e1 == "undefined") {
@@ -132,7 +135,7 @@ const BST = () => {
       }
     }
   }
-  
+
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {
@@ -203,9 +206,8 @@ const BST = () => {
 
     let endTime = performance.now();  // End the timer
 
-    console.log(record)
-    let prevSuccessorNodePosition = record[record.length - 1];    // exchange position to position found at index
-    if (animationData.dataset[index].position != prevSuccessorNodePosition) {
+    let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
+    if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
       record.push({
         e1: prevSuccessorNodePosition,
         e2: animationData.dataset[index].position,
@@ -216,11 +218,11 @@ const BST = () => {
       e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-    console.log("Removing from animationData dataset index", index)
-    //console.log(prevSuccessorNodePosition+","+animationData.dataset[index].position)
-    animationData.dataset.splice(index,1)
+    //console.log("Removing from animationData dataset index", index);
+    animationData.dataset.splice(index, 1);
 
-    let deletedNodePosition = animationData.dataset[index - 1].position;
+    let deletedNodePosition = animationData.dataset[index].position;
+    deletedNodePosition = deletedNodePosition -2 
     // console.log(deletedNodePosition)
 
     addTableRow({
@@ -303,6 +305,11 @@ const BST = () => {
             >
               Search
             </button>
+            {/* <SaveInputToLocalStorage
+              algorithm="bst"
+              inputData={data}
+              useHisInput={useHisInput}
+            /> */}
           </div>
           <div style={{ flexGrow: 1 }}>
             <AlgorithmSpace
@@ -345,7 +352,7 @@ const BST = () => {
                 inputData={data}
                 useHisInput={useHisInput}
               />
-            </div>
+          </div>
         </div>
       </Box>
     </Container>
