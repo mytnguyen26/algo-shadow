@@ -20,6 +20,7 @@ var record = []; // this array saves all animation steps that needs to happen
 // allow users to have next and back functionality
 var step = 0;
 var tree = null;
+var temptree = null;
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -85,6 +86,7 @@ const BST = () => {
   function next() {
     if (step >= record.length) {
       TreeGraphRenderer.renderGraph(animationData, svgRef);
+      createBST();
       alert("Animation ends!");
     } else {
       if (typeof record[step].e1 == "undefined") {
@@ -123,6 +125,7 @@ const BST = () => {
   function deleteBST(ddata, index) {
     record = [];
     reset();
+    //temptree = tree
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
     let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
@@ -137,7 +140,7 @@ const BST = () => {
       e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-    console.log("Removing from animationData dataset index", index);
+    //console.log("Removing from animationData dataset index", index);
     animationData.dataset.splice(index, 1);
   }
 

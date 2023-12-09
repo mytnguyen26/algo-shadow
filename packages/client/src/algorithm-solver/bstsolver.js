@@ -201,7 +201,7 @@ class BSTConcreteStrategy {
     let inOrderSuccessorNode = null;
     console.log("deleting", dData)
     const removeNode = (node, dData) => {
-      console.log("Start", node)
+      //console.log("Start", node)
       if (node === null) return null;
       if (node.nodeData.value == dData) {   // We found a node to be deleted
         deleteNode = node;
