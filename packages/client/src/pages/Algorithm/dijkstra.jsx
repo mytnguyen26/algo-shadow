@@ -29,15 +29,15 @@ function next() {
         const p = document
         .getElementById(t.node)
         .getElementsByTagName("path")[0];
-        DiGraphRenderer.pathDisplay(p, t.change, "black;blue");
+        DiGraphRenderer.pathDisplay(p, t.change, "#000000;#006699");
       }else{
         const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
         if (t.change == "stroke") {
-          DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
+          DiGraphRenderer.pathDisplay(c, t.change, "#99CCFF;#006699");
         } else {
-          DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+          DiGraphRenderer.pathDisplay(c, t.change, "#FFFFFF;#006699");
         }
       }
       
@@ -46,7 +46,7 @@ function next() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "#4fd2dd;#235fa7");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#000000;#99CCFF");
       });
     }
     step++;
@@ -65,15 +65,15 @@ function back() {
         const p = document
         .getElementById(t.node)
         .getElementsByTagName("path")[0];
-        DiGraphRenderer.pathDisplay(p, t.change, "blue;black");
+        DiGraphRenderer.pathDisplay(p, t.change, "#006699;#000000");
       }else{
         const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
         if (t.change == "stroke") {
-          DiGraphRenderer.pathDisplay(c, t.change, "blue;yellow");
+          DiGraphRenderer.pathDisplay(c, t.change, "#006699;#99CCFF");
         } else {
-          DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+          DiGraphRenderer.pathDisplay(c, t.change, "#006699;#FFFFFF");
         }
       }
     } else {
@@ -81,7 +81,7 @@ function back() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "yellow;black");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#99CCFF;#000000");
       });
     }
   }
