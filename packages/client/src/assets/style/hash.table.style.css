@@ -1,11 +1,11 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f7f8fc;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
+} */
 
 .container {
     background-color: #ffffff;
@@ -96,4 +96,3 @@ button:disabled {
 .pulse-animation {
     animation: pulse 1s;
 }
-

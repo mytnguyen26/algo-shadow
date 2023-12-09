@@ -12,7 +12,7 @@ import { AuthProvider } from "./context/auth.context.jsx";
 import { Logout } from "./pages/Auth/logout.jsx";
 import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
 import BST from "./pages/Algorithm/bst.jsx";
-import HASH from "./pages/Algorithm/HashTableVisualization.jsx";
+import HASH from "./pages/Algorithm/hash.jsx";
 
 function App() {
   return (

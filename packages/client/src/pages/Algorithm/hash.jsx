@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import "./HashComponent/HashTableVisualization.css";
-import { djb2Hash, hashFunc } from "./HashComponent/HashTableLogic";
+import React, { useState, useRef } from "react";
+import "../../assets/style/hash.table.style.css"
+import { djb2Hash, hashFunc } from "../../algorithm-solver/hashTableSolver";
 
 const MAX = 20;
 const HashTableVisualization = () => {
@@ -8,6 +8,12 @@ const HashTableVisualization = () => {
   const [inputValue, setInputValue] = useState("");
   const [currentSize, setCurrentSize] = useState(0);
 
+  /**
+   * A helper function to animate the cell if an element
+   * is inserted, deleted, or selected from the hash table
+   * @param {*} index 
+   * @returns 
+   */
   const animateCell = async (index) => {
     return new Promise((resolve) => {
       const newCells = [...cells];
@@ -21,6 +27,10 @@ const HashTableVisualization = () => {
     });
   };
 
+  /**
+   * Insert an element to the hash table.
+   * @returns 
+   */
   const insert = async () => {
     const value = parseInt(inputValue);
     if (isNaN(value) || value < 0 || value > 99) {
@@ -68,6 +78,10 @@ const HashTableVisualization = () => {
     setInputValue("");
   };
 
+  /**
+   * Search for an element in the hash table.
+   * @returns 
+   */
   const search = async () => {
     const value = parseInt(inputValue);
     if (isNaN(value) || value < 0 || value > 99) {
@@ -100,6 +114,10 @@ const HashTableVisualization = () => {
     setInputValue("");
   };
 
+  /**
+   * Delete an element from the hash table.
+   * @returns 
+   */
   const deleteValue = async () => {
     const value = parseInt(inputValue);
     if (isNaN(value) || value < 0 || value > 99) {
@@ -135,7 +153,7 @@ const HashTableVisualization = () => {
     alert("Value not found!");
     setInputValue("");
   };
-
+ 
   return (
     <div className="container">
       <h1>Hash</h1>
