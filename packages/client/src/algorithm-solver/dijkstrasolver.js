@@ -79,8 +79,8 @@ export default class DijkstraConcreteStrategy {
     }
 
     while (visited.size < this.nodes.length) {
-      console.log("visited", visited)
-      console.log("all nodes", distances)
+      // console.log("visited", visited)
+      // console.log("all nodes", distances)
       const currentNode = this.getMinDistanceNode(distances, visited);  // The node with the smallest distance is selected among the nodes that have never been visited
       visited.add(currentNode);     // Mark the selected node as visited
       let t = [];
@@ -107,8 +107,8 @@ export default class DijkstraConcreteStrategy {
     let minNode = null;
   
     for (const [node, distance] of distances.entries()) {
-      console.log("for loop node ", node)
-      console.log("for loop distance", distance)
+      // console.log("for loop node ", node)
+      // console.log("for loop distance", distance)
       if (!visited.has(node) && distance < minDistance) {
         minDistance = distance;
         minNode = node;
@@ -124,7 +124,7 @@ export default class DijkstraConcreteStrategy {
     if (this.kind == "Undirected") {
       for (const [node, neighbors] of this.edges.entries()) {
         for (const neighbor of neighbors) {
-          // 为了确保不会添加重复的边，检查边是否已经被添加过
+          // no duplicate edges
           const edgeKey1 = `${node}-${neighbor.node}`;
           const edgeKey2 = `${neighbor.node}-${node}`;
 

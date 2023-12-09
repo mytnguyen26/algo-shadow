@@ -13,26 +13,12 @@ import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
 import useTableData  from "./AlgComponent/useTableData";
 
-var data = [4, 7, 8, 2, 1, 3, 5, 9];
+var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
 var animationData = null;
-var record = [];
+var record = [];            // this array saves all animation steps that needs to happen
+                            // allow users to have next and back functionality
 var step = 0;
 var tree = null;
-
-function next() {
-  if (step >= record.length) {
-    alert("Animation is end!");
-  } else {
-    if (typeof record[step].e1 == "undefined") {
-      const c = document.getElementById("c" + record[step]);
-      TreeGraphRenderer.pathDisplay(c, "fill", "white;blue");
-      step++;
-    } else {
-      step = Common.next(step, record);
-    }
-  }
-}
-
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -93,7 +79,13 @@ const BST = () => {
   function searchBST(sdata) {
     record = [];
     reset();
+
+    let startTime = performance.now();  // Start the timer
+
     let node = tree.search(sdata, record);
+
+    let endTime = performance.now();  // Start the timer
+
     console.log(node);
   
     let nodePosition = record[record.length - 1] - 1;
@@ -104,7 +96,7 @@ const BST = () => {
       operation: 'Search a node',
       input: sdata,
       output: 'Node Position ' + nodePosition,
-      runtime: ''
+      runtime: endTime - startTime
     });
   
   }
@@ -126,6 +118,21 @@ const BST = () => {
     return values;
   }
 
+  function next() {
+    if (step >= record.length) {
+      TreeGraphRenderer.renderGraph(animationData, svgRef)
+      alert("Animation ends!");
+    } else {
+      if (typeof record[step].e1 == "undefined") {
+        const c = document.getElementById("c" + record[step]);
+        TreeGraphRenderer.pathDisplay(c, "fill", "white;blue");
+        step++;
+      } else {
+        step = Common.next(step, record);
+      }
+    }
+  }
+  
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {
@@ -154,14 +161,21 @@ const BST = () => {
   }
 
   function insertBST(idata) {
+
+
     record = [];
     reset();
+
+    let startTime = performance.now();  // Start the timer
+
     data.push(Number(idata[0]));
     animationData.push(new Node(data.length, idata));
-    // const result = AnalyzeRuntime("insertBST", idata, () => {
+
     tree.insert(animationData.dataset[data.length - 1], record);
-    // });
-    console.log(data.length)
+
+    let endTime = performance.now();  // End the timer
+
+    console.log(`Insert operation took ${endTime - startTime} milliseconds.`);
 
     let insertedNodePosition = animationData.dataset[data.length - 1].position - 1;
 
@@ -173,7 +187,7 @@ const BST = () => {
       operation: 'Insert new node',
       input: idata,
       output: 'Node Position ' + insertedNodePosition,
-      runtime: ''
+      runtime: endTime - startTime
     });
 
   }
@@ -181,29 +195,39 @@ const BST = () => {
   function deleteBST(ddata, index) {
     record = [];
     reset();
-    //k delete，t exchange
+
+    let startTime = performance.now();  // Start the timer
+
+    // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
-    let t = record[record.length - 1];
-    if (animationData.dataset[index].position != t) {
+
+    let endTime = performance.now();  // End the timer
+
+    console.log(record)
+    let prevSuccessorNodePosition = record[record.length - 1];    // exchange position to position found at index
+    if (animationData.dataset[index].position != prevSuccessorNodePosition) {
       record.push({
-        e1: t,
+        e1: prevSuccessorNodePosition,
         e2: animationData.dataset[index].position,
       });
     }
     record.push({
       e1: 0,
-      e2: [t, animationData.dataset[index].position],
+      e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
+    console.log("Removing from animationData dataset index", index)
+    //console.log(prevSuccessorNodePosition+","+animationData.dataset[index].position)
+    animationData.dataset.splice(index,1)
 
-    let deletedNodePosition = animationData.dataset[index].position - 1;
+    let deletedNodePosition = animationData.dataset[index - 1].position;
     // console.log(deletedNodePosition)
 
     addTableRow({
       operation: 'Delete node',
       input: ddata,
       output: 'Delete Node inital position ' + deletedNodePosition,
-      runtime: ''
+      runtime: endTime - startTime
     });
 
   }
