@@ -106,9 +106,9 @@ class BSTConcreteStrategy {
     };
     const inOrderNode = (node, callback) => {
       if (node !== null) {
-        backs.push(callback(node.nodeData.position)); // 将值push到数组里
-        inOrderNode(node.left, callback); // 递归遍历出左节点
-        inOrderNode(node.right, callback); // 递归遍历出右节点
+        backs.push(callback(node.nodeData.position)); // push the values into the array
+        inOrderNode(node.left, callback); // Recursively iterate over the left node
+        inOrderNode(node.right, callback); // Recursively iterate over the right node
       }
     };
     inOrderNode(this.root, callback);
@@ -126,9 +126,9 @@ class BSTConcreteStrategy {
     };
     const inOrderNode = (node, callback) => {
       if (node !== null) {
-        inOrderNode(node.left, callback); // 递归遍历出左节点
-        inOrderNode(node.right, callback); // 递归遍历出右节点
-        backs.push(callback(node.nodeData.position)); // 将值push到数组里
+        inOrderNode(node.left, callback); // Recursively iterate over the left node
+        inOrderNode(node.right, callback); // Recursively iterate over the right node
+        backs.push(callback(node.nodeData.position)); // push the values into the array
       }
     };
     inOrderNode(this.root, callback);

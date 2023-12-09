@@ -82,14 +82,14 @@ class DiGraphRenderer extends TreeGraphRenderer {
     // Header row
     const headerRow = document.createElement("tr");
     for (let key of distance.keys()) {
-      console.log(key)
+      //console.log(key)
       headerRow.appendChild(DiGraphRenderer.createTableCell_(key));
     }
     table.appendChild(headerRow);
     const row = document.createElement("tr");
     // Data rows
     distance.forEach(element => {
-      console.log(element)
+      //console.log(element)
       row.appendChild(DiGraphRenderer.createTableCell_(element));
     });
     table.appendChild(row);
@@ -100,6 +100,13 @@ class DiGraphRenderer extends TreeGraphRenderer {
     const cell = document.createElement("td");
     cell.textContent = content;
     return cell;
+  }
+
+  static wordcolor(node){
+    const w = document
+        .getElementById("c" + node)
+        .getElementsByTagName("text")[0];
+    w.setAttribute("fill","orange")
   }
 }
 

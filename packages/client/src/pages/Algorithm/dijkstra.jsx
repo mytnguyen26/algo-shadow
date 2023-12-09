@@ -21,6 +21,8 @@ var step = 0;
 var graph = null;
 function next() {
   if (step >= record.length) {
+    //console.log(record[step-1].node)
+    DiGraphRenderer.wordcolor(record[step-1].node)
     alert("Animation is end!");
   } else {
     let t = record[step];
@@ -29,7 +31,7 @@ function next() {
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
       if (t.change == "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "black;blue");
+        DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
       } else {
         DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
       }
@@ -38,7 +40,7 @@ function next() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "black;green");
+        DiGraphRenderer.pathDisplay(c, "stroke", "black;yellow");
       });
     }
     step++;
@@ -113,6 +115,7 @@ const Dijkstra = () => {
 
   function run() {
     let d = graph.run("A", record);
+    DiGraphRenderer.wordcolor("A")
     DiGraphRenderer.displaydistance(d)
   }
 
