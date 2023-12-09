@@ -202,7 +202,6 @@ const BST = () => {
 
     let startTime = performance.now();  // Start the timer
 
-    //temptree = tree
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
 
