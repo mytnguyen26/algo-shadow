@@ -70,6 +70,7 @@ export default class DijkstraConcreteStrategy {
 
   run(startNode, record) {
     // Track the distance to each node and the path to reach it
+    console.log("Edges", this.edges)
     const distances = new Map();
     const visited = new Set();
 
@@ -109,7 +110,7 @@ export default class DijkstraConcreteStrategy {
         }
       }
     }
-    
+    console.log("Distances", distances);
     return distances;
   }
 
