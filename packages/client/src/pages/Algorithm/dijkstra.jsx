@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box } from "@mui/material";
+import { Container, Box, Paper, tabScrollButtonClasses } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
 import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
+import { dark } from "@mui/material/styles/createPalette.js";
 
 let data = [
   [0, 10, 0, 5, 0],
@@ -18,6 +19,8 @@ let step = 0;
 let graph = null;
 function next() {
   if (step >= record.length) {
+    //console.log(record[step-1].node)
+    DiGraphRenderer.wordcolor(record[step-1].node)
     alert("Animation is end!");
   } else {
     let t = record[step];
@@ -25,8 +28,8 @@ function next() {
       const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change === "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "black;blue");
+      if (t.change == "stroke") {
+        DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
       } else {
         DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
       }
@@ -35,7 +38,7 @@ function next() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "black;green");
+        DiGraphRenderer.pathDisplay(c, "stroke", "black;yellow");
       });
     }
     step++;
@@ -106,7 +109,9 @@ const Dijkstra = () => {
   };
 
   function run() {
-    graph.run("A", record);
+    let d = graph.run("A", record);
+    DiGraphRenderer.wordcolor("A")
+    DiGraphRenderer.displaydistance(d)
   }
 
   function validmatrix(valuename) {
@@ -272,6 +277,7 @@ const Dijkstra = () => {
                 )}
               </>
             )}
+            <div id="distance"></div>
             <div id="adjacencyMatrix"></div>
           </div>
 
