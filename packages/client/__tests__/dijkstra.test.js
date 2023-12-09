@@ -1,40 +1,44 @@
 import { expect, it, describe } from "vitest";
-import DijkstraConcreteStrategy from "../src/components/AlgorithmSolver/DijkstraConcreteStrategy.js";
+import DijkstraConcreteStrategy from "../src/algorithm-solver/dijkstrasolver"
 
 describe("DijkstraAlgorithm", () => {
-  it("should get correct shortest path", () => {
+  it("should get correct shortest path weights from source node to all nodes", () => {
     const graph = new DijkstraConcreteStrategy();
-
     const startNode = "A";
-    const endNode = "B";
+    var record = []
+    graph.addNode("A")
+    graph.addNode("B")
+    graph.addNode("C")
+    graph.addEdge("A", "B", 3)
+    graph.addEdge("A", "C", 1)
+    graph.addEdge("B", "C", 1)
+    graph.addEdge("C", "B", 1)
 
-    graph.addNode("A", { C: 3, F: 2 });
-    graph.addNode("B", { D: 1, E: 2, G: 2 });
-    graph.addNode("C", { A: 3, F: 2, E: 1, D: 4 });
-    graph.addNode("D", { C: 4, B: 1 });
-    graph.addNode("E", { C: 1, F: 3, B: 2 });
-    graph.addNode("F", { A: 2, C: 2, E: 3, G: 5 });
-
-    const { shortestPath } = graph.run(startNode, endNode);
-
-    expect(shortestPath).toEqual(["A", "C", "E", "B"]);
+    const orderedVisitedNodes = graph.run(startNode, record);
+    const expectResult = new Map()
+    expectResult.set("A", 0)
+    expectResult.set("B", 2)
+    expectResult.set("C", 1)
+    expect(orderedVisitedNodes).toEqual(expectResult);
   });
 
-  it("should get correct ordered visited nodes", () => {
+  it("should create correct nodes from adjacency matrix", () => {
+    let data = [
+      [0, 3, 1],
+      [0, 0, 1],
+      [0, 1, 0]
+    ]
     const graph = new DijkstraConcreteStrategy();
+    graph.fromAdjacencyMatrix(data)
+    const expectResult = new Map(Object.entries(
+      {
+        "A": [{node: "B", weight: 3}, {node: "C", weight: 1}],
+        "B": [{node: "C", weight: 1}],
+        "C": [{node: "B", weight: 1}]
+  
+      }
+    ));
 
-    const startNode = "A";
-    const endNode = "B";
-
-    graph.addNode("A", { C: 3, F: 2 });
-    graph.addNode("B", { D: 1, E: 2, G: 2 });
-    graph.addNode("C", { A: 3, F: 2, E: 1, D: 4 });
-    graph.addNode("D", { C: 4, B: 1 });
-    graph.addNode("E", { C: 1, F: 3, B: 2 });
-    graph.addNode("F", { A: 2, C: 2, E: 3, G: 5 });
-
-    const { orderedVisitedNodes } = graph.run(startNode, endNode);
-
-    expect(orderedVisitedNodes).toEqual(["A", "F", "C", "E", "B"]);
+    expect(graph.edges).toEqual(expectResult)
   });
 });

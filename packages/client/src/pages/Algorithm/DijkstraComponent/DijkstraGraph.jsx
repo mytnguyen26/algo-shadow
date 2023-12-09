@@ -6,7 +6,7 @@ import * as d3 from "d3";
 import { Button, Stack } from "@mui/material";
 import { useNodes } from "./useNodes.jsx";
 import { useLinks } from "./useLinks.jsx";
-import DijkstraConcreteStrategy from "../../../components/AlgorithmSolver/DijkstraConcreteStrategy.js";
+import DijkstraConcreteStrategy from "../AlgorithmSolver/dijkstrasolver.js";
 
 export const DijkstraGraph = () => {
   const [nodes, setNodes] = useNodes();
@@ -62,14 +62,14 @@ export const DijkstraGraph = () => {
         (d) =>
           (nodes.find((node) => node.id === d.source).x +
             nodes.find((node) => node.id === d.target).x) /
-          2
+          2,
       )
       .attr(
         "y",
         (d) =>
           (nodes.find((node) => node.id === d.source).y +
             nodes.find((node) => node.id === d.target).y) /
-          2
+          2,
       )
       .text((d) => d.weight);
 
@@ -157,7 +157,7 @@ export const DijkstraGraph = () => {
           .filter((d) => shortestPath.includes(d.id))
           .style(
             "fill",
-            () => step === orderedVisitedPath.length - 1 && "green"
+            () => step === orderedVisitedPath.length - 1 && "green",
           );
       }
 
