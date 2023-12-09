@@ -1,92 +1,76 @@
+/**
+ * TODO
+ */
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import BinarySearchTree from "./bstComponent/bstmethod.js";
-import AnimationB from "./bstComponent/bstanimate.jsx";
-import Animation from "./HeapComponent/animate";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import BSTConcreteStrategy from "../../algorithm-solver/bstsolver.js";
 import Common from "./Common/common";
+import { TreeAnimationData, Node } from "./Common/animationdata.js";
+import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 
-var data = [4, 7, 8, 2, 1, 3, 5, 9];
-var dataset = [];
-var record = [];
+var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
+var animationData = null;
+var record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 var step = 0;
 var tree = null;
-
-function datatran(data) {
-  dataset = [];
-  for (let i = 1; i <= data.length; ++i) {
-    dataset[i - 1] = { index: i, value: Number(data[i - 1]), position: 1 };
-  }
-  return dataset;
-}
-
-function reset() {
-  step = 0;
-  record.forEach((element) => {
-    AnimationB.Pathdisappear(dataset[element - 1].position);
-  });
-}
-
-function Inorder() {
-  reset();
-  record = tree.inOrderTraverse();
-}
-
-function Preorder() {
-  reset();
-  record = tree.preOrderTraverse();
-}
-
-function Postorder() {
-  reset();
-  record = tree.postOrderTraverse();
-}
-
-function nextStep() {
-  if (step >= record.length) {
-    alert("AnimationB is end!");
-  } else {
-    if (typeof record[step].e1 == "undefined") {
-      AnimationB.Pathdisplay(dataset[record[step] - 1].position);
-    } else {
-      if (record[step].e1 == 0) {
-        Animation.deleteelement(record[step - 1].e2, record[step - 1].e1);
-      } else {
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1, text2);
-      }
-    }
-    step++;
-  }
-}
-
+var temptree = null;
 function back() {
   if (step < 1) {
     alert("This is the first step!");
   } else {
-    step--;
-    if (typeof record[step].e1 == "undefined") {
-      AnimationB.Pathdisappear(dataset[record[step] - 1].position);
+    if (typeof record[step - 1].e1 == "undefined") {
+      step--;
+      const c = document.getElementById("c" + record[step]);
+      TreeGraphRenderer.pathDisplay.pathDisplay(c, "fill", "blue;white");
     } else {
-      if (record[step].e1 == 0) {
-        Animation.showelement(record[step - 1].e2, record[step - 1].e1);
-      } else {
-        const text1 = document.getElementById("t" + record[step].e1);
-        const text2 = document.getElementById("t" + record[step].e2);
-        Animation.animateExchange(text1, text2);
-      }
+      step = Common.back(step, record);
     }
   }
+}
+
+function reset() {
+  step = 0;
+  animationData.dataset.forEach((element) => {
+    //TreeGraphRenderer.Pathdisappear(element.position)
+    const c = document.getElementById("c" + element.position);
+    TreeGraphRenderer.pathDisplay(c, "fill", "blue;white");
+  });
+}
+
+function inOrder() {
+  reset();
+  record = tree.inOrderTraverse();
+  //console.log(record)
+}
+
+function preOrder() {
+  reset();
+  record = tree.preOrderTraverse();
+}
+
+function postOrder() {
+  reset();
+  record = tree.postOrderTraverse();
+}
+
+function searchBST(sdata) {
+  record = [];
+  reset();
+  let node = tree.search(sdata, record);
+  console.log(node);
 }
 
 const BST = () => {
   const svgRef = useRef(null);
   useEffect(() => {
-    createbst();
+    createBST();
   }, []);
 
   useEffect(() => {
@@ -96,9 +80,69 @@ const BST = () => {
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
-    data = input;
-    createbst();
+    createBST();
   };
+
+  function next() {
+    if (step >= record.length) {
+      TreeGraphRenderer.renderGraph(animationData, svgRef);
+      createBST();
+      alert("Animation ends!");
+    } else {
+      if (typeof record[step].e1 == "undefined") {
+        const c = document.getElementById("c" + record[step]);
+        TreeGraphRenderer.pathDisplay(c, "fill", "white;blue");
+        step++;
+      } else {
+        step = Common.next(step, record);
+      }
+    }
+  }
+
+  function createBST() {
+    record = [];
+    const result = AnalyzeRuntime("createBST", data, () => {
+      tree = new BSTConcreteStrategy();
+      animationData = new TreeAnimationData(data, "position");
+      animationData.dataset.forEach((element) => {
+        tree.insert(element, record);
+      });
+    });
+    TreeGraphRenderer.renderGraph(animationData, svgRef);
+    reset();
+    addResult(result); // Correctly add the result
+  }
+
+  function insertBST(idata) {
+    record = [];
+    reset();
+    data.push(Number(idata[0]));
+    animationData.push(new Node(data.length, idata));
+    tree.insert(animationData.dataset[data.length - 1], record);
+    TreeGraphRenderer.renderGraph(animationData, svgRef);
+  }
+
+  function deleteBST(ddata, index) {
+    record = [];
+    reset();
+    //temptree = tree
+    // index delete，prevSuccessorNodePosition exchange
+    tree.delete(ddata, record);
+    let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
+    if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
+      record.push({
+        e1: prevSuccessorNodePosition,
+        e2: animationData.dataset[index].position,
+      });
+    }
+    record.push({
+      e1: 0,
+      e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
+    });
+    data.splice(animationData.dataset[index].index - 1, 1);
+    //console.log("Removing from animationData dataset index", index);
+    animationData.dataset.splice(index, 1);
+  }
 
   const [bstResults, setBstResults] = useState(() => {
     const savedResults = localStorage.getItem("bstResults");
@@ -121,60 +165,6 @@ const BST = () => {
     });
   };
 
-  function createbst() {
-    record = [];
-    const result = AnalyzeRuntime("createBST", data, () => {
-      tree = new BinarySearchTree();
-      datatran(data);
-      dataset.forEach((element) => {
-        tree.insert(element, record);
-      });
-    });
-    AnimationB.createbst(dataset, svgRef);
-    addResult(result); // Correctly add the result
-  }
-
-  function insertbst(idata) {
-    record = [];
-    data.push(Number(idata[0]));
-    dataset.push({ index: data.length, value: Number(idata[0]), position: 1 });
-    tree.insert(dataset[data.length - 1], record);
-    record.push(dataset[data.length - 1].index);
-    AnimationB.createbst(dataset, svgRef);
-  }
-
-  function deletebst(ddata, k) {
-    record = [];
-    //k 被删除，i交换
-    tree.delete(ddata, record);
-    //tree.inOrderTraverse()
-    let t = record[record.length - 1];
-    for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].index == t) {
-        if (dataset[i].value != ddata) {
-          console.log(
-            "exchange " + dataset[i].position + " and " + dataset[k].position,
-          );
-          record.push({
-            e1: dataset[i].position,
-            e2: dataset[k].position,
-          });
-        }
-        break;
-      }
-    }
-    record.push({
-      e1: 0,
-      e2: dataset[k].position,
-    });
-    data.splice(dataset[i].index - 1, 1);
-  }
-
-  function test() {
-    console.log(record[0].e1);
-    //AnimationB.addGradients(dataset,svgRef)
-  }
-
   return (
     <Container maxWidth="md">
       <Box className="canvas">
@@ -187,11 +177,11 @@ const BST = () => {
               id="csubmit"
               onClick={() => {
                 try {
-                  let cdata = Common.validdata("create");
+                  let cdata = Common.validData("create");
                   data = cdata.map((item) => Number(item.trim()));
-                  createbst();
+                  createBST();
                 } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
+                  alert("Error: " + error.message);
                 }
               }}
             >
@@ -203,10 +193,10 @@ const BST = () => {
               id="isubmit"
               onClick={() => {
                 try {
-                  let idata = Common.validonedata("insert");
-                  insertbst(idata);
+                  let idata = Common.validOneData("insert");
+                  insertBST(idata);
                 } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
+                  alert("Error: " + error.message);
                 }
               }}
             >
@@ -218,18 +208,40 @@ const BST = () => {
               id="dsubmit"
               onClick={() => {
                 try {
-                  let ddata = Common.validonedata("delete");
-                  const index = Common.findinarray(ddata, dataset);
-                  deletebst(ddata, index);
+                  let ddata = Common.validOneData("delete");
+                  const index = Common.findInArray(
+                    ddata,
+                    animationData.dataset,
+                  );
+                  deleteBST(ddata, index);
                 } catch (error) {
-                  alert("Error: " + error.message); // 输出错误消息
+                  alert("Error: " + error.message);
                 }
               }}
             >
               Delete
             </button>
-          </div>
 
+            <input id="search" placeholder="Insert a number" />
+            <button
+              id="ssubmit"
+              onClick={() => {
+                try {
+                  let sdata = Common.validOneData("search");
+                  searchBST(sdata);
+                } catch (error) {
+                  alert("Error: " + error.message);
+                }
+              }}
+            >
+              Search
+            </button>
+            <SaveInputToLocalStorage
+              algorithm="bst"
+              inputData={data}
+              useHisInput={useHisInput}
+            />
+          </div>
           <div style={{ flexGrow: 1 }}>
             <AlgorithmSpace
               svgRef={svgRef}
@@ -245,9 +257,9 @@ const BST = () => {
                 marginTop: "10px",
               }}
             >
-              <button onClick={Inorder}>Inorder</button>
-              <button onClick={Preorder}>Preorder</button>
-              <button onClick={Postorder}>Postorder</button>
+              <button onClick={inOrder}>Inorder</button>
+              <button onClick={preOrder}>Preorder</button>
+              <button onClick={postOrder}>Postorder</button>
             </div>
             <div
               style={{
@@ -257,19 +269,14 @@ const BST = () => {
                 marginTop: "10px",
               }}
             >
-              <button onClick={nextStep}>Next Step</button>
+              <button onClick={next}>Next Step</button>
               <button onClick={back}>Back</button>
               <button onClick={reset}>Reset</button>
-              <button onClick={test}>Test</button>
             </div>
-            <ResultsTable results={bstResults} />
-          </div>
-          <div>
-            <SaveInputToLocalStorage
-              algorithm="bst"
-              inputData={data}
-              useHisInput={useHisInput}
-            />
+            <div>
+              <ResultsTable results={bstResults} />
+              <BarChart data={getBarChartData(bstResults).reverse()} />
+            </div>
           </div>
         </div>
       </Box>

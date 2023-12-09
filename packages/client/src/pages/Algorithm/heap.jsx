@@ -1,75 +1,31 @@
 import React, { useState, useEffect, useRef } from "react";
-import Animation from "./HeapComponent/animate";
-import Common from "./Common/common";
-import Heapification from "./HeapComponent/heapmethod";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
+import HeapConcreteStrategy from "../../algorithm-solver/heapsolver.js";
+import Common from "./Common/common";
+import TreeGraphRenderer from "./Common/treerenderer.js";
+import { TreeAnimationData, Node } from "./Common/animationdata.js";
 import ResultsTable from "./AlgComponent/tableCreater";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
 
-var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
-var dataset = [];
-var tdataset = [];
-var record = [];
-var step = 0;
-var data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
-var dataset = [];
-var tdataset = [];
-var record = [];
-var step = 0;
-var deletetest = -1;
-var deletegraph = -1;
-var totallen = dataset.length;
-var state = 0;
-
-function findinheap(xdata, dataset) {
-  for (var i = 0; i < dataset.length; i++) {
-    if (dataset[i].value == xdata) {
-      return i;
-    }
-  }
-  throw new Error(xdata + " is not in heap");
-}
-
-const nextStep = () => {
-  if (step >= record.length) {
-    alert("Heap is end!");
-  } else {
-    if (record[step].e1 == 0) {
-      Animation.deleteelement(deletetest + 1, deletegraph);
-    } else {
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      Animation.animateExchange(text1, text2);
-    }
-    step++;
-  }
-};
-
-function back() {
-  if (step < 1) {
-    alert("This is the first step!");
-  } else {
-    step--;
-    if (record[step].e1 == 0) {
-      Animation.showelement(deletetest + 1, deletegraph);
-    } else {
-      const text1 = document.getElementById("t" + record[step].e1);
-      const text2 = document.getElementById("t" + record[step].e2);
-      Animation.animateExchange(text1, text2);
-    }
-  }
-}
-
-const getInitialHeapResults = () => {
-  const savedResults = localStorage.getItem("heapResults");
-  return savedResults ? JSON.parse(savedResults) : [];
-};
+let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+let animationData = null;
+let tDataset = null;
+let record = [];
+let step = 0;
+let deleteGraph = -1;
+let totalLength = data.length;
+let state = 0;
 
 function HeapPage() {
   const svgRef = useRef(null);
-  const [resetkey, setResetkey] = useState(0);
-  const [heapResults, setHeapResults] = useState([]);
+  const [resetKey] = useState(0);
+  const [heapResults, setHeapResults] = useState(() => {
+    const savedResults = localStorage.getItem("heapResults");
+    return savedResults ? JSON.parse(savedResults) : [];
+  });
 
   const addResult = (newResult) => {
     setHeapResults((prevResults) => {
@@ -77,99 +33,106 @@ function HeapPage() {
       if (updatedResults.length > 10) {
         updatedResults.shift(); // Remove the oldest result
       }
+
+      // Save updated results to localStorage
+      localStorage.setItem("heapResults", JSON.stringify(updatedResults));
       return updatedResults;
     });
   };
 
-  useEffect(() => {
-    // Save updated results to localStorage
-    localStorage.setItem("heapResults", JSON.stringify(heapResults));
-  }, [heapResults]);
-
-  useEffect(() => {
-    setHeapResults(getInitialHeapResults());
-  }, []);
-
   function empty() {
     record = [];
-    step = 0;
-    if (state == 1) Animation.fianlTree(tdataset, svgRef);
-    else Animation.createTree(dataset, svgRef);
+    reset();
   }
 
   function reset() {
     step = 0;
-    if (state == 0) Animation.createTree(dataset, svgRef);
-    else Animation.fianlTree(tdataset, svgRef);
+    if (state === 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
+    else TreeGraphRenderer.renderGraph(tDataset, svgRef);
   }
 
   useEffect(() => {
     createHeap();
   }, []);
 
+  useEffect(() => {
+    SaveInputToLocalStorage;
+  }, []);
+
   function createHeap() {
-    dataset = data.map((value, index) => ({
-      index: index + 1,
-      value: Number(value),
-    }));
+    animationData = new TreeAnimationData(data, "position");
+    tDataset = new TreeAnimationData(data, "position");
     state = 0;
-    empty();
+    empty(); // render tree before maxheap
     const result = AnalyzeRuntime("createHeap", data, () => {
-      Heapification.buildmaxheap(dataset, record);
-      return dataset;
+      HeapConcreteStrategy.buildMaxHeap(animationData.dataset, record);
+      return animationData.dataset;
     });
+    totalLength = animationData.dataset.length;
     addResult(result);
   }
 
-  function insertheap(idata) {
+  function insertNewNodeToHeap(idata) {
     state = 1;
     data.push(Number(idata));
-    dataset.push({ index: data.length, value: Number(idata) });
-    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
+    animationData.dataset.push(new Node(data.length, idata));
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); // save data before sort
     empty();
-    const result = AnalyzeRuntime("insertheap", data, () => {
-      Heapification.insertheap(dataset, record);
-      return dataset;
+    const result = AnalyzeRuntime("insertNewNodeToHeap", data, () => {
+      HeapConcreteStrategy.insert(animationData.dataset, record);
+      return animationData.dataset;
     });
+    totalLength = animationData.dataset.length;
+    addResult(result);
   }
 
-  function deleteheap(i) {
+  function deleteNodeFromHeap(i) {
     state = 1;
-    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
-    empty();
-    deletetest = i;
-    deletegraph = tdataset[tdataset.length - 1].index;
-    Heapification.deleteheap(i + 1, dataset, record);
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
+    empty(); // render graphs before removing node from heap
+    deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
+    HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
     record.push({
       e1: 0,
-      e2: totallen + 1,
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[i].index,
+      ],
     });
-    data.splice(dataset[i].index - 1, 1);
+    data.splice(animationData.dataset[i].index - 1, 1); // delete 1 element from data
   }
 
-  function increasekey(i, kdata) {
-    if (kdata < dataset[i].value) {
+  function increaseKey(i, kdata) {
+    if (kdata < animationData.dataset[i].value) {
       alert("new value is smaller than before");
     }
     state = 1;
-    dataset[i].value = kdata;
-    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
+    animationData.dataset[i].value = kdata;
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty();
-    Heapification.increasekey(i + 1, kdata, dataset, record);
+    HeapConcreteStrategy.increaseKey(
+      i + 1,
+      kdata,
+      animationData.dataset,
+      record,
+    );
   }
 
-  function extraheap() {
+  function extraHeap() {
     state = 1;
-    tdataset = JSON.parse(JSON.stringify(dataset)); //save data before sort
-    deletetest = tdataset[0].index - 1;
-    deletegraph = tdataset[tdataset.length - 1].index;
+    tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
+    deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
     empty();
-    Heapification.extraheap(dataset, record);
+    HeapConcreteStrategy.extraHeap(animationData.dataset, record);
     record.push({
       e1: 0,
-      e2: totallen + 1,
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[0].index - 1,
+      ],
     });
   }
+
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
@@ -184,11 +147,11 @@ function HeapPage() {
           id="csubmit"
           onClick={() => {
             try {
-              let cdata = Common.validdata("create");
+              let cdata = Common.validData("create");
               data = cdata.map((item) => Number(item.trim()));
               createHeap();
             } catch (error) {
-              alert("Error: " + error.message); // 输出错误消息
+              alert("Error: " + error.message);
             }
           }}
         >
@@ -200,10 +163,10 @@ function HeapPage() {
           id="isubmit"
           onClick={() => {
             try {
-              let idata = Common.validonedata("insert");
-              insertheap(idata);
+              let idata = Common.validOneData("insert");
+              insertNewNodeToHeap(idata);
             } catch (error) {
-              alert("Error: " + error.message); // 输出错误消息
+              alert("Error: " + error.message);
             }
           }}
         >
@@ -215,11 +178,11 @@ function HeapPage() {
           id="dsubmit"
           onClick={() => {
             try {
-              let ddata = Common.validonedata("delete");
-              const index = Common.findinarray(ddata, dataset);
-              deleteheap(index);
+              let ddata = Common.validOneData("delete");
+              const index = Common.findInArray(ddata, animationData.dataset);
+              deleteNodeFromHeap(index);
             } catch (error) {
-              alert("Error: " + error.message); // 输出错误消息
+              alert("Error: " + error.message);
             }
           }}
         >
@@ -232,12 +195,12 @@ function HeapPage() {
           id="ksubmit"
           onClick={() => {
             try {
-              let sdata = Common.validonedata("select");
-              let idata = Common.validonedata("increase");
-              const index = Common.findinarray(sdata, dataset);
-              increasekey(index, idata);
+              let sdata = Common.validOneData("select");
+              let idata = Common.validOneData("increase");
+              const index = Common.findInArray(sdata, animationData.dataset);
+              increaseKey(index, idata);
             } catch (error) {
-              alert("Error: " + error.message); // 输出错误消息
+              alert("Error: " + error.message);
             }
           }}
         >
@@ -250,7 +213,7 @@ function HeapPage() {
           svgRef={svgRef}
           width={Common.width}
           height={Common.height}
-          resetkey={resetkey}
+          resetKey={resetKey}
         >
           {/* the graph will be rendered inside the AlgorithmSpace component */}
         </AlgorithmSpace>
@@ -263,26 +226,34 @@ function HeapPage() {
             marginTop: "10px",
           }}
         >
-          <button onClick={nextStep}>Next Step</button>
-          <button onClick={back}>Back</button>
-          <button onClick={reset}>Reset</button>
           <button
             onClick={() => {
-              <button
-                onClick={() => {
-                  Animation.fianlTree(dataset, svgRef);
-                  step = record.length;
-                }}
-              >
-                Final Heap
-              </button>;
+              step = Common.next(step, record);
+            }}
+          >
+            Next Step
+          </button>
+          <button
+            onClick={() => {
+              step = Common.back(step, record);
+            }}
+          >
+            Back
+          </button>
+          <button onClick={reset}>Reset</button>
+
+          <button
+            onClick={() => {
+              TreeGraphRenderer.renderGraph(animationData, svgRef);
+              step = record.length;
             }}
           >
             Final Heap
           </button>
-          <button onClick={extraheap}>extra heap</button>
+          <button onClick={extraHeap}>extra heap</button>
         </div>
         <ResultsTable results={heapResults} />
+        <BarChart data={getBarChartData(heapResults).reverse()} />
       </div>
       <div>
         <SaveInputToLocalStorage
