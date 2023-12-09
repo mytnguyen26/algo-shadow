@@ -89,8 +89,8 @@ const HeapConcreteStrategy = {
 
   delete: (index, localDataset, localRecord) => {
     let max = localDataset[0].value + 1;
-    Heapification.increaseKey(index, max, localDataset, localRecord);
-    Heapification.extraHeap(localDataset, localRecord);
+    HeapConcreteStrategy.increaseKey(index, max, localDataset, localRecord);
+    HeapConcreteStrategy.extraHeap(localDataset, localRecord);
   },
 
   increaseKey: (i, key, localDataset, localRecord) => {

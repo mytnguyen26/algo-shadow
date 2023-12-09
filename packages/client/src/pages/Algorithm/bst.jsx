@@ -2,7 +2,7 @@
  * TODO
  */
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
 import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
@@ -11,27 +11,15 @@ import Common from "./Common/common";
 import { TreeAnimationData, Node } from "./Common/animationdata.js";
 import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
+import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 
-var data = [4, 7, 8, 2, 1, 3, 5, 9];
+var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
 var animationData = null;
-var record = [];
+var record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 var step = 0;
 var tree = null;
-
-function next() {
-  if (step >= record.length) {
-    alert("Animation is end!");
-  } else {
-    if (typeof record[step].e1 == "undefined") {
-      const c = document.getElementById("c" + record[step]);
-      TreeGraphRenderer.pathDisplay(c, "fill", "white;blue");
-      step++;
-    } else {
-      step = Common.next(step, record);
-    }
-  }
-}
-
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -94,6 +82,21 @@ const BST = () => {
     createBST();
   };
 
+  function next() {
+    if (step >= record.length) {
+      TreeGraphRenderer.renderGraph(animationData, svgRef);
+      alert("Animation ends!");
+    } else {
+      if (typeof record[step].e1 == "undefined") {
+        const c = document.getElementById("c" + record[step]);
+        TreeGraphRenderer.pathDisplay(c, "fill", "white;blue");
+        step++;
+      } else {
+        step = Common.next(step, record);
+      }
+    }
+  }
+
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {
@@ -120,20 +123,22 @@ const BST = () => {
   function deleteBST(ddata, index) {
     record = [];
     reset();
-    //k delete，t exchange
+    // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
-    let t = record[record.length - 1];
-    if (animationData.dataset[index].position != t) {
+    let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
+    if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
       record.push({
-        e1: t,
+        e1: prevSuccessorNodePosition,
         e2: animationData.dataset[index].position,
       });
     }
     record.push({
       e1: 0,
-      e2: [t, animationData.dataset[index].position],
+      e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
+    console.log("Removing from animationData dataset index", index);
+    animationData.dataset.splice(index, 1);
   }
 
   const [bstResults, setBstResults] = useState(() => {
@@ -228,6 +233,11 @@ const BST = () => {
             >
               Search
             </button>
+            <SaveInputToLocalStorage
+              algorithm="bst"
+              inputData={data}
+              useHisInput={useHisInput}
+            />
           </div>
           <div style={{ flexGrow: 1 }}>
             <AlgorithmSpace
@@ -262,13 +272,7 @@ const BST = () => {
             </div>
             <div>
               <ResultsTable results={bstResults} />
-            </div>
-            <div>
-              <SaveInputToLocalStorage
-                algorithm="bst"
-                inputData={data}
-                useHisInput={useHisInput}
-              />
+              <BarChart data={getBarChartData(bstResults).reverse()} />
             </div>
           </div>
         </div>

@@ -1,43 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper } from "@mui/material";
+import { Container, Box, Paper, tabScrollButtonClasses } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage.jsx";
 import Common from "./Common/common";
-import Graph from "./DijkstraComponent/Graph";
 import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
+import { dark } from "@mui/material/styles/createPalette.js";
 
-var data = [
+let data = [
   [0, 10, 0, 5, 0],
   [0, 0, 1, 2, 0],
   [0, 0, 0, 0, 4],
   [0, 3, 9, 0, 0],
   [7, 0, 6, 0, 0],
 ];
-//var dataset = []
-var record = [];
-var step = 0;
-var graph = null;
+let record = [];
+let step = 0;
+let graph = null;
 function next() {
   if (step >= record.length) {
+    //console.log(record[step-1].node)
+    DiGraphRenderer.wordcolor(record[step-1].node)
     alert("Animation is end!");
   } else {
     let t = record[step];
     if (typeof t.node == "string") {
-      const c = document
+      if(t.node.indexOf("edge") != -1 ){
+        const p = document
+        .getElementById(t.node)
+        .getElementsByTagName("path")[0];
+        DiGraphRenderer.pathDisplay(p, t.change, "black;blue");
+      }else{
+        const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "black;blue");
-      } else {
-        DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+        if (t.change == "stroke") {
+          DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
+        } else {
+          DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+        }
       }
+      
     } else {
       record[step].node.forEach((element) => {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "black;green");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#4fd2dd;#235fa7");
       });
     }
     step++;
@@ -50,21 +59,29 @@ function back() {
   } else {
     step--;
     let t = record[step];
+    
     if (typeof t.node == "string") {
-      const c = document
+      if(t.node.indexOf("edge") != -1 ){
+        const p = document
+        .getElementById(t.node)
+        .getElementsByTagName("path")[0];
+        DiGraphRenderer.pathDisplay(p, t.change, "blue;black");
+      }else{
+        const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
-      if (t.change == "stroke") {
-        DiGraphRenderer.pathDisplay(c, t.change, "blue;black");
-      } else {
-        DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+        if (t.change == "stroke") {
+          DiGraphRenderer.pathDisplay(c, t.change, "blue;yellow");
+        } else {
+          DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+        }
       }
     } else {
       record[step].node.forEach((element) => {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "green;black");
+        DiGraphRenderer.pathDisplay(c, "stroke", "yellow;black");
       });
     }
   }
@@ -74,17 +91,14 @@ const Dijkstra = () => {
   const [graphKind, setGraphKind] = useState("");
   const [createKindVisible, setCreateKindVisible] = useState(false);
   const [createKind, setCreateKind] = useState("");
-  const [p_adj, setP] = useState("0 1\n1 0");
-  const [p_edge, setE] = useState("A B 3\nC B 2");
+  const [p_adj] = useState("0 1\n1 0");
+  const [p_edge] = useState("A B 3\nC B 2");
 
   const svgRef = useRef(null);
   useEffect(() => {
     creategraph(data);
   }, []);
 
-  useEffect(() => {
-    SaveInputToLocalStorage;
-  }, []);
   function reset() {
     step = 0;
     DiGraphRenderer.renderGraph(graph, svgRef);
@@ -100,7 +114,7 @@ const Dijkstra = () => {
       graph.fromAdjacencyMatrix(cdata, graphKind);
     }
     DiGraphRenderer.renderGraph(graph, svgRef);
-    DiGraphRenderer.displayAdjacencyMatrix(graph.nodes, graph.edges)
+    DiGraphRenderer.displayAdjacencyMatrix(graph.nodes, graph.edges);
     // graph.displayAdjacencyMatrix();
   }
 
@@ -111,7 +125,10 @@ const Dijkstra = () => {
   };
 
   function run() {
-    graph.run("A", record);
+    let d = graph.run("A", record);
+    DiGraphRenderer.wordcolor("A")
+    DiGraphRenderer.displaydistance(d)
+    console.log(record)
   }
 
   function validmatrix(valuename) {
@@ -277,6 +294,7 @@ const Dijkstra = () => {
                 )}
               </>
             )}
+            <div id="distance"></div>
             <div id="adjacencyMatrix"></div>
           </div>
 
