@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, TextField } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime.jsx";
+import { AnalyzeRuntime } from "./AlgComponent/analyzeRuntime";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import HeapConcreteStrategy from "../../algorithm-solver/heapsolver.js";
+import HeapConcreteStrategy from "../../algorithm-solver/heapsolver";
 import Common from "./Common/common";
-import TreeGraphRenderer from "./Common/treerenderer.js";
-import { TreeAnimationData, Node } from "./Common/animationdata.js"
+import TreeGraphRenderer from "./Common/treerenderer";
+import { TreeAnimationData, Node } from "./Common/animationdata"
 import ResultsTable from "./AlgComponent/tableCreater";
 import useTableData  from "./AlgComponent/useTableData";
 

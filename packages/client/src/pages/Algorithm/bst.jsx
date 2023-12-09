@@ -4,13 +4,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Box, Paper } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
+import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import BSTConcreteStrategy from "../../algorithm-solver/bstsolver.js";
+import BSTConcreteStrategy from "../../algorithm-solver/bstsolver";
 import Common from "./Common/common";
-import { TreeAnimationData, Node } from "./Common/animationdata.js";
-import TreeGraphRenderer from "./Common/treerenderer.js";
-import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import { TreeAnimationData, Node } from "./Common/animationdata";
+import TreeGraphRenderer from "./Common/treerenderer";
+import ResultsTable from "./AlgComponent/tableCreater";
 import useTableData  from "./AlgComponent/useTableData";
 
 var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];

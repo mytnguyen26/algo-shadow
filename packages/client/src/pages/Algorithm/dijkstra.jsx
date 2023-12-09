@@ -293,18 +293,7 @@ const Dijkstra = () => {
               width={Common.width}
               height={Common.height}
             />
-
-            {/* {bstResult && (
-            <div>
-              <h3>Dijkstra Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )} */}
+            
             <div
               style={{
                 display: "flex",
