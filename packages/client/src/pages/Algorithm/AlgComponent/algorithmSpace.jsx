@@ -1,12 +1,13 @@
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 
-export const AlgorithmSpace = ({ svgRef, width, height, resetkey }) => {
+export const AlgorithmSpace = ({ svgRef, width, height, resetKey }) => {
   return (
     <Paper
       elevation={3}
       sx={{
-        width: "width",
-        height: "height",
+        width: width,
+        height: height,
         backgroundColor: "#fff",
         border: "1px solid #ddd",
         marginTop: (theme) =>
@@ -16,9 +17,9 @@ export const AlgorithmSpace = ({ svgRef, width, height, resetkey }) => {
         flexGrow: 1,
       }}
     >
-      <div style={{ flexGrow: 1 }}>
-        <svg key={resetkey} ref={svgRef} width={width} height={height}></svg>
-      </div>
+      <Box sx={{ flexGrow: 1 }}>
+        <svg key={resetKey} ref={svgRef} width={width} height={height}></svg>
+      </Box>
     </Paper>
   );
 };
