@@ -23,6 +23,11 @@ describe("DijkstraAlgorithm", () => {
   });
 
   it("should create correct nodes from adjacency matrix", () => {
+    let data = [
+      [0, 3, 1],
+      [0, 0, 1],
+      [0, 1, 0]
+    ]
     const graph = new DijkstraConcreteStrategy();
     graph.fromAdjacencyMatrix(data)
     const expectResult = new Map(Object.entries(
