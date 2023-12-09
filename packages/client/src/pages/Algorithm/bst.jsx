@@ -11,6 +11,7 @@ import Common from "./Common/common";
 import { TreeAnimationData, Node } from "./Common/animationdata.js";
 import TreeGraphRenderer from "./Common/treerenderer.js";
 import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import useTableData  from "./AlgComponent/useTableData";
 
 var data = [4, 7, 8, 2, 1, 3, 5, 9];
 var animationData = null;
@@ -71,14 +72,9 @@ function postOrder() {
   record = tree.postOrderTraverse();
 }
 
-function searchBST(sdata) {
-  record = [];
-  reset();
-  let node = tree.search(sdata, record);
-  console.log(node);
-}
-
 const BST = () => {
+  const { tableData, addTableRow } = useTableData('bstResults');
+
   const svgRef = useRef(null);
   useEffect(() => {
     createBST();
@@ -94,6 +90,42 @@ const BST = () => {
     createBST();
   };
 
+  function searchBST(sdata) {
+    record = [];
+    reset();
+    let node = tree.search(sdata, record);
+    console.log(node);
+  
+    let nodePosition = record[record.length - 1] - 1;
+  
+    console.log(nodePosition);
+  
+    addTableRow({
+      operation: 'Search a node',
+      input: sdata,
+      output: 'Node Position ' + nodePosition,
+      runtime: ''
+    });
+  
+  }
+
+  function getBSTValues(node) {
+    const values = [];
+  
+    // In-order traversal to collect values
+    function inOrderTraverse(node) {
+      if (node !== null) {
+        inOrderTraverse(node.left);
+        const { index, value, position } = node.nodeData;
+        values.push({ index, value, position });
+        inOrderTraverse(node.right);
+      }
+    }
+  
+    inOrderTraverse(node);
+    return values;
+  }
+
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {
@@ -103,9 +135,22 @@ const BST = () => {
         tree.insert(element, record);
       });
     });
+
+    // Get the values from the BST
+    const bstValues = getBSTValues(tree.root);
+
+    console.log(bstValues); // This array contains the values from the BST
+
     TreeGraphRenderer.renderGraph(animationData, svgRef);
+
+    addTableRow({
+      operation: 'Create new tree',
+      input: result.input,
+      output: bstValues,
+      runtime: result.runtime
+    });
+
     reset();
-    addResult(result); // Correctly add the result
   }
 
   function insertBST(idata) {
@@ -113,8 +158,24 @@ const BST = () => {
     reset();
     data.push(Number(idata[0]));
     animationData.push(new Node(data.length, idata));
+    // const result = AnalyzeRuntime("insertBST", idata, () => {
     tree.insert(animationData.dataset[data.length - 1], record);
+    // });
+    console.log(data.length)
+
+    let insertedNodePosition = animationData.dataset[data.length - 1].position - 1;
+
     TreeGraphRenderer.renderGraph(animationData, svgRef);
+
+    
+    
+    addTableRow({
+      operation: 'Insert new node',
+      input: idata,
+      output: 'Node Position ' + insertedNodePosition,
+      runtime: ''
+    });
+
   }
 
   function deleteBST(ddata, index) {
@@ -134,28 +195,18 @@ const BST = () => {
       e2: [t, animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-  }
 
-  const [bstResults, setBstResults] = useState(() => {
-    const savedResults = localStorage.getItem("bstResults");
-    return savedResults ? JSON.parse(savedResults) : [];
-  });
+    let deletedNodePosition = animationData.dataset[index].position - 1;
+    // console.log(deletedNodePosition)
 
-  const addResult = (newResult) => {
-    setBstResults((prevResults) => {
-      // Ensure prevResults is always an array
-      const updatedResults = Array.isArray(prevResults)
-        ? [...prevResults, newResult]
-        : [newResult];
-
-      if (updatedResults.length > 10) {
-        updatedResults.shift(); // Remove the oldest result
-      }
-
-      localStorage.setItem("bstResults", JSON.stringify(updatedResults));
-      return updatedResults;
+    addTableRow({
+      operation: 'Delete node',
+      input: ddata,
+      output: 'Delete Node inital position ' + deletedNodePosition,
+      runtime: ''
     });
-  };
+
+  }
 
   return (
     <Container maxWidth="md">
@@ -261,16 +312,16 @@ const BST = () => {
               <button onClick={reset}>Reset</button>
             </div>
             <div>
-              <ResultsTable results={bstResults} />
+              <ResultsTable tableData={tableData} />
             </div>
-            <div>
+          </div>
+          <div>
               <SaveInputToLocalStorage
                 algorithm="bst"
                 inputData={data}
                 useHisInput={useHisInput}
               />
             </div>
-          </div>
         </div>
       </Box>
     </Container>
