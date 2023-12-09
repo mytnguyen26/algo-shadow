@@ -85,6 +85,7 @@ const BST = () => {
   function next() {
     if (step >= record.length) {
       TreeGraphRenderer.renderGraph(animationData, svgRef);
+      createBST();
       alert("Animation ends!");
     } else {
       if (typeof record[step].e1 == "undefined") {
@@ -137,7 +138,7 @@ const BST = () => {
       e2: [prevSuccessorNodePosition,animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-    console.log("Removing from animationData dataset index", index);
+    //console.log("Removing from animationData dataset index", index);
     animationData.dataset.splice(index, 1);
   }
 
