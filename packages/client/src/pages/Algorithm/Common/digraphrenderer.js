@@ -75,10 +75,38 @@ class DiGraphRenderer extends TreeGraphRenderer {
     matrixDiv.appendChild(table);
   }
 
+  static displaydistance(distance) {
+    const matrixDiv = document.getElementById("distance");
+    matrixDiv.innerHTML = "";
+    const table = document.createElement("table");
+    // Header row
+    const headerRow = document.createElement("tr");
+    for (let key of distance.keys()) {
+      //console.log(key)
+      headerRow.appendChild(DiGraphRenderer.createTableCell_(key));
+    }
+    table.appendChild(headerRow);
+    const row = document.createElement("tr");
+    // Data rows
+    distance.forEach(element => {
+      //console.log(element)
+      row.appendChild(DiGraphRenderer.createTableCell_(element));
+    });
+    table.appendChild(row);
+    matrixDiv.appendChild(table);
+  }
+
   static createTableCell_(content) {
     const cell = document.createElement("td");
     cell.textContent = content;
     return cell;
+  }
+
+  static wordcolor(node){
+    const w = document
+        .getElementById("c" + node)
+        .getElementsByTagName("text")[0];
+    w.setAttribute("fill","orange")
   }
 }
 
