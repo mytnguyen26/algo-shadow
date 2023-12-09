@@ -1,8 +1,8 @@
 
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import HashTableVisualization from '../src/pages/Algorithm/HashTableVisualization';
-import { djb2Hash, hashFunc } from '../src/pages/Algorithm/HashComponent/HashTableLogic';
+import HashTableVisualization from '../src/pages/Algorithm/hash'
+import { djb2Hash, hashFunc } from '../src/algorithm-solver/hashTableSolver';
 
 const mockedAlert = vi.fn();
 // Mock global alert function
