@@ -7,7 +7,7 @@ export default class Graph {
     this.nodes[name] = neighbors;
   }
 
-  dijkstra(startNode, endNode) {
+  run(startNode, endNode) {
     // Track the distance to each node and the path to reach it
     const distances = {};
     const parents = {};

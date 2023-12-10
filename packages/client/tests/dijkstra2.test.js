@@ -1,5 +1,5 @@
 import { expect, it, describe } from "vitest";
-import DijkstraConcreteStrategy from "../src/utils/algorithm-solver/DijkstraConcreteStrategy.js";
+import DijkstraConcreteStrategy from "../src/utils/algorithm-solver/dijkstraAlgorithm.js";
 
 describe("DijkstraAlgorithm", () => {
   it("should get correct shortest path", () => {
