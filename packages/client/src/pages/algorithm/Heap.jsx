@@ -135,7 +135,7 @@ function HeapPage() {
       i + 1,
       kdata,
       animationData.dataset,
-      record,
+      record
     );
   }
 
@@ -166,6 +166,7 @@ function HeapPage() {
         <TextField
           id="create"
           label="Enter comma separated numbers"
+          placeholder="Enter comma separated numbers"
           helperText="example: 1,2,3,4"
         />
         <Button
