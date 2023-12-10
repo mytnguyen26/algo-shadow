@@ -8,7 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
+    testMatch: ["**/tests/**/*.test.[jt]s?(x)"],
     coverage: {
       provider: "istanbul", // or 'v8',
       reporter: ["text", "json", "html"],
