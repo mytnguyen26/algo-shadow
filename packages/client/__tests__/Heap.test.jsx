@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import Heap from '../src/pages/Algorithm/heap';
-import HeapConcreteStrategy  from '../src/algorithm-solver/heapsolver';
+import HeapPage from '../src/pages/Algorithm/Heap';
+import HeapConcreteStrategy  from '../src/utils/algorithm-solver/heapSolver';
 
 vi.stubGlobal('alert', vi.fn());
 globalThis.alert = vi.fn();
@@ -16,7 +16,7 @@ describe('Heap Component Test', () => {
   });
 
   it('Renders testing', () => {
-    const { getByText, getByPlaceholderText } = render(<Heap />);
+    const { getByText, getByPlaceholderText } = render(<HeapPage />);
     expect(getByText('Create Heap')).toBeInTheDocument();
     expect(getByPlaceholderText('Enter comma separated numbers')).toBeInTheDocument();
   });

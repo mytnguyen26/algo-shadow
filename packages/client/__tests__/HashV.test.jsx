@@ -1,8 +1,8 @@
 
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import HashTableVisualization from '../src/pages/Algorithm/hash'
-import { djb2Hash, hashFunc } from '../src/algorithm-solver/hashTableSolver';
+import HashTablePage from '../src/pages/Algorithm/Hash'
+import { djb2Hash, hashFunc } from '../src/utils/algorithm-solver/hashTableSolver';
 
 const mockedAlert = vi.fn();
 // Mock global alert function
@@ -16,14 +16,14 @@ describe('Hash Component Test', () => {
 
   it('Renders testing', () => {
     // Render component and check if certain texts are in the document
-    const { getByText, getByPlaceholderText } = render(<HashTableVisualization />);
+    const { getByText, getByPlaceholderText } = render(<HashTablePage />);
     expect(getByText('Hash')).toBeInTheDocument();
     expect(getByPlaceholderText('Enter a number (0-99)')).toBeInTheDocument();
   });
 
   it('Insert testing', async () => {
      // Test inserting a value into the hash
-    const { getByText, getByPlaceholderText } = render(<HashTableVisualization />);
+    const { getByText, getByPlaceholderText } = render(<HashTablePage />);
     const input = getByPlaceholderText('Enter a number (0-99)');
     const insertButton = getByText('Insert');
 
@@ -35,7 +35,7 @@ describe('Hash Component Test', () => {
 
   it('Search testing', async () => {
     // Test searching for a value in the hash
-    const { getByText, getByPlaceholderText } = render(<HashTableVisualization />);
+    const { getByText, getByPlaceholderText } = render(<HashTablePage />);
     const input = getByPlaceholderText('Enter a number (0-99)');
     const insertButton = getByText('Insert');
     const searchButton = getByText('Search');
@@ -57,7 +57,7 @@ describe('Hash Component Test', () => {
   }, 5000);
   
   it('Delete testing', async () => {
-    const { getByText, getByPlaceholderText, queryByText } = render(<HashTableVisualization />);
+    const { getByText, getByPlaceholderText, queryByText } = render(<HashTablePage />);
     const input = getByPlaceholderText('Enter a number (0-99)');
     const insertButton = getByText('Insert');
     const deleteButton = getByText('Delete');

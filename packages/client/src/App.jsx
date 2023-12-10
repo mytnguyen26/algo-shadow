@@ -5,14 +5,14 @@ import About from "./pages/home/About.jsx";
 import Algorithm from "./pages/algorithm/Algorithm.jsx";
 import { Paths } from "./constants/paths.js";
 import AlgoLayout from "./pages/algorithm/AlgoLayout.jsx";
-import Heap from "./pages/algorithm/Heap.jsx";
-import Dijkstra from "./pages/algorithm/Dijkstra.jsx";
 import { Callback } from "./pages/auth/Callback.jsx";
 import { AuthProvider } from "./context/auth.context.jsx";
 import { Logout } from "./pages/auth/Logout.jsx";
 import { AuthGuard } from "./pages/auth/Auth.guard.jsx";
-import BST from "./pages/algorithm/BST.jsx";
-import HASH from "./pages/Algorithm/hash.jsx";
+import BSTPage from "./pages/algorithm/BST.jsx";
+import HashTablePage from "./pages/Algorithm/Hash.jsx";
+import DijkstraPage from "./pages/algorithm/Dijkstra.jsx";
+import HeapPage from "./pages/algorithm/Heap.jsx";
 
 function App() {
   return (
@@ -24,10 +24,10 @@ function App() {
           <Route element={<AuthGuard />}>
             <Route path={Paths.ALGORITHM} element={<AlgoLayout />}>
               <Route index element={<Algorithm />} />
-              <Route path={Paths.HEAP} element={<Heap />} />
-              <Route path={Paths.DIJKSTRA} element={<Dijkstra />} />
-              <Route path={Paths.BST} element={<BST />} />
-              <Route path={Paths.HASH} element={<HASH />} />
+              <Route path={Paths.HEAP} element={<HeapPage />} />
+              <Route path={Paths.DIJKSTRA} element={<DijkstraPage />} />
+              <Route path={Paths.BST} element={<BSTPage />} />
+              <Route path={Paths.HASH} element={<HashTablePage />} />
             </Route>
           </Route>
           <Route path={Paths.ABOUT} element={<About />} />

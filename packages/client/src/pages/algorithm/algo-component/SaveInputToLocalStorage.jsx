@@ -74,7 +74,7 @@ export const SaveInputToLocalStorage = ({
     <ClickAwayListener onClickAway={handleClickAway}>
       <Box sx={{ position: "relative", width: "300px" }}>
         <Button variant="contained" onClick={saveInput} sx={{ mb: 1 }}>
-          Save Input
+          Retrieve Past Inputs
         </Button>
         <TextField
           fullWidth

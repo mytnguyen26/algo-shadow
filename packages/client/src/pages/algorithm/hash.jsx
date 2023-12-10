@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import "../../assets/style/hash.table.style.css"
-import { djb2Hash, hashFunc } from "../../algorithm-solver/hashTableSolver";
+import { djb2Hash, hashFunc } from "../../utils/algorithm-solver/hashTableSolver";
 
 const MAX = 20;
-const HashTableVisualization = () => {
+const HashTablePage = () => {
   const [cells, setCells] = useState(Array(MAX).fill(null));
   const [inputValue, setInputValue] = useState("");
   const [currentSize, setCurrentSize] = useState(0);
@@ -183,4 +183,4 @@ const HashTableVisualization = () => {
   );
 };
 
-export default HashTableVisualization;
+export default HashTablePage;

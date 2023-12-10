@@ -60,7 +60,7 @@ function postOrder() {
   record = tree.postOrderTraverse();
 }
 
-const BST = () => {
+const BSTPage = () => {
   const { tableData, addTableRow } = useTableData("bstResults");
 
   const svgRef = useRef(null);
@@ -341,4 +341,4 @@ const BST = () => {
   );
 };
 
-export default BST;
+export default BSTPage;

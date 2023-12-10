@@ -1,4 +1,4 @@
-import DijkstraConcreteStrategy from '../src/algorithm-solver/dijkstrasolver';
+import DijkstraConcreteStrategy from '../src/utils/algorithm-solver/dijkstraSolver';
 import { describe, it, expect } from 'vitest';
 
 describe('DijkstraConcreteStrategy Tests', () => {
