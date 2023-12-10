@@ -10,7 +10,7 @@ import { AuthProvider } from "./context/auth.context.jsx";
 import { Logout } from "./pages/auth/Logout.jsx";
 import { AuthGuard } from "./pages/auth/Auth.guard.jsx";
 import BSTPage from "./pages/algorithm/BST.jsx";
-import HashTablePage from "./pages/Algorithm/Hash.jsx";
+import HashTablePage from "./pages/algorithm/Hash.jsx";
 import DijkstraPage from "./pages/algorithm/Dijkstra.jsx";
 import HeapPage from "./pages/algorithm/Heap.jsx";
 
