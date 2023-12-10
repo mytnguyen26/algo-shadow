@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Layout } from "./pages/Home/layout.jsx";
-import Home from "./pages/Home/home";
-import About from "./pages/Home/about.jsx";
-import Algorithm from "./pages/Algorithm/algorithm.jsx";
-import { Paths } from "./constants/Paths.js";
-import AlgoLayout from "./pages/Algorithm/algoLayout.jsx";
-import Heap from "./pages/Algorithm/heap.jsx";
-import Dijkstra from "./pages/Algorithm/dijkstra.jsx";
-import { Callback } from "./pages/Auth/callback.jsx";
+import { Layout } from "./pages/home/Layout.jsx";
+import Home from "./pages/home/Home.jsx";
+import About from "./pages/home/About.jsx";
+import Algorithm from "./pages/algorithm/Algorithm.jsx";
+import { Paths } from "./constants/paths.js";
+import AlgoLayout from "./pages/algorithm/AlgoLayout.jsx";
+import Heap from "./pages/algorithm/Heap.jsx";
+import Dijkstra from "./pages/algorithm/Dijkstra.jsx";
+import { Callback } from "./pages/auth/Callback.jsx";
 import { AuthProvider } from "./context/auth.context.jsx";
-import { Logout } from "./pages/Auth/logout.jsx";
-import { AuthGuard } from "./pages/Auth/auth.guard.jsx";
-import BST from "./pages/Algorithm/bst.jsx";
+import { Logout } from "./pages/auth/Logout.jsx";
+import { AuthGuard } from "./pages/auth/Auth.guard.jsx";
+import BST from "./pages/algorithm/BST.jsx";
 
 function App() {
   return (
