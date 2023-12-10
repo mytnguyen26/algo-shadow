@@ -81,11 +81,14 @@ const BSTPage = () => {
   function searchBST(sdata) {
     record = [];
     reset();
-
     let startTime = performance.now(); // Start the timer
     let node = tree.search(sdata, record);
+    console.log(record)
+
     let endTime = performance.now(); // end the timer
-    let nodePosition = record[record.length - 1] - 1;
+    let nodePosition = [record.length] - 2;
+    console.log(nodePosition)
+
 
     addTableRow({
       operation: "Search a node",
