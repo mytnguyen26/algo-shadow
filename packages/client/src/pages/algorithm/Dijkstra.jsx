@@ -98,7 +98,7 @@ function back() {
   }
 }
 
-const Dijkstra = () => {
+const DijkstraPage = () => {
   const [graphKind, setGraphKind] = useState("");
   const [createKindVisible, setCreateKindVisible] = useState(false);
   const [createKind, setCreateKind] = useState("");
@@ -396,4 +396,4 @@ const Dijkstra = () => {
   );
 };
 
-export default Dijkstra;
+export default DijkstraPage;

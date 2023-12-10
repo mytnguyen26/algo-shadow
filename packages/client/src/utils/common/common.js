@@ -48,7 +48,7 @@ const Common = {
         return i;
       }
     }
-    throw new Error(xdata + " is not in heap");
+    throw new Error(xdata + " is not in tree");
   },
 
   /**
