@@ -23,11 +23,6 @@ const dropDownData = [
   },
   {
     id: 3,
-    name: "Bellman Ford",
-    path: Paths.DIJKSTRA,
-  },
-  {
-    id: 4,
     name: "Heap",
     path: Paths.HEAP,
   },

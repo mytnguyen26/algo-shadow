@@ -48,7 +48,6 @@ function reset() {
 function inOrder() {
   reset();
   record = tree.inOrderTraverse();
-  //console.log(record)
 }
 
 function preOrder() {
@@ -61,7 +60,7 @@ function postOrder() {
   record = tree.postOrderTraverse();
 }
 
-const BST = () => {
+const BSTPage = () => {
   const { tableData, addTableRow } = useTableData("bstResults");
 
   const svgRef = useRef(null);
@@ -184,14 +183,14 @@ const BST = () => {
     });
   }
 
-  function deleteBST(ddata, index) {
+  function deleteBST(dData, index) {
     record = [];
     reset();
-
+    let deletedNodePosition = [];
     let startTime = performance.now(); // Start the timer
 
     // index delete，prevSuccessorNodePosition exchange
-    tree.delete(ddata, record);
+    tree.delete(dData, deletedNodePosition, record);
 
     let endTime = performance.now(); // End the timer
 
@@ -207,18 +206,12 @@ const BST = () => {
       e2: [prevSuccessorNodePosition, animationData.dataset[index].position],
     });
     data.splice(animationData.dataset[index].index - 1, 1);
-    //console.log("Removing from animationData dataset index", index);
     animationData.dataset.splice(index, 1);
-
-    let deletedNodePosition = animationData.dataset[index].position;
-    deletedNodePosition = deletedNodePosition - 2;
-    // console.log(deletedNodePosition)
-
     addTableRow({
-      operation: "Delete node",
-      input: ddata,
-      output: "Delete Node inital position " + deletedNodePosition,
-      runtime: endTime - startTime,
+      operation: 'Delete node',
+      input: dData,
+      output: 'Delete Node inital position ' + deletedNodePosition[0],
+      runtime: endTime - startTime
     });
   }
 
@@ -348,4 +341,4 @@ const BST = () => {
   );
 };
 
-export default BST;
+export default BSTPage;

@@ -87,7 +87,7 @@ function back() {
   }
 }
 
-const Dijkstra = () => {
+const DijkstraPage = () => {
   const [graphKind, setGraphKind] = useState("");
   const [createKindVisible, setCreateKindVisible] = useState(false);
   const [createKind, setCreateKind] = useState("");
@@ -340,10 +340,10 @@ const Dijkstra = () => {
                 marginTop: "10px",
               }}
             >
+              <button onClick={run}>Find Shortest Path</button>
               <button onClick={next}>Next Step</button>
               <button onClick={back}>Back</button>
               <button onClick={reset}>Reset</button>
-              <button onClick={run}>Fast Forward</button>
             </div>
             <div>
               <ResultsTable tableData={tableData} />
@@ -362,4 +362,4 @@ const Dijkstra = () => {
   );
 };
 
-export default Dijkstra;
+export default DijkstraPage;
