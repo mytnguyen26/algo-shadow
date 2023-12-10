@@ -206,10 +206,10 @@ const BSTPage = () => {
     data.splice(animationData.dataset[index].index - 1, 1);
     animationData.dataset.splice(index, 1);
     addTableRow({
-      operation: 'Delete node',
+      operation: "Delete node",
       input: dData,
-      output: 'Delete Node inital position ' + deletedNodePosition[0],
-      runtime: endTime - startTime
+      output: "Delete Node initial position " + deletedNodePosition[0],
+      runtime: endTime - startTime,
     });
   }
 
