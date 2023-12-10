@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box } from "@mui/material";
+import {
+  Box,
+  Stack,
+  InputLabel,
+  FormControl,
+  Select,
+  Typography,
+} from "@mui/material";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import Common from "../../utils/common/common";
@@ -7,6 +14,10 @@ import DijkstraConcreteStrategy from "../../utils/algorithm-solver/dijkstraSolve
 import DigraphRenderer from "../../utils/common/digraphRenderer.js";
 import useTableData from "./algo-component/useTableData.jsx";
 import ResultsTable from "./algo-component/TableCreater.jsx";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
+import { BarChart } from "./analyze-graph/BarChart.jsx";
 
 let data = [
   [0, 10, 0, 5, 0],
@@ -60,7 +71,7 @@ function back() {
     step--;
     let t = record[step];
 
-    if (typeof t.node == "string") {
+    if (typeof t.node === "string") {
       if (t.node.indexOf("edge") !== -1) {
         const p = document
           .getElementById(t.node)
@@ -139,7 +150,6 @@ const Dijkstra = () => {
 
     DigraphRenderer.wordcolor("A");
     DigraphRenderer.displaydistance(d);
-    // console.log(d)
 
     let formattedDistances = "";
 
@@ -241,124 +251,148 @@ const Dijkstra = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Box className="canvas">
-        <div style={{ display: "flex" }}>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+    <Stack direction="row" gap={3}>
+      <Stack gap={2}>
+        <Typography>
+          Step 1: Select what kind of graph you want to create
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel id="graph-kind-select-label">
+            Select Graph Kind
+          </InputLabel>
+          <Select
+            labelId="graph-kind-select-label"
+            id="graph-kind"
+            label="Select Graph Kind"
+            value={graphKind}
+            onChange={GraphKindChange}
           >
-            <label>Select Graph Kind:</label>
-            <select
-              id="graph-kind"
-              value={graphKind}
-              onChange={GraphKindChange}
-            >
-              <option value="">--Please choose graph kind--</option>
-              <option value="Directed">Directed</option>
-              <option value="Undirected">Undirected</option>
-            </select>
+            <MenuItem value="">--Please choose graph kind--</MenuItem>
+            <MenuItem value="Directed">Directed</MenuItem>
+            <MenuItem value="Undirected">Undirected</MenuItem>
+          </Select>
+        </FormControl>
 
-            {createKindVisible && (
+        {createKindVisible && (
+          <Stack gap={2}>
+            <Typography>
+              Step 2: Select how do you want to create the graph
+            </Typography>
+            <FormControl fullWidth>
+              <InputLabel id="create-kind-select-label">
+                Select Create Kind
+              </InputLabel>
+              <Select
+                labelId="create-kind-select-label"
+                id="create-kind"
+                label="Select Create Kind"
+                value={createKind}
+                onChange={CreateKindChange}
+              >
+                <MenuItem value="">--Please choose create kind--</MenuItem>
+                <MenuItem value="AdjacencyMatrix">Adjacency Matrix</MenuItem>
+                <MenuItem value="EdgeList">Edge List</MenuItem>
+              </Select>
+            </FormControl>
+            {createKind === "AdjacencyMatrix" && (
               <>
-                <label htmlFor="create-kind">Select Create Kind:</label>
-                <select
-                  id="create-kind"
-                  value={createKind}
-                  onChange={CreateKindChange}
+                <Typography variant="body1">
+                  Step 3: Enter Adjacency Matrix
+                </Typography>
+                <textarea id="create" rows="5" placeholder={p_adj}></textarea>
+                <Button
+                  variant="contained"
+                  id="csubmit"
+                  onClick={() => {
+                    try {
+                      let cdata = validmatrix("create");
+                      creategraph(cdata);
+                    } catch (error) {
+                      alert("Error: " + error.message);
+                    }
+                  }}
                 >
-                  <option value="">--Please choose create kind--</option>
-                  <option value="AdjacencyMatrix">Adjacency Matrix</option>
-                  <option value="EdgeList">Edge List</option>
-                </select>
-
-                {createKind === "AdjacencyMatrix" && (
-                  <>
-                    <label htmlFor="create">Enter Adjacency Matrix:</label>
-
-                    <textarea
-                      id="create"
-                      rows="5"
-                      placeholder={p_adj}
-                    ></textarea>
-                    <button
-                      id="csubmit"
-                      onClick={() => {
-                        try {
-                          let cdata = validmatrix("create");
-                          creategraph(cdata);
-                        } catch (error) {
-                          alert("Error: " + error.message);
-                        }
-                      }}
-                    >
-                      Create
-                    </button>
-                  </>
-                )}
-                {createKind === "EdgeList" && (
-                  <>
-                    <label htmlFor="create">Enter Edge List:</label>
-                    <textarea
-                      id="create"
-                      rows="5"
-                      placeholder={p_edge}
-                    ></textarea>
-
-                    <button
-                      id="csubmit"
-                      onClick={() => {
-                        try {
-                          let cdata = validateEdgeList("create");
-                          creategraph(cdata);
-                        } catch (error) {
-                          alert("Error: " + error.message);
-                        }
-                      }}
-                    >
-                      Create
-                    </button>
-                  </>
-                )}
+                  Create
+                </Button>
               </>
             )}
-            <div id="distance"></div>
-            <div id="adjacencyMatrix"></div>
-          </div>
+            {createKind === "EdgeList" && (
+              <>
+                <Typography variant="body1">
+                  Step 3: Enter Edge List:
+                </Typography>
+                <textarea id="create" rows="5" placeholder={p_edge}></textarea>
+                <Button
+                  variant="contained"
+                  id="csubmit"
+                  onClick={() => {
+                    try {
+                      let cdata = validateEdgeList("create");
+                      creategraph(cdata);
+                    } catch (error) {
+                      alert("Error: " + error.message);
+                    }
+                  }}
+                >
+                  Create
+                </Button>
+              </>
+            )}
+          </Stack>
+        )}
+        <Stack gap={2}>
+          <Typography variant="subtitle1">Shortest Path:</Typography>
+          <Box id="distance"></Box>
+        </Stack>
+        <Stack gap={2}>
+          <Typography variant="subtitle1">Current Adjacency Matrix:</Typography>
+          <Box id="adjacencyMatrix"></Box>
+        </Stack>
+        <SaveInputToLocalStorage
+          algorithm="dij"
+          inputData={savedata}
+          useHisInput={useHisInput}
+        />
+      </Stack>
 
-          <div style={{ flexGrow: 1 }}>
-            <div id="graph-container"></div>
-            <AlgorithmSpace
-              svgRef={svgRef}
-              width={Common.width}
-              height={Common.height}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "middle",
-                gap: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <button onClick={next}>Next Step</button>
-              <button onClick={back}>Back</button>
-              <button onClick={reset}>Reset</button>
-              <button onClick={run}>Fast Forward</button>
-            </div>
-            <div>
-              <ResultsTable tableData={tableData} />
-            </div>
-          </div>
-          <div>
-            <SaveInputToLocalStorage
-              algorithm="dij"
-              inputData={savedata}
-              useHisInput={useHisInput}
-            />
-          </div>
-        </div>
-      </Box>
-    </Container>
+      <Stack gap={2}>
+        <div id="graph-container"></div>
+        <AlgorithmSpace
+          svgRef={svgRef}
+          width={Common.width}
+          height={Common.height}
+        />
+        <Typography variant="subtitle1">Run Dijkstra Step by Step</Typography>
+        <Stack direction="row" gap={2}>
+          <Button variant="contained" onClick={next}>
+            Next Step
+          </Button>
+          <Button variant="contained" onClick={back}>
+            Previous Step
+          </Button>
+        </Stack>
+        <Typography variant="subtitle1">
+          Rest Dijkstra to the Beginning
+        </Typography>
+        <Stack gap={2} direction="row">
+          <Button variant="contained" onClick={reset}>
+            Reset
+          </Button>
+        </Stack>
+        <Typography variant="subtitle1">
+          Get Final Result in One Step
+        </Typography>
+        <Stack gap={2} direction="row">
+          <Button variant="contained" onClick={run}>
+            Fast Forward
+          </Button>
+        </Stack>
+        <Box>
+          <ResultsTable tableData={tableData} />
+          <BarChart data={getBarchartData(tableData).reverse()} />
+        </Box>
+      </Stack>
+    </Stack>
   );
 };
 
