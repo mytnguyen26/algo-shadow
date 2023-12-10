@@ -2,7 +2,7 @@ const maxheap = (localDataset, i, localRecord) => {
   const n = localDataset.length;
   const left = 2 * i;
   const right = 2 * i + 1;
-  let largest = 0;
+  let largest;
   if (left <= n && localDataset[left - 1].value > localDataset[i - 1].value) {
     largest = left;
   } else {
@@ -72,8 +72,7 @@ const Heapification = {
     return result;
   },
   insertheap: (localDataset, localRecord) => {
-    const n = localDataset.length;
-    let i = n;
+    let i = localDataset.length;
     while (i > 1) {
       const parentIndex = getparent(i);
       if (localDataset[i - 1].value > localDataset[parentIndex - 1].value) {

@@ -14,13 +14,13 @@ import ResultsTable from "./algo-component/TableCreater.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
 import { BarChart } from "./analyze-graph/BarChart.jsx";
 
-var data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
-var animationData = null;
-var record = []; // this array saves all animation steps that needs to happen
+let data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
+let animationData = null;
+let record = []; // this array saves all animation steps that needs to happen
 // allow users to have next and back functionality
-var step = 0;
-var tree = null;
-var temptree = null;
+let step = 0;
+let tree = null;
+
 function back() {
   if (step < 1) {
     alert("This is the first step!");

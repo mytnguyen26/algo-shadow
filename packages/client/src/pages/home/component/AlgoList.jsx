@@ -21,7 +21,7 @@ export const AlgoList = () => {
       cols={5}
       rowHeight={164}
     >
-      {itemData.map((item, index) => (
+      {itemData.map((item) => (
         <ImageListItem key={item.img}>
           <Link
             to={item.path}

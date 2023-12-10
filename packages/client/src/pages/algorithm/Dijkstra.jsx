@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Box, Paper, tabScrollButtonClasses } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import Common from "../../utils/common/common";
 import DijkstraConcreteStrategy from "../../utils/algorithm-solver/dijkstraSolver.js";
 import DigraphRenderer from "../../utils/common/digraphRenderer.js";
-import { dark } from "@mui/material/styles/createPalette.js";
 
 let data = [
   [0, 10, 0, 5, 0],
@@ -25,7 +24,7 @@ function next() {
   } else {
     let t = record[step];
     if (typeof t.node == "string") {
-      if (t.node.indexOf("edge") != -1) {
+      if (t.node.indexOf("edge") !== -1) {
         const p = document
           .getElementById(t.node)
           .getElementsByTagName("path")[0];
@@ -34,7 +33,7 @@ function next() {
         const c = document
           .getElementById("c" + t.node)
           .getElementsByTagName("ellipse")[0];
-        if (t.change == "stroke") {
+        if (t.change === "stroke") {
           DigraphRenderer.pathDisplay(c, t.change, "#99CCFF;#006699");
         } else {
           DigraphRenderer.pathDisplay(c, t.change, "#FFFFFF;#006699");
@@ -60,7 +59,7 @@ function back() {
     let t = record[step];
 
     if (typeof t.node == "string") {
-      if (t.node.indexOf("edge") != -1) {
+      if (t.node.indexOf("edge") !== -1) {
         const p = document
           .getElementById(t.node)
           .getElementsByTagName("path")[0];
@@ -69,7 +68,7 @@ function back() {
         const c = document
           .getElementById("c" + t.node)
           .getElementsByTagName("ellipse")[0];
-        if (t.change == "stroke") {
+        if (t.change === "stroke") {
           DigraphRenderer.pathDisplay(c, t.change, "#006699;#99CCFF");
         } else {
           DigraphRenderer.pathDisplay(c, t.change, "#006699;#FFFFFF");

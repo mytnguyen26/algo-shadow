@@ -4,16 +4,16 @@
 
 /**
  * TODO
- * @param {*} localDataset 
- * @param {*} i 
- * @param {*} localRecord 
- * @returns 
+ * @param {*} localDataset
+ * @param {*} i
+ * @param {*} localRecord
+ * @returns
  */
 const getMaxHeap = (localDataset, i, localRecord) => {
   const n = localDataset.length;
   const left = 2 * i;
   const right = 2 * i + 1;
-  let largest = 0;
+  let largest;
   if (left <= n && localDataset[left - 1].value > localDataset[i - 1].value) {
     largest = left;
   } else {
@@ -51,7 +51,6 @@ const getParent = (i) => {
 };
 
 const HeapConcreteStrategy = {
-
   buildMaxHeap: (dataset, record) => {
     let result = 0;
     for (var i = Math.floor(dataset.length / 2); i > 0; i--) {
@@ -62,8 +61,7 @@ const HeapConcreteStrategy = {
   },
 
   insert: (localDataset, localRecord) => {
-    const n = localDataset.length;
-    let i = n;
+    let i = localDataset.length;
     while (i > 1) {
       const parentIndex = getParent(i);
       if (localDataset[i - 1].value > localDataset[parentIndex - 1].value) {

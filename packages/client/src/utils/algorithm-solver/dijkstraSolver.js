@@ -55,10 +55,10 @@ export default class DijkstraConcreteStrategy {
     // Add nodes to the graph
     for (const edge of edgeList) {
       console.log(edge);
-      if (this.nodes.indexOf(edge.node1) == -1) {
+      if (this.nodes.indexOf(edge.node1) === -1) {
         this.addNode(edge.node1);
       }
-      if (this.nodes.indexOf(edge.node2) == -1) {
+      if (this.nodes.indexOf(edge.node2) === -1) {
         this.addNode(edge.node2);
       }
     }
@@ -118,8 +118,8 @@ export default class DijkstraConcreteStrategy {
     for (let j = 0; j < edges.length; j++) {
       let title = edges[j].getElementsByTagName("title")[0].innerHTML;
       if (
-        lastNode == title.charAt(0) &&
-        currentNode == title.charAt(title.length - 1)
+        lastNode === title.charAt(0) &&
+        currentNode === title.charAt(title.length - 1)
       ) {
         return edges[j].id;
       }
@@ -142,7 +142,7 @@ export default class DijkstraConcreteStrategy {
   getEdgeList() {
     const edgeList = [];
     const addedEdges = new Set();
-    if (this.kind == "Undirected") {
+    if (this.kind === "Undirected") {
       for (const [node, neighbors] of this.edges.entries()) {
         for (const neighbor of neighbors) {
           // no duplicate edges

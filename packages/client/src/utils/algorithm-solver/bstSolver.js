@@ -170,7 +170,7 @@ class BSTConcreteStrategy {
   search(data, record) {
     const searchNode = (node) => {
       if (node === null) return false;
-      if (node.nodeData.value == data) {
+      if (node.nodeData.value === data) {
         record.push(node.nodeData.position);
         return node;
       }
@@ -203,7 +203,7 @@ class BSTConcreteStrategy {
     const removeNode = (node, dData) => {
       //console.log("Start", node)
       if (node === null) return null;
-      if (node.nodeData.value == dData) {
+      if (node.nodeData.value === dData) {
         // We found a node to be deleted
         deleteNode = node;
         if (node.left === null && node.right === null) {

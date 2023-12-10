@@ -61,7 +61,7 @@ const Common = {
     if (step >= record.length) {
       alert("Animation is end!");
     } else {
-      if (record[step].e1 == 0) {
+      if (record[step].e1 === 0) {
         TreeGraphRenderer.deleteElement(record[step].e2[1], record[step].e2[0]);
       } else {
         const text1 = document.getElementById("t" + record[step].e1);
