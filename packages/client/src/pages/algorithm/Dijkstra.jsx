@@ -216,7 +216,7 @@ const Dijkstra = () => {
       // Check if there are exactly three components on each line
       if (components.length !== 3) {
         throw new Error(
-          "Invalid edge list with weights. Each line should contain exactly source node, target node, and weight."
+          "Invalid edge list with weights. Each line should contain exactly source node, target node, and weight.",
         );
       }
 
@@ -226,7 +226,7 @@ const Dijkstra = () => {
       // For simplicity, this example assumes any non-empty string is a valid node, and the weight is a valid number
       if (!sourceNode.trim() || !targetNode.trim() || isNaN(Number(weight))) {
         throw new Error(
-          "Invalid component in the edge list with weights. Nodes should be non-empty strings, and the weight should be a valid number."
+          "Invalid component in the edge list with weights. Nodes should be non-empty strings, and the weight should be a valid number.",
         );
       } else {
         edgeList.push({

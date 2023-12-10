@@ -11,7 +11,7 @@ export const AuthGuard = () => {
       const loginUrl = `${import.meta.env.VITE_AUTH_CLIENT}?projectId=${
         import.meta.env.VITE_PROJECT_ID
       }&redirectUrl=${encodeURIComponent(
-        window.location.origin + Paths.CALLBACK
+        window.location.origin + Paths.CALLBACK,
       )}`;
       window.location.replace(loginUrl);
     }

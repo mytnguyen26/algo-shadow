@@ -50,20 +50,23 @@ function ResultsTable({ tableData }) {
                 {result.operation}
               </TableCell>
               <TableCell>
-                {Array.isArray(result.input) ? result.input.join(", ") : result.input}
+                {Array.isArray(result.input)
+                  ? result.input.join(", ")
+                  : result.input}
               </TableCell>
               <TableCell align="center">
                 {result.output && Array.isArray(result.output)
-                  ? result.output.map(item => item.value).join(", ")
+                  ? result.output.map((item) => item.value).join(", ")
                   : result.output}
               </TableCell>
               <TableCell align="center">
-                {typeof result.runtime === 'number' ? result.runtime.toFixed(4) : "N/A"}
+                {typeof result.runtime === "number"
+                  ? result.runtime.toFixed(4)
+                  : "N/A"}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-
       </Table>
     </TableContainer>
   );

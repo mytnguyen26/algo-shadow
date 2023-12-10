@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useTableData = (localStorageKey) => {
   const [tableData, setTableData] = useState([]);
@@ -11,7 +11,7 @@ const useTableData = (localStorageKey) => {
   }, [localStorageKey]);
 
   const addTableRow = (newRowData) => {
-    setTableData(prevData => {
+    setTableData((prevData) => {
       const updatedData = [...prevData, newRowData].slice(-10); // Keep the last 10 records
       localStorage.setItem(localStorageKey, JSON.stringify(updatedData));
       return updatedData;
