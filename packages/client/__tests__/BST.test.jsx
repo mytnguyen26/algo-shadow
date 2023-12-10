@@ -8,6 +8,7 @@ describe('BST Testing', () => {
 
   let bst;
   let record;
+  let deletedNodePosition = [];
 
   beforeEach(() => {
     bst = new BSTConcreteStrategy();
@@ -40,21 +41,21 @@ describe('BST Testing', () => {
 
   describe('Delete method', () => {
     it('should delete a left leaf node correctly', () => {
-      const inOrderSuccessorNode = bst.delete(5, record);
+      const inOrderSuccessorNode = bst.delete(5, deletedNodePosition, record);
       expect(inOrderSuccessorNode).toBeNull();
       expect(bst.search(5, [])).toBeFalsy(); 
     });
 
     it("should delete a root node correctly", () =>{
-      const inOrderSuccessorNode = bst.delete(10, record);
+      const inOrderSuccessorNode = bst.delete(10, deletedNodePosition, record);
       expect(inOrderSuccessorNode.nodeData.value).toEqual(15);
       expect(inOrderSuccessorNode.nodeData.position).toEqual(1);
     });
 
     it("should delete a node with right child correctly", () =>{
-      const inOrderSuccessorNode = bst.delete(10, record);
-      expect(inOrderSuccessorNode.nodeData.value).toEqual(15);
-      expect(inOrderSuccessorNode.nodeData.position).toEqual(1);
+      const inOrderSuccessorNode = bst.delete(15, deletedNodePosition, record);
+      expect(inOrderSuccessorNode.nodeData.value).toEqual(20);
+      expect(inOrderSuccessorNode.nodeData.position).toEqual(3);
     })
   });
 
