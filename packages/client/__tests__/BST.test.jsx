@@ -39,11 +39,23 @@ describe('BST Testing', () => {
   });
 
   describe('Delete method', () => {
-    it('should delete a node correctly', () => {
-      const deletedNode = bst.delete(5, record);
-      expect(deletedNode).toBeNull();
+    it('should delete a left leaf node correctly', () => {
+      const inOrderSuccessorNode = bst.delete(5, record);
+      expect(inOrderSuccessorNode).toBeNull();
       expect(bst.search(5, [])).toBeFalsy(); 
     });
+
+    it("should delete a root node correctly", () =>{
+      const inOrderSuccessorNode = bst.delete(10, record);
+      expect(inOrderSuccessorNode.nodeData.value).toEqual(15);
+      expect(inOrderSuccessorNode.nodeData.position).toEqual(1);
+    });
+
+    it("should delete a node with right child correctly", () =>{
+      const inOrderSuccessorNode = bst.delete(10, record);
+      expect(inOrderSuccessorNode.nodeData.value).toEqual(15);
+      expect(inOrderSuccessorNode.nodeData.position).toEqual(1);
+    })
   });
 
   describe('traversal methods', () => {
@@ -65,4 +77,17 @@ describe('BST Testing', () => {
 
   });
 
+  describe("min method" , () => {
+    it("should return min nodes from tree", () => {
+      const minNode = bst.min(bst.root);
+      expect(minNode.nodeData.value).toEqual(5);
+    })
+  });
+
+  describe("max method" , () => {
+    it("should return max nodes from tree", () => {
+      const maxNode = bst.max(bst.root);
+      expect(maxNode.nodeData.value).toEqual(20);
+    })
+  });
 });

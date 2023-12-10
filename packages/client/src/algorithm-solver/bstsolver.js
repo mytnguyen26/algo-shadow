@@ -91,7 +91,6 @@ class BSTConcreteStrategy {
       }
     };
     inOrderNode(this.root, callback);
-    console.log(backs)
     return backs;
   }
 
@@ -206,11 +205,22 @@ class BSTConcreteStrategy {
       if (node.nodeData.value == dData) {   // We found a node to be deleted
         deleteNode = node;
         if (node.left === null && node.right === null) {
+          // case 1: the node has no child
           record.push(node.nodeData.position); 
-          return null;}  // case 1: the node has no child
-        if (node.left === null){ return node.right;}        // case 2: the node has right child
-        if (node.right === null) {return node.left;}    // case 3: the node has only left child
-        if (node.left !== null && node.right !== null) {  // case 4: the node has both child,
+          return null;
+        }
+        if (node.left === null) {
+          // case 2: the node has right child
+          inOrderSuccessorNode = node.right;
+          return node.right;
+        }
+        if (node.right === null) {
+          // case 3: the node has only left child
+          inOrderSuccessorNode = node.left;
+          return node.left;
+        }
+        if (node.left !== null && node.right !== null) {
+          // case 4: the node has both child,
           // in this case, to correctly render the graph animation,
           // we need to first find the inOrderSuccessorNode to update its
           // position. Then, right child node of the successor node will also
@@ -234,10 +244,9 @@ class BSTConcreteStrategy {
         return node;
       }
     };
-    removeNode(this.root, dData, this.root.nodeData.position);
-    console.log("Final node", inOrderSuccessorNode) // This node is the inorder successor of our deleting node
+    removeNode(this.root, dData);
     this._updateSuccessorSubTreePositions(inOrderSuccessorNode, deleteNode);
-    return inOrderSuccessorNode;
+    return inOrderSuccessorNode;  // This node is the inorder successor of our deleting node
   }
 
   /**
