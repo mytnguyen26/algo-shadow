@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import HeapPage from '../src/pages/Algorithm/Heap';
+import HeapPage from '../src/pages/algorithm/Heap';
 import HeapConcreteStrategy  from '../src/utils/algorithm-solver/heapSolver';
 
 vi.stubGlobal('alert', vi.fn());
