@@ -7,6 +7,9 @@ import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
 import { dark } from "@mui/material/styles/createPalette.js";
 
+import ResultsTable from "./AlgComponent/tableCreater";
+import useTableData  from "./AlgComponent/useTableData";
+
 let data = [
   [0, 10, 0, 5, 0],
   [0, 0, 1, 2, 0],
@@ -94,6 +97,12 @@ const Dijkstra = () => {
   const [p_adj] = useState("0 1\n1 0");
   const [p_edge] = useState("A B 3\nC B 2");
 
+  const [savedata, setSavedata] = useState(data); // Initialize cdata with the default data
+
+  //create table for dijk
+  const { tableData, addTableRow } = useTableData('dijkResults');
+
+
   const svgRef = useRef(null);
   useEffect(() => {
     creategraph(data);
@@ -107,6 +116,9 @@ const Dijkstra = () => {
   function creategraph(cdata) {
     step = 0;
     graph = new DijkstraConcreteStrategy();
+
+    setSavedata(cdata);
+     
     data = cdata;
     if (createKind === "EdgeList") {
       graph.fromEdgeList(cdata, graphKind);
@@ -125,10 +137,37 @@ const Dijkstra = () => {
   };
 
   function run() {
+
+    let startTime = performance.now();  // Start the timer
+
     let d = graph.run("A", record);
+
+    let endTime = performance.now();  // end the timer
+
     DiGraphRenderer.wordcolor("A")
     DiGraphRenderer.displaydistance(d)
-    console.log(record)
+    // console.log(d)
+
+    let formattedDistances = '';
+
+    d.forEach((d, node) => {
+        formattedDistances += `${node}: ${d}, `;
+      }
+    );
+
+    // Remove the last comma and space
+    formattedDistances = formattedDistances.slice(0, -2);
+
+    console.log(formattedDistances)
+
+      
+    addTableRow({
+      operation: 'Calculate Shortest Paths from Node A',
+      input: 'Start Node: A',
+      output: formattedDistances,
+      runtime: endTime - startTime
+    });
+
   }
 
   function validmatrix(valuename) {
@@ -305,18 +344,7 @@ const Dijkstra = () => {
               width={Common.width}
               height={Common.height}
             />
-
-            {/* {bstResult && (
-            <div>
-              <h3>Dijkstra Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )} */}
+            
             <div
               style={{
                 display: "flex",
@@ -330,11 +358,14 @@ const Dijkstra = () => {
               <button onClick={reset}>Reset</button>
               <button onClick={run}>Fast Forward</button>
             </div>
+            <div>
+              <ResultsTable tableData={tableData} />
+            </div>
           </div>
           <div>
             <SaveInputToLocalStorage
               algorithm="dij"
-              inputData={data}
+              inputData={savedata}
               useHisInput={useHisInput}
             />
           </div>
