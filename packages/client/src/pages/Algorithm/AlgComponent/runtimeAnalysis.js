@@ -3,6 +3,8 @@ export const AnalyzeRuntime = (algorithm, input, func, ...args) => {
   const iterations = 10; // Repeat the operation 1000 times
   let output;
 
+  // console.log(input)
+
   for (let i = 0; i < iterations; i++) {
     const startTime = performance.now();
     output = func(...args); // Execute the function being tested

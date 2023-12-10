@@ -4,13 +4,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Container, Box } from "@mui/material";
 import { AlgorithmSpace } from "./AlgComponent/algorithmSpace";
-import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis.jsx";
+import { AnalyzeRuntime } from "./AlgComponent/runtimeAnalysis";
 import { SaveInputToLocalStorage } from "./AlgComponent/saveInputToLocalStorage";
-import BSTConcreteStrategy from "../../algorithm-solver/bstsolver.js";
+import BSTConcreteStrategy from "../../algorithm-solver/bstsolver";
 import Common from "./Common/common";
-import { TreeAnimationData, Node } from "./Common/animationdata.js";
-import TreeGraphRenderer from "./Common/treerenderer.js";
-import ResultsTable from "./AlgComponent/tableCreater.jsx";
+import { TreeAnimationData, Node } from "./Common/animationdata";
+import TreeGraphRenderer from "./Common/treerenderer";
+import ResultsTable from "./AlgComponent/tableCreater";
+import useTableData  from "./AlgComponent/useTableData";
 import { getBarChartData } from "../../components/AnalyzeGraph/getBarChartData.js";
 import { BarChart } from "../../components/AnalyzeGraph/BarChart.jsx";
 
@@ -60,14 +61,9 @@ function postOrder() {
   record = tree.postOrderTraverse();
 }
 
-function searchBST(sdata) {
-  record = [];
-  reset();
-  let node = tree.search(sdata, record);
-  console.log(node);
-}
-
 const BST = () => {
+  const { tableData, addTableRow } = useTableData('bstResults');
+
   const svgRef = useRef(null);
   useEffect(() => {
     createBST();
@@ -82,6 +78,48 @@ const BST = () => {
     data = input;
     createBST();
   };
+
+  function searchBST(sdata) {
+    record = [];
+    reset();
+
+    let startTime = performance.now();  // Start the timer
+
+    let node = tree.search(sdata, record);
+
+    let endTime = performance.now();  // end the timer
+
+    console.log(node);
+  
+    let nodePosition = record[record.length - 1] - 1;
+  
+    console.log(nodePosition);
+  
+    addTableRow({
+      operation: 'Search a node',
+      input: sdata,
+      output: 'Node Position ' + nodePosition,
+      runtime: endTime - startTime
+    });
+  
+  }
+
+  function getBSTValues(node) {
+    const values = [];
+  
+    // In-order traversal to collect values
+    function inOrderTraverse(node) {
+      if (node !== null) {
+        inOrderTraverse(node.left);
+        const { index, value, position } = node.nodeData;
+        values.push({ index, value, position });
+        inOrderTraverse(node.right);
+      }
+    }
+  
+    inOrderTraverse(node);
+    return values;
+  }
 
   function next() {
     if (step >= record.length) {
@@ -108,26 +146,67 @@ const BST = () => {
         tree.insert(element, record);
       });
     });
+
+    // Get the values from the BST
+    const bstValues = getBSTValues(tree.root);
+
+    console.log(bstValues); // This array contains the values from the BST
+
     TreeGraphRenderer.renderGraph(animationData, svgRef);
+
+    addTableRow({
+      operation: 'Create new tree',
+      input: result.input,
+      output: bstValues,
+      runtime: result.runtime
+    });
+
     reset();
-    addResult(result); // Correctly add the result
   }
 
   function insertBST(idata) {
+
+
     record = [];
     reset();
+
+    let startTime = performance.now();  // Start the timer
+
     data.push(Number(idata[0]));
     animationData.push(new Node(data.length, idata));
+
     tree.insert(animationData.dataset[data.length - 1], record);
+
+    let endTime = performance.now();  // End the timer
+
+    console.log(`Insert operation took ${endTime - startTime} milliseconds.`);
+
+    let insertedNodePosition = animationData.dataset[data.length - 1].position - 1;
+
     TreeGraphRenderer.renderGraph(animationData, svgRef);
+
+    
+    
+    addTableRow({
+      operation: 'Insert new node',
+      input: idata,
+      output: 'Node Position ' + insertedNodePosition,
+      runtime: endTime - startTime
+    });
+
   }
 
   function deleteBST(ddata, index) {
     record = [];
     reset();
-    //temptree = tree
+
+    let startTime = performance.now();  // Start the timer
+
     // index delete，prevSuccessorNodePosition exchange
     tree.delete(ddata, record);
+
+    let endTime = performance.now();  // End the timer
+
     let prevSuccessorNodePosition = record[record.length - 1]; // exchange position to position found at index
     if (animationData.dataset[index].position !== prevSuccessorNodePosition) {
       record.push({
@@ -142,28 +221,19 @@ const BST = () => {
     data.splice(animationData.dataset[index].index - 1, 1);
     //console.log("Removing from animationData dataset index", index);
     animationData.dataset.splice(index, 1);
-  }
 
-  const [bstResults, setBstResults] = useState(() => {
-    const savedResults = localStorage.getItem("bstResults");
-    return savedResults ? JSON.parse(savedResults) : [];
-  });
+    let deletedNodePosition = animationData.dataset[index].position;
+    deletedNodePosition = deletedNodePosition -2 
+    // console.log(deletedNodePosition)
 
-  const addResult = (newResult) => {
-    setBstResults((prevResults) => {
-      // Ensure prevResults is always an array
-      const updatedResults = Array.isArray(prevResults)
-        ? [...prevResults, newResult]
-        : [newResult];
-
-      if (updatedResults.length > 10) {
-        updatedResults.shift(); // Remove the oldest result
-      }
-
-      localStorage.setItem("bstResults", JSON.stringify(updatedResults));
-      return updatedResults;
+    addTableRow({
+      operation: 'Delete node',
+      input: ddata,
+      output: 'Delete Node inital position ' + deletedNodePosition,
+      runtime: endTime - startTime
     });
-  };
+
+  }
 
   return (
     <Container maxWidth="md">
@@ -236,11 +306,11 @@ const BST = () => {
             >
               Search
             </button>
-            <SaveInputToLocalStorage
+            {/* <SaveInputToLocalStorage
               algorithm="bst"
               inputData={data}
               useHisInput={useHisInput}
-            />
+            /> */}
           </div>
           <div style={{ flexGrow: 1 }}>
             <AlgorithmSpace
@@ -274,9 +344,15 @@ const BST = () => {
               <button onClick={reset}>Reset</button>
             </div>
             <div>
-              <ResultsTable results={bstResults} />
-              <BarChart data={getBarChartData(bstResults).reverse()} />
+              <ResultsTable tableData={tableData} />
             </div>
+          </div>
+          <div>
+              <SaveInputToLocalStorage
+                algorithm="bst"
+                inputData={data}
+                useHisInput={useHisInput}
+              />
           </div>
         </div>
       </Box>

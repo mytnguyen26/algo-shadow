@@ -7,6 +7,9 @@ import DijkstraConcreteStrategy from "../../algorithm-solver/dijkstrasolver.js";
 import DiGraphRenderer from "./Common/digraphrenderer.js";
 import { dark } from "@mui/material/styles/createPalette.js";
 
+import ResultsTable from "./AlgComponent/tableCreater";
+import useTableData  from "./AlgComponent/useTableData";
+
 let data = [
   [0, 10, 0, 5, 0],
   [0, 0, 1, 2, 0],
@@ -29,15 +32,15 @@ function next() {
         const p = document
         .getElementById(t.node)
         .getElementsByTagName("path")[0];
-        DiGraphRenderer.pathDisplay(p, t.change, "black;blue");
+        DiGraphRenderer.pathDisplay(p, t.change, "#000000;#006699");
       }else{
         const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
         if (t.change == "stroke") {
-          DiGraphRenderer.pathDisplay(c, t.change, "yellow;blue");
+          DiGraphRenderer.pathDisplay(c, t.change, "#99CCFF;#006699");
         } else {
-          DiGraphRenderer.pathDisplay(c, t.change, "white;blue");
+          DiGraphRenderer.pathDisplay(c, t.change, "#FFFFFF;#006699");
         }
       }
       
@@ -46,7 +49,7 @@ function next() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "#4fd2dd;#235fa7");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#000000;#99CCFF");
       });
     }
     step++;
@@ -65,15 +68,15 @@ function back() {
         const p = document
         .getElementById(t.node)
         .getElementsByTagName("path")[0];
-        DiGraphRenderer.pathDisplay(p, t.change, "blue;black");
+        DiGraphRenderer.pathDisplay(p, t.change, "#006699;#000000");
       }else{
         const c = document
         .getElementById("c" + t.node)
         .getElementsByTagName("ellipse")[0];
         if (t.change == "stroke") {
-          DiGraphRenderer.pathDisplay(c, t.change, "blue;yellow");
+          DiGraphRenderer.pathDisplay(c, t.change, "#006699;#99CCFF");
         } else {
-          DiGraphRenderer.pathDisplay(c, t.change, "blue;white");
+          DiGraphRenderer.pathDisplay(c, t.change, "#006699;#FFFFFF");
         }
       }
     } else {
@@ -81,7 +84,7 @@ function back() {
         const c = document
           .getElementById("c" + element)
           .getElementsByTagName("ellipse")[0];
-        DiGraphRenderer.pathDisplay(c, "stroke", "yellow;black");
+        DiGraphRenderer.pathDisplay(c, "stroke", "#99CCFF;#000000");
       });
     }
   }
@@ -93,6 +96,12 @@ const Dijkstra = () => {
   const [createKind, setCreateKind] = useState("");
   const [p_adj] = useState("0 1\n1 0");
   const [p_edge] = useState("A B 3\nC B 2");
+
+  const [savedata, setSavedata] = useState(data); // Initialize cdata with the default data
+
+  //create table for dijk
+  const { tableData, addTableRow } = useTableData('dijkResults');
+
 
   const svgRef = useRef(null);
   useEffect(() => {
@@ -107,6 +116,9 @@ const Dijkstra = () => {
   function creategraph(cdata) {
     step = 0;
     graph = new DijkstraConcreteStrategy();
+
+    setSavedata(cdata);
+     
     data = cdata;
     if (createKind === "EdgeList") {
       graph.fromEdgeList(cdata, graphKind);
@@ -125,10 +137,37 @@ const Dijkstra = () => {
   };
 
   function run() {
+
+    let startTime = performance.now();  // Start the timer
+
     let d = graph.run("A", record);
+
+    let endTime = performance.now();  // end the timer
+
     DiGraphRenderer.wordcolor("A")
     DiGraphRenderer.displaydistance(d)
-    console.log(record)
+    // console.log(d)
+
+    let formattedDistances = '';
+
+    d.forEach((d, node) => {
+        formattedDistances += `${node}: ${d}, `;
+      }
+    );
+
+    // Remove the last comma and space
+    formattedDistances = formattedDistances.slice(0, -2);
+
+    console.log(formattedDistances)
+
+      
+    addTableRow({
+      operation: 'Calculate Shortest Paths from Node A',
+      input: 'Start Node: A',
+      output: formattedDistances,
+      runtime: endTime - startTime
+    });
+
   }
 
   function validmatrix(valuename) {
@@ -305,18 +344,7 @@ const Dijkstra = () => {
               width={Common.width}
               height={Common.height}
             />
-
-            {/* {bstResult && (
-            <div>
-              <h3>Dijkstra Result:</h3>
-              <div>
-                <strong>Input:</strong> [{bstResult.input.join(", ")}]
-              </div>
-              <div>
-                <strong>Runtime:</strong> {bstResult.runtime} ms
-              </div>
-            </div>
-          )} */}
+            
             <div
               style={{
                 display: "flex",
@@ -330,11 +358,14 @@ const Dijkstra = () => {
               <button onClick={reset}>Reset</button>
               <button onClick={run}>Fast Forward</button>
             </div>
+            <div>
+              <ResultsTable tableData={tableData} />
+            </div>
           </div>
           <div>
             <SaveInputToLocalStorage
               algorithm="dij"
-              inputData={data}
+              inputData={savedata}
               useHisInput={useHisInput}
             />
           </div>
