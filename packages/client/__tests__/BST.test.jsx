@@ -53,6 +53,16 @@ describe('BST Testing', () => {
       expect(traversalResult).toEqual([2, 1, 3, 7]);
     });
 
+    it("should perform post-order traverasl correctly", () => {
+      const traversalResult = bst.postOrderTraverse();
+      expect(traversalResult).toEqual([2, 7, 3, 1])
+    });
+
+    it("should perform pre-order traverasl correctly", () => {
+      const traversalResult = bst.preOrderTraverse();
+      expect(traversalResult).toEqual([1, 2, 3, 7])
+    })
+
   });
 
 });

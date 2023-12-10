@@ -1,7 +1,9 @@
 {
-  "name": "client",
+  "name": "algo-shadow",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "This is our product created for BU MET CS673, an algorithm visualizer.",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
