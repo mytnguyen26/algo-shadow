@@ -11,6 +11,8 @@ import ResultsTable from "./algo-component/TableCreater.jsx";
 import { BarChart } from "./analyze-graph/BarChart.jsx";
 import useTableData from "./algo-component/useTableData.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
+import { Box, Stack, TextField, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 
 let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
 let animationData = null;
@@ -133,7 +135,7 @@ function HeapPage() {
       i + 1,
       kdata,
       animationData.dataset,
-      record,
+      record
     );
   }
 
@@ -159,11 +161,17 @@ function HeapPage() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <input id="create" placeholder="Enter comma separated numbers" />
-        <button
+    <Stack direction="row" gap={3}>
+      <Stack gap={2}>
+        <TextField
+          id="create"
+          label="Enter comma separated numbers"
+          placeholder="Enter comma separated numbers"
+          helperText="example: 1,2,3,4"
+        />
+        <Button
           id="csubmit"
+          variant="contained"
           onClick={() => {
             try {
               let cdata = Common.validData("create");
@@ -175,10 +183,11 @@ function HeapPage() {
           }}
         >
           Create Heap
-        </button>
+        </Button>
 
-        <input id="insert" placeholder="Insert a number" />
-        <button
+        <TextField id="insert" label="Insert a node" helperText="example: 12" />
+        <Button
+          variant="contained"
           id="isubmit"
           onClick={() => {
             try {
@@ -189,99 +198,76 @@ function HeapPage() {
             }
           }}
         >
-          Insert
-        </button>
+          Insert Node
+        </Button>
 
-        <input id="delete" placeholder="Delete a number" />
-        <button
+        <TextField id="delete" label="Delete a node" helperText="example: 2" />
+        <Button
+          variant="contained"
           id="dsubmit"
           onClick={() => {
             try {
               let ddata = Common.validOneData("delete");
               const index = Common.findInArray(ddata, animationData.dataset);
-              deleteNodeFromHeap(index, ddata);
+              deleteNodeFromHeap(ddata, index);
             } catch (error) {
               alert("Error: " + error.message);
             }
           }}
         >
-          Delete
-        </button>
-
-        <input id="select" placeholder="select a number" />
-        <input id="increase" placeholder="increase a number" />
-        <button
-          id="ksubmit"
-          onClick={() => {
-            try {
-              let sdata = Common.validOneData("select");
-              let idata = Common.validOneData("increase");
-              const index = Common.findInArray(sdata, animationData.dataset);
-              increaseKey(index, idata);
-            } catch (error) {
-              alert("Error: " + error.message);
-            }
-          }}
-        >
-          increase
-        </button>
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+          Delete Node
+        </Button>
+        <SaveInputToLocalStorage
+          algorithm="bst"
+          inputData={data}
+          useHisInput={useHisInput}
+        />
+      </Stack>
+      <Stack gap={2} alignItems="start">
         <AlgorithmSpace
           svgRef={svgRef}
           width={Common.width}
           height={Common.height}
-          resetKey={resetKey}
-        >
-          {/* the graph will be rendered inside the AlgorithmSpace component */}
-        </AlgorithmSpace>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "middle",
-            gap: "10px",
-            marginTop: "10px",
-          }}
-        >
-          <button
-            onClick={() => {
-              step = Common.next(step, record);
-            }}
+        />
+        <Typography variant="subtitle1">Step 1: Run it step by step</Typography>
+        <Stack direction="row" justifyContent="center" gap={2}>
+          <Button
+            variant="contained"
+            onClick={() => (step = Common.next(step, record))}
           >
             Next Step
-          </button>
-          <button
-            onClick={() => {
-              step = Common.back(step, record);
-            }}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => (step = Common.back(step, record))}
           >
-            Back
-          </button>
-          <button onClick={reset}>Reset</button>
-
-          <button
+            Previous Step
+          </Button>
+        </Stack>
+        <Typography variant="subtitle1">Step 2: Run Final Heap</Typography>
+        <Stack direction="row" justifyContent="center" gap={2}>
+          <Button
+            variant="contained"
             onClick={() => {
               TreeGraphRenderer.renderGraph(animationData, svgRef);
               step = record.length;
             }}
           >
             Final Heap
-          </button>
-          <button onClick={extraHeap}>extra heap</button>
-        </div>
-        <ResultsTable tableData={tableData} />
-        <BarChart data={getBarchartData(tableData).reverse()} />
-      </div>
-      <div>
-        <SaveInputToLocalStorage
-          algorithm="heap"
-          inputData={data}
-          useHisInput={useHisInput}
-        />
-      </div>
-    </div>
+          </Button>
+        </Stack>
+        <Typography variant="subtitle1">
+          Step 3: Extracting Maximum Number
+        </Typography>
+        <Button variant="contained" onClick={extraHeap}>
+          Extra Heap
+        </Button>
+        <Box>
+          <ResultsTable tableData={tableData} />
+          <BarChart data={getBarchartData(tableData).reverse()} />
+        </Box>
+      </Stack>
+    </Stack>
   );
 }
 
