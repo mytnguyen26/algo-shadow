@@ -12,7 +12,7 @@ const useTableData = (localStorageKey) => {
 
   const addTableRow = (newRowData) => {
     setTableData(prevData => {
-      const updatedData = [...prevData, newRowData];
+      const updatedData = [...prevData, newRowData].slice(-10); // Keep the last 10 records
       localStorage.setItem(localStorageKey, JSON.stringify(updatedData));
       return updatedData;
     });

@@ -275,7 +275,7 @@ function HeapPage() {
           <button onClick={extraHeap}>extra heap</button>
         </div>
         <ResultsTable tableData={tableData} />
-        {/* <BarChart data={getBarChartData(heapResults).reverse()} /> */}
+        <BarChart data={getBarChartData(tableData).reverse()} />
       </div>
       <div>
         <SaveInputToLocalStorage
