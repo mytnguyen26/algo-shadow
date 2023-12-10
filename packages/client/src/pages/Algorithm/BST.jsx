@@ -2,7 +2,7 @@
  * TODO
  */
 import React, { useEffect, useRef } from "react";
-import { Container, Box } from "@mui/material";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { AnalyzeRuntime } from "../../utils/algorithm-solver/runtimeAnalysis.js";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
@@ -14,6 +14,7 @@ import ResultsTable from "./algo-component/TableCreater.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
 import { BarChart } from "./analyze-graph/BarChart.jsx";
 import useTableData from "./algo-component/UseTableData.jsx";
+import Button from "@mui/material/Button";
 
 let data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
 let animationData = null;
@@ -143,9 +144,6 @@ const BSTPage = () => {
 
     // Get the values from the BST
     const bstValues = getBSTValues(tree.root);
-
-    console.log(bstValues); // This array contains the values from the BST
-
     TreeGraphRenderer.renderGraph(animationData, svgRef);
 
     addTableRow({
@@ -211,136 +209,127 @@ const BSTPage = () => {
     data.splice(animationData.dataset[index].index - 1, 1);
     animationData.dataset.splice(index, 1);
     addTableRow({
-      operation: 'Delete node',
+      operation: "Delete node",
       input: dData,
-      output: 'Delete Node inital position ' + deletedNodePosition[0],
-      runtime: endTime - startTime
+      output: "Delete Node initial position " + deletedNodePosition[0],
+      runtime: endTime - startTime,
     });
   }
 
   return (
-    <Container maxWidth="md">
-      <Box className="canvas">
-        <div style={{ display: "flex" }}>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-          >
-            <input id="create" placeholder="Enter comma separated numbers" />
-            <button
-              id="csubmit"
-              onClick={() => {
-                try {
-                  let cdata = Common.validData("create");
-                  data = cdata.map((item) => Number(item.trim()));
-                  createBST();
-                } catch (error) {
-                  alert("Error: " + error.message);
-                }
-              }}
-            >
-              Create
-            </button>
+    <Stack direction="row" gap={3}>
+      <Stack gap={2}>
+        <TextField
+          id="create"
+          label="Enter comma separated numbers"
+          helperText="example: 1,2,3,4"
+        />
+        <Button
+          id="csubmit"
+          variant="contained"
+          onClick={() => {
+            try {
+              let cdata = Common.validData("create");
+              data = cdata.map((item) => Number(item.trim()));
+              createBST();
+            } catch (error) {
+              alert("Error: " + error.message);
+            }
+          }}
+        >
+          Create BST
+        </Button>
 
-            <input id="insert" placeholder="Insert a number" />
-            <button
-              id="isubmit"
-              onClick={() => {
-                try {
-                  let idata = Common.validOneData("insert");
-                  insertBST(idata);
-                } catch (error) {
-                  alert("Error: " + error.message);
-                }
-              }}
-            >
-              Insert
-            </button>
+        <TextField id="insert" label="Insert a node" helperText="example: 12" />
+        <Button
+          variant="contained"
+          id="isubmit"
+          onClick={() => {
+            try {
+              let idata = Common.validOneData("insert");
+              insertBST(idata);
+            } catch (error) {
+              alert("Error: " + error.message);
+            }
+          }}
+        >
+          Insert Node
+        </Button>
 
-            <input id="delete" placeholder="Insert a number" />
-            <button
-              id="dsubmit"
-              onClick={() => {
-                try {
-                  let ddata = Common.validOneData("delete");
-                  const index = Common.findInArray(
-                    ddata,
-                    animationData.dataset,
-                  );
-                  deleteBST(ddata, index);
-                } catch (error) {
-                  alert("Error: " + error.message);
-                }
-              }}
-            >
-              Delete
-            </button>
+        <TextField id="delete" label="Delete a node" helperText="example: 2" />
+        <Button
+          variant="contained"
+          id="dsubmit"
+          onClick={() => {
+            try {
+              let ddata = Common.validOneData("delete");
+              const index = Common.findInArray(ddata, animationData.dataset);
+              deleteBST(ddata, index);
+            } catch (error) {
+              alert("Error: " + error.message);
+            }
+          }}
+        >
+          Delete Node
+        </Button>
 
-            <input id="search" placeholder="Insert a number" />
-            <button
-              id="ssubmit"
-              onClick={() => {
-                try {
-                  let sdata = Common.validOneData("search");
-                  searchBST(sdata);
-                } catch (error) {
-                  alert("Error: " + error.message);
-                }
-              }}
-            >
-              Search
-            </button>
-            {/* <SaveInputToLocalStorage
-              algorithm="bst"
-              inputData={data}
-              useHisInput={useHisInput}
-            /> */}
-          </div>
-          <div style={{ flexGrow: 1 }}>
-            <AlgorithmSpace
-              svgRef={svgRef}
-              width={Common.width}
-              height={Common.height}
-            />
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "middle",
-                gap: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <button onClick={inOrder}>Inorder</button>
-              <button onClick={preOrder}>Preorder</button>
-              <button onClick={postOrder}>Postorder</button>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "middle",
-                gap: "10px",
-                marginTop: "10px",
-              }}
-            >
-              <button onClick={next}>Next Step</button>
-              <button onClick={back}>Back</button>
-              <button onClick={reset}>Reset</button>
-            </div>
-            <div>
-              <ResultsTable tableData={tableData} />
-              <BarChart data={getBarchartData(tableData).reverse()} />
-            </div>
-          </div>
-          <div>
-            <SaveInputToLocalStorage
-              algorithm="bst"
-              inputData={data}
-              useHisInput={useHisInput}
-            />
-          </div>
-        </div>
-      </Box>
-    </Container>
+        <TextField id="search" label="Search a node" helperText="example: 9" />
+        <Button
+          variant="contained"
+          id="ssubmit"
+          onClick={() => {
+            try {
+              let sdata = Common.validOneData("search");
+              searchBST(sdata);
+            } catch (error) {
+              alert("Error: " + error.message);
+            }
+          }}
+        >
+          Search Node
+        </Button>
+        <SaveInputToLocalStorage
+          algorithm="bst"
+          inputData={data}
+          useHisInput={useHisInput}
+        />
+      </Stack>
+      <Stack gap={2} alignItems="start">
+        <AlgorithmSpace
+          svgRef={svgRef}
+          width={Common.width}
+          height={Common.height}
+        />
+        <Typography variant="h5">Traverse the Tree: </Typography>
+        <Typography variant="subtitle1">
+          Step 1: Pick how do you want to traverse the BST tree
+        </Typography>
+        <Stack direction="row" justifyContent="center" gap={2}>
+          <Button variant="contained" onClick={inOrder}>
+            Inorder
+          </Button>
+          <Button variant="contained" onClick={preOrder}>
+            Preorder
+          </Button>
+          <Button variant="contained" onClick={postOrder}>
+            Postorder
+          </Button>
+        </Stack>
+        <Typography variant="subtitle1">Step 2: Run it step by step</Typography>
+        <Stack direction="row" justifyContent="center" gap={2}>
+          <Button variant="contained" onClick={next}>
+            Next Step
+          </Button>
+          <Button variant="contained" onClick={back}>
+            Previous Step
+          </Button>
+        </Stack>
+        <Box>
+          <ResultsTable tableData={tableData} />
+          <BarChart data={getBarchartData(tableData).reverse()} />
+        </Box>
+      </Stack>
+    </Stack>
   );
 };
 
