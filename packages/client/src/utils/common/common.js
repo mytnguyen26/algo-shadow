@@ -44,7 +44,7 @@ const Common = {
    */
   findInArray(xdata, dataset) {
     for (var i = 0; i < dataset.length; i++) {
-      if (dataset[i].value === xdata) {
+      if (dataset[i].value == xdata) {
         return i;
       }
     }
