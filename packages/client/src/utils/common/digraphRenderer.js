@@ -7,7 +7,7 @@ class DigraphRenderer extends TreeGraphRenderer {
   static renderGraph(graph, svgRef) {
     const viz = new Viz({ Module, render });
 
-    var graphvizCode = `
+    let graphvizCode = `
         digraph G {
             rankdir=LR;
             node [penwidth=2, pencolor=white, shape=circle];`;
