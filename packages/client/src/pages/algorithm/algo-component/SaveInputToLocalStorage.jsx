@@ -36,15 +36,12 @@ export const SaveInputToLocalStorage = ({
   const [selectedInput, setSelectedInput] = useState("");
 
   const saveInput = () => {
-    // Retrieve existing inputs or initialize to an empty array
     const existingInputs = JSON.parse(localStorage.getItem(storageKey)) || [];
     // Add new input at the beginning of the array
-    existingInputs.unshift(inputData);
+    existingInputs.unshift(JSON.stringify(inputData));
     // Slice array to keep only the last 5 inputs
     const updatedInputs = existingInputs.slice(0, 5);
-    // Save back to local storage
     localStorage.setItem(storageKey, JSON.stringify(updatedInputs));
-    // Update the state
     setRecentInputs(updatedInputs);
   };
 
@@ -58,24 +55,23 @@ export const SaveInputToLocalStorage = ({
   };
 
   const handleListItemClick = (input) => {
-    const inputString = input.join(","); // Assuming 'input' is an array of numbers
+    const inputString = JSON.stringify(input); // Convert the 2D array to a string
     setInputValue(inputString);
-    setSelectedInput(inputString); // Save the selected input as a string
+    setSelectedInput(inputString);
   };
 
-  // Handler when "Use This" is clicked
   const handleUseHisInput = () => {
     if (typeof selectedInput === "string") {
-      useHisInput(selectedInput.split(",").map(Number)); // Convert string to array of numbers
-      setShowHistory(false); // Optionally close the history dropdown
+      const inputArray = JSON.parse(selectedInput);
+      useHisInput(inputArray);
+      setShowHistory(false);
     } else {
-      // Handle the error or initialize selectedInput as a string to prevent this
       console.error("Selected input is not a string:", selectedInput);
     }
   };
 
   return (
-    <ClickAwayListener onClickAway={() => setShowHistory(false)}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <Box sx={{ position: "relative", width: "300px" }}>
         <Button variant="contained" onClick={saveInput} sx={{ mb: 1 }}>
           Save Input
@@ -110,9 +106,9 @@ export const SaveInputToLocalStorage = ({
               {recentInputs.map((input, index) => (
                 <ListItem
                   key={index}
-                  onClick={() => handleListItemClick(input)}
+                  onClick={() => handleListItemClick(JSON.parse(input))}
                 >
-                  {input.join(",")}
+                  {input}
                 </ListItem>
               ))}
             </List>

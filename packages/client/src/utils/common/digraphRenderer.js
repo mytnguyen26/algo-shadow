@@ -90,7 +90,6 @@ class DigraphRenderer extends TreeGraphRenderer {
     const row = document.createElement("tr");
     // Data rows
     distance.forEach((element) => {
-      //console.log(element)
       row.appendChild(DigraphRenderer.createTableCell_(element));
     });
     table.appendChild(row);

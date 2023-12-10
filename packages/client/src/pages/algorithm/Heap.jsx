@@ -7,7 +7,9 @@ import Common from "../../utils/common/common";
 import TreeGraphRenderer from "../../utils/common/treeRenderer.js";
 import { TreeAnimationData, Node } from "../../utils/common/animationData.js";
 import ResultsTable from "./algo-component/TableCreater.jsx";
+
 import { BarChart } from "./analyze-graph/BarChart.jsx";
+import useTableData from "./algo-component/useTableData.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
 
 let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
@@ -22,23 +24,7 @@ let state = 0;
 function HeapPage() {
   const svgRef = useRef(null);
   const [resetKey] = useState(0);
-  const [heapResults, setHeapResults] = useState(() => {
-    const savedResults = localStorage.getItem("heapResults");
-    return savedResults ? JSON.parse(savedResults) : [];
-  });
-
-  const addResult = (newResult) => {
-    setHeapResults((prevResults) => {
-      const updatedResults = [...prevResults, newResult];
-      if (updatedResults.length > 10) {
-        updatedResults.shift(); // Remove the oldest result
-      }
-
-      // Save updated results to localStorage
-      localStorage.setItem("heapResults", JSON.stringify(updatedResults));
-      return updatedResults;
-    });
-  };
+  const { tableData, addTableRow } = useTableData("heapResults");
 
   function empty() {
     record = [];
@@ -68,8 +54,17 @@ function HeapPage() {
       HeapConcreteStrategy.buildMaxHeap(animationData.dataset, record);
       return animationData.dataset;
     });
+
     totalLength = animationData.dataset.length;
-    addResult(result);
+
+    // addTableRow('Create new tree', result.input, result.output, result.runtime);
+
+    addTableRow({
+      operation: "Create new tree",
+      input: result.input,
+      output: result.output,
+      runtime: result.runtime,
+    });
   }
 
   function insertNewNodeToHeap(idata) {
@@ -78,28 +73,52 @@ function HeapPage() {
     animationData.dataset.push(new Node(data.length, idata));
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); // save data before sort
     empty();
-    const result = AnalyzeRuntime("insertNewNodeToHeap", data, () => {
+    const result = AnalyzeRuntime("insertNewNodeToHeap", idata, () => {
       HeapConcreteStrategy.insert(animationData.dataset, record);
       return animationData.dataset;
     });
     totalLength = animationData.dataset.length;
-    addResult(result);
+    // Find the position of the inserted node
+    const insertedNodePosition =
+      animationData.dataset[animationData.dataset.length - 1].position;
+
+    // console.log("Position of newly inserted node:", insertedNodePosition);
+
+    addTableRow({
+      operation: "Insert new node",
+      input: idata,
+      output: "Node Position " + insertedNodePosition,
+      runtime: result.runtime,
+    });
+
+    // addResult(result);
   }
 
-  function deleteNodeFromHeap(i) {
+  function deleteNodeFromHeap(i, ddata) {
     state = 1;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty(); // render graphs before removing node from heap
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
-    HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
-    record.push({
-      e1: 0,
-      e2: [
-        tDataset.dataset[tDataset.dataset.length - 1].index,
-        tDataset.dataset[i].index,
-      ],
+    const result = AnalyzeRuntime("deleteNodeFromHeap", ddata, () => {
+      HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
+      record.push({
+        e1: 0,
+        e2: [
+          tDataset.dataset[tDataset.dataset.length - 1].index,
+          tDataset.dataset[i].index,
+        ],
+      });
+      return animationData.dataset;
     });
+
     data.splice(animationData.dataset[i].index - 1, 1); // delete 1 element from data
+
+    addTableRow({
+      operation: "Delete node",
+      input: ddata,
+      output: "Delete Node inital position " + i,
+      runtime: result.runtime,
+    });
   }
 
   function increaseKey(i, kdata) {
@@ -180,7 +199,7 @@ function HeapPage() {
             try {
               let ddata = Common.validOneData("delete");
               const index = Common.findInArray(ddata, animationData.dataset);
-              deleteNodeFromHeap(index);
+              deleteNodeFromHeap(index, ddata);
             } catch (error) {
               alert("Error: " + error.message);
             }
@@ -252,8 +271,8 @@ function HeapPage() {
           </button>
           <button onClick={extraHeap}>extra heap</button>
         </div>
-        <ResultsTable results={heapResults} />
-        <BarChart data={getBarchartData(heapResults).reverse()} />
+        <ResultsTable tableData={tableData} />
+        <BarChart data={getBarchartData(tableData).reverse()} />
       </div>
       <div>
         <SaveInputToLocalStorage
