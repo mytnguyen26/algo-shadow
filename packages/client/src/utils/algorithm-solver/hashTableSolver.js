@@ -1,3 +1,8 @@
+/**
+ * Implements function to calculate Hash
+ * @param {str} str is the input value to be hashed
+ * @returns 
+ */
 export const djb2Hash = (str) => {
     const len = str.length;
     let hash = 6518;
@@ -10,4 +15,3 @@ export const djb2Hash = (str) => {
   export const hashFunc = (value, max) => {
     return djb2Hash(value.toString()) % max;
   }
-  
