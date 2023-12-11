@@ -60,19 +60,15 @@ const HashTablePage = () => {
     let startTime = performance.now();
     let hashedValue = hashFunc(value, MAX);
     let endTime = performance.now();
-    addTableRow({
-      operation: "Insert new number",
-      input: value,
-      output: "Number Position " + hashedValue,
-      runtime: startTime - endTime,
-    });
     let attempt = 1;
     while (cells[hashedValue] && attempt < MAX) {
       if (cells[hashedValue].deleted) {
         break;
       }
       await animateCell(hashedValue);
+      startTime = performance.now();
       hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
+      endTime = performance.now();
       attempt++;
     }
 
@@ -81,12 +77,6 @@ const HashTablePage = () => {
         " Unable to find a suitable location for insertion due to conflict! ",
       );
       setInputValue("");
-      addTableRow({
-        operation: "Insert new number",
-        input: value,
-        output: "Number Position " + hashedValue,
-        runtime: 'N/A',
-      });
       return;
     }
 
@@ -96,6 +86,12 @@ const HashTablePage = () => {
     setCells(newCells);
     setCurrentSize(currentSize + 1);
     setInputValue("");
+    addTableRow({
+      operation: "Insert new number",
+      input: value,
+      output: "Number Position " + hashedValue,
+      runtime:  endTime - startTime,
+    });
   };
 
   /**
@@ -164,9 +160,9 @@ const HashTablePage = () => {
     let attempt = 1;
     while (cells[hashedValue] && attempt < MAX) {
       if (cells[hashedValue] && cells[hashedValue].deleted) {
-        // startTime = performance.now();
+        startTime = performance.now();
         hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
-        // endTime = performance.now();
+        endTime = performance.now();
         attempt++;
         continue;
       }
@@ -175,23 +171,22 @@ const HashTablePage = () => {
         await animateCell(hashedValue);
         const newCells = [...cells];
         newCells[hashedValue] = { deleted: true }; //deleted ius true
-        addTableRow({
-          operation: "Delete number",
-          input: value,
-          output: "Number Position " + hashedValue,
-          runtime: 'N/A',
-        });
         setCells(newCells);
         setCurrentSize(currentSize - 1);
         alert("Value deleted!");
         setInputValue("");
+        addTableRow({
+          operation: "Delete number",
+          input: value,
+          output: "Number Position " + hashedValue,
+          runtime: endTime - startTime,
+        });
         return;
       }
 
       hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
       attempt++;
     }
-
     alert("Value not found!");
     setInputValue("");
   };

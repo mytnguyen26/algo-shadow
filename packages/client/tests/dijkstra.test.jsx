@@ -32,24 +32,6 @@ describe('DijkstraConcreteStrategy Tests', () => {
     });
   });
 
-  describe('Dijkstra Algorithm', () => {
-    beforeEach(() => {
-      dijkstra.addNode('A');
-      dijkstra.addNode('B');
-      dijkstra.addNode('C');
-      dijkstra.addEdge('A', 'B', 1);
-      dijkstra.addEdge('B', 'C', 2);
-      dijkstra.addEdge('A', 'C', 4);
-    });
-
-    it('Find the shortest path correctly', () => {
-      let record = [];
-      const distances = dijkstra.run('A', record);
-      expect(distances.get('A')).toBe(0);
-      expect(distances.get('B')).toBe(1);
-      expect(distances.get('C')).toBe(3);
-    });
-  });
   describe("DijkstraAlgorithm", () => {
     it("should get correct shortest path weights from source node to all nodes", () => {
       const graph = new DijkstraConcreteStrategy();

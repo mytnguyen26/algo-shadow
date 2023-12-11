@@ -3,10 +3,18 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import HashTablePage from '../src/pages/algorithm/Hash'
 import { djb2Hash, hashFunc } from '../src/utils/algorithm-solver/hashTableSolver';
+import useTableData from '../src/pages/algorithm/algo-component/useTableData';
 
 const mockedAlert = vi.fn();
 // Mock global alert function
 globalThis.alert = vi.fn();
+
+vi.mock('../src/pages/algorithm/algo-component/useTableData', () => ({
+  default: () => ({
+    tableData: [],
+    addTableRow: vi.fn(),
+  }),
+}));
 
 describe('Hash Component Test', () => {
   afterEach(() => {
@@ -22,6 +30,7 @@ describe('Hash Component Test', () => {
   });
 
   it('Insert testing', async () => {
+
      // Test inserting a value into the hash
     const { getByText, getByPlaceholderText } = render(<HashTablePage />);
     const input = getByPlaceholderText('Enter a number (0-99)');
