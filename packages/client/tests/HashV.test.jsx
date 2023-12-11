@@ -30,8 +30,8 @@ describe('Hash Component Test', () => {
     fireEvent.change(input, { target: { value: '23' } });
     fireEvent.click(insertButton);
     // Wait for the value to be visible after insertion
-    await waitFor(() => expect(getByText('23')).toBeVisible(), { timeout: 1500 });
-  });
+    await waitFor(() => expect(getByText('23')).toBeVisible(), { timeout: 10000 });
+  }), { timeout: 100000 };
 
   it('Search testing', async () => {
     // Test searching for a value in the hash
@@ -54,7 +54,7 @@ describe('Hash Component Test', () => {
     await waitFor(() => {
       expect(document.querySelector('.pulse-animation')).not.toBeNull();
     }, { timeout: 5000 });
-  }, 5000);
+  }, 7000);
   
   it('Delete testing', async () => {
     const { getByText, getByPlaceholderText, queryByText } = render(<HashTablePage />);

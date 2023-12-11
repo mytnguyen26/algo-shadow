@@ -48,13 +48,13 @@ h1 {
 }
 
 button {
-    background-color: #58ac43;
+    background-color:#0074D9;
     color: white;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #217424;
+    background-color:#1976d2;
 }
 
 button:disabled {
