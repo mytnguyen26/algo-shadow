@@ -9,7 +9,7 @@ import { TreeAnimationData, Node } from "../../utils/renderer/animationData.js";
 import ResultsTable from "./algo-component/TableCreater.jsx";
 
 import { BarChart } from "./analyze-graph/BarChart.jsx";
-import useTableData from "./algo-component/UseTableData.jsx";
+import useTableData from "./algo-component/useTableData.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -209,7 +209,7 @@ function HeapPage() {
             try {
               let ddata = Common.validOneData("delete");
               const index = Common.findInArray(ddata, animationData.dataset);
-              deleteNodeFromHeap(ddata, index);
+              deleteNodeFromHeap(index, ddata);
             } catch (error) {
               alert("Error: " + error.message);
             }
