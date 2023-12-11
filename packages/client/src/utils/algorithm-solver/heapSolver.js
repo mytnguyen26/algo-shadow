@@ -25,7 +25,6 @@
  * }
  */
 const getMaxHeap = (localDataset, i, localRecord) => {
-  console.log("Dataset", localDataset)
   const n = localDataset.length;
   const left = 2 * i;
   const right = 2 * i + 1;
