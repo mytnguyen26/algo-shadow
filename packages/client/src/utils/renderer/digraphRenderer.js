@@ -4,6 +4,16 @@ import { Module, render } from "viz.js/full.render";
 import TreeGraphRenderer from "./treeRenderer.js";
 
 class DigraphRenderer extends TreeGraphRenderer {
+  
+  /**
+   * Renders the Directed Graph from input dataset with viz and svgRef
+   * The renderer directly use DijkstraConcreteStrategy, which has all nodes
+   * and edges data. Viz then calculate the coordinate and lines to render on
+   * canvas. For DiGraph, we dont have to calculate coordinates ourselves.
+   * @param {DijkstraConcreteStrategy} graph is the dijkstra algorithm solver object,
+   * which has edges and lists data that VIZ uses
+   * @param {*} svgRef 
+   */
   static renderGraph(graph, svgRef) {
     const viz = new Viz({ Module, render });
 
@@ -48,6 +58,16 @@ class DigraphRenderer extends TreeGraphRenderer {
       });
   }
 
+  /**
+   * Renders nodes and edges as Adjancency Matrix on the UI
+   * @param {Array} nodes is a array of nodes, i.e. ["A","B","C"]
+   * @param {Map} edges is a Hashmap of edges and weights
+   * For example:
+   * {
+   *  "A": [{node: "B", weight: 1}, {node: "C", weight: 2}],
+   * ...
+   * }
+   */
   static displayAdjacencyMatrix(nodes, edges) {
     const matrixDiv = document.getElementById("adjacencyMatrix");
     matrixDiv.innerHTML = "";
@@ -72,18 +92,31 @@ class DigraphRenderer extends TreeGraphRenderer {
       }
       table.appendChild(row);
     }
-
     matrixDiv.appendChild(table);
   }
 
-  static displaydistance(distance) {
+  /**
+   * Create a table-like rendering on the UI, showing the all the
+   * nodes and shortest distance to each node from the source node
+   * For example, on the UI:
+   * A  B  C
+   * 0  8  9
+   * @param {Map} distance is a Map object holds all the nodes
+   * and shortest distance to each node. For example:
+   * {
+   *  "A": 0,
+   *  "B": 8,
+   *  "C": 9
+   * }
+   */
+  static displayDistance(distance) {
+    console.log(distance)
     const matrixDiv = document.getElementById("distance");
     matrixDiv.innerHTML = "";
     const table = document.createElement("table");
     // Header row
     const headerRow = document.createElement("tr");
     for (let key of distance.keys()) {
-      //console.log(key)
       headerRow.appendChild(DigraphRenderer.createTableCell_(key));
     }
     table.appendChild(headerRow);
@@ -102,7 +135,7 @@ class DigraphRenderer extends TreeGraphRenderer {
     return cell;
   }
 
-  static wordcolor(node) {
+  static setWordColor(node) {
     const w = document
       .getElementById("c" + node)
       .getElementsByTagName("text")[0];

@@ -123,8 +123,9 @@ class TreeGraphRenderer {
    * Renders the Graph from input dataset with D3 and svgRef
    * For each nodes, use svg to create circles, labels, and draw lines
    * between a source node and target nodes.
-   * @param {*} dataset [description]
-   * @param {*} svgRef [description]
+   * @param {TreeAnimationData} dataset is the reference to the TreeAnimationData
+   * created and manipulated by the algorithm solver
+   * @param {*} svgRef is the reference to the SVG object
    *
    */
   static renderGraph(animationData, svgRef) {

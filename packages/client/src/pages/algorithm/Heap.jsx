@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
-import { AnalyzeRuntime } from "../../utils/algorithm-solver/analyzeRuntime.js";
+import { AnalyzeRuntime } from "../../utils/algorithm-solver/runtimeAnalysis.js";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import HeapConcreteStrategy from "../../utils/algorithm-solver/heapSolver.js";
 import Common from "../../utils/renderer/common";
@@ -209,7 +209,7 @@ function HeapPage() {
             try {
               let ddata = Common.validOneData("delete");
               const index = Common.findInArray(ddata, animationData.dataset);
-              deleteNodeFromHeap(ddata, index);
+              deleteNodeFromHeap(index, ddata);
             } catch (error) {
               alert("Error: " + error.message);
             }

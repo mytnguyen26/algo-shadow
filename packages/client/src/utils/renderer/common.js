@@ -1,5 +1,6 @@
 /**
- * TODO
+ * This module consists of helper functions for Tree Based Graph Page, such
+ * as BSTPage or HeapPage.
  */
 import TreeGraphRenderer from "./treeRenderer.js";
 
@@ -8,9 +9,11 @@ const Common = {
   height: 300,
 
   /**
-   * TODO
-   * @param {*} valueName
-   * @returns
+   * Get user input data by id, validate user input data,
+   * and turn it into an array of number for algoritm solver.
+   * This method is used in Create use case
+   * @param {str} valueName is the id of the form, such as "create"
+   * @returns array of numbers, such as [1, 2, 3, 4]
    */
   validData(valueName) {
     let tdata = document.getElementById(valueName).value.split(",");
@@ -23,8 +26,9 @@ const Common = {
   },
 
   /**
-   * TODO
-   * @param {*} valueName
+   * Get user input data by id, validate that only a single number
+   * is provided. This method is used in Insert, or Delete use case
+   * @param {*} valueName is the id of the form, such as "insert"
    * @returns
    */
   validOneData(valueName) {
@@ -37,9 +41,11 @@ const Common = {
   },
 
   /**
-   * TODO
-   * @param {*} xdata
-   * @param {*} dataset
+   * Find the value that the user provided (such as when they
+   * want to search or delete a value from the tree) in the current tree.
+   * @param {number} xdata a data value of the node, such as 2 
+   * @param {Array<Node>} dataset is the current array holding current data
+   * of the Graph.
    * @returns
    */
   findInArray(xdata, dataset) {
@@ -52,10 +58,17 @@ const Common = {
   },
 
   /**
-   * TODO
-   * @param {*} step
-   * @param {*} record
-   * @returns
+   * Function for "Next" button. As user click "Next", step is increased,
+   * and the function get the data in `record` array at index == `step`.
+   * Then, the function determine what animation needs to happen based on the data. 
+   * @param {number} step is the number represent the current step the user is at.
+   * This number is always between 0 and <= the size of `record` array
+   * @param {Array} record the array of animation steps. For example:
+   * [1, 2, {e1: 0, e2: [3, 1]}].
+   * The above example would result in an animation series like so:
+   * change color of node position 1, change color of node position 2,
+   * delete element at node position 3
+   * @returns updated `step`
    */
   next(step, record) {
     if (step >= record.length) {
@@ -74,11 +87,15 @@ const Common = {
   },
 
   /**
-   * TODO
-   * @param {*} step
-   * @param {*} record
+   * Function for "Back" button. As user click "Back", step is decreased,
+   * and the function get the data in `record` array at index == `step`.
+   * Then, the function determine what animation needs to happen based on the data. 
+   * @param {number} step is the number represent the current step the user is at.
+   * This number is always between 0 and <= the size of `record` array
+   * @param {Array} record the array of animation steps. For example:
+   * [1, 2, {e1: 0, e2: [3, 1]}].
    * @param  {...any} restParams
-   * @returns
+   * @returns updated `step`
    */
   back(step, record, ...restParams) {
     if (step < 1) {

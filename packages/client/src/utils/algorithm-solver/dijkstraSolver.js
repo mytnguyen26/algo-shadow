@@ -1,6 +1,5 @@
 /**
  * This module has concrete logic implementation for Dijkstra
- * TODO: Replace this after refactor DijkstraConcreteStrategy.js in pages
  */
 export default class DijkstraConcreteStrategy {
   constructor() {
@@ -27,6 +26,31 @@ export default class DijkstraConcreteStrategy {
     }
   }
 
+  /**
+   * Parse input adjancency matrix that user provided,
+   * and appends to `nodes` and `edges` attribute of this object.
+   * This function also set the node labels automatically with
+   * uppercased alphabetical character, such as A, B, C...
+   * if the user provide
+   * [
+   *  [0, 1, 1]
+   *  [0, 0, 2]
+   *  [0, 0, 0]
+   * ]
+   * then,
+   * nodes: [A, B, C]
+   * edges: {
+   *   "A": [ {node: "B", weight: 1}, {node: "C", weight: 1} ],
+   *   "B": [ {node: "A", weight: 0}, {node: "C", weight: 2}]
+   * ...
+   * }
+   * @param {Array<Array<number>>} matrix a matrix holding weights. For example:
+   * 0 1 1
+   * 0 0 2
+   * 0 0 0
+   * @param {str} k the description of edge type, such as "directed" or
+   * "undirected"
+   */
   fromAdjacencyMatrix(matrix, k) {
     this.kind = k;
     const numNodes = matrix.length;
@@ -50,6 +74,15 @@ export default class DijkstraConcreteStrategy {
     }
   }
 
+  /**
+   * Parse input adjancency matrix that user provided,
+   * and appends to `nodes` and `edges` attribute of this object.
+   * This function allow users to provide node label and weight
+   * @param {Array} edgeList is an array holding an object with format
+   * {node1: "x", node2: "y", weight: number}
+   * @param {*} k the description of edge type, such as "directed" or
+   * "undirected"
+   */
   fromEdgeList(edgeList, k) {
     this.kind = k;
     // Add nodes to the graph
@@ -68,6 +101,22 @@ export default class DijkstraConcreteStrategy {
     }
   }
 
+  /**
+   * From source node `startNode`, find the shortest distance from the `startNode`
+   * to every other node in the graph. While traversing the graph, the function
+   * records the node and edges visited to the `record` array, which is then used for
+   * animation purpose by graph renderer
+   * @param {str} startNode the source node
+   * @param {Array} record the reference to the `record` array, used for
+   * graph rendering
+   * @returns `distances` is a Map object holds all the nodes
+   * and shortest distance to each node. For example:
+   * {
+   *  "A": 0,
+   *  "B": 8,
+   *  "C": 9
+   * }
+   */
   run(startNode, record) {
     // Track the distance to each node and the path to reach it
     console.log("Edges", this.edges);
@@ -139,6 +188,15 @@ export default class DijkstraConcreteStrategy {
     return minNode;
   }
 
+  /**
+   * Get the array of edges and return it as an array of object
+   * with format. This is used by the viz in graph renderer later for
+   * rendering purpose
+   * [{ node1: "A", node2: "B", weight: 4 },
+   * ]
+   * 
+   * @returns `edgeList`
+   */
   getEdgeList() {
     const edgeList = [];
     const addedEdges = new Set();
