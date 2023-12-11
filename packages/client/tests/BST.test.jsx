@@ -1,7 +1,7 @@
 import BSTConcreteStrategy from '../src/utils/algorithm-solver/bstSolver';
 import { render } from '@testing-library/react';
 import BSTPage from '../src/pages/algorithm/BST';
-import TreeGraphRenderer from '../src/utils/common/treeRenderer';
+import TreeGraphRenderer from '../src/utils/renderer/treeRenderer';
 
 
 describe('BST Testing', () => {

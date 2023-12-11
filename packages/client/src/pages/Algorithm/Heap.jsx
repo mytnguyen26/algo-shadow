@@ -3,9 +3,9 @@ import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { AnalyzeRuntime } from "../../utils/algorithm-solver/analyzeRuntime.js";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import HeapConcreteStrategy from "../../utils/algorithm-solver/heapSolver.js";
-import Common from "../../utils/common/common";
-import TreeGraphRenderer from "../../utils/common/treeRenderer.js";
-import { TreeAnimationData, Node } from "../../utils/common/animationData.js";
+import Common from "../../utils/renderer/common";
+import TreeGraphRenderer from "../../utils/renderer/treeRenderer.js";
+import { TreeAnimationData, Node } from "../../utils/renderer/animationData.js";
 import ResultsTable from "./algo-component/TableCreater.jsx";
 
 import { BarChart } from "./analyze-graph/BarChart.jsx";

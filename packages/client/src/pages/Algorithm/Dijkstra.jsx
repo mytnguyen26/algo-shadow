@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
-import Common from "../../utils/common/common";
+import Common from "../../utils/renderer/common";
 import DijkstraConcreteStrategy from "../../utils/algorithm-solver/dijkstraSolver.js";
-import DigraphRenderer from "../../utils/common/digraphRenderer.js";
-import useTableData from "./algo-component/UseTableData.jsx";
+import DigraphRenderer from "../../utils/renderer/digraphRenderer.js";
+import useTableData from "./algo-component/useTableData.jsx";
 import ResultsTable from "./algo-component/TableCreater.jsx";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";

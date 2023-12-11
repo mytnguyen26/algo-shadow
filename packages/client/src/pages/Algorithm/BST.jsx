@@ -7,13 +7,13 @@ import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { AnalyzeRuntime } from "../../utils/algorithm-solver/runtimeAnalysis.js";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import BSTConcreteStrategy from "../../utils/algorithm-solver/bstSolver.js";
-import Common from "../../utils/common/common";
-import { TreeAnimationData, Node } from "../../utils/common/animationData.js";
-import TreeGraphRenderer from "../../utils/common/treeRenderer.js";
+import Common from "../../utils/renderer/common";
+import { TreeAnimationData, Node } from "../../utils/renderer/animationData.js";
+import TreeGraphRenderer from "../../utils/renderer/treeRenderer.js";
 import ResultsTable from "./algo-component/TableCreater.jsx";
 import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
 import { BarChart } from "./analyze-graph/BarChart.jsx";
-import useTableData from "./algo-component/UseTableData.jsx";
+import useTableData from "./algo-component/useTableData.jsx";
 import Button from "@mui/material/Button";
 
 let data = [5, 2, 9, 7, 8, 6, 1, 3, 10];
