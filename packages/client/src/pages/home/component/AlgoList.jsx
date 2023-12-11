@@ -18,7 +18,7 @@ export const AlgoList = () => {
         padding: "50px", // Optional: Adds some space inside the container
       }}
       variant="quilted"
-      cols={5}
+      cols={4}
       rowHeight={164}
     >
       {itemData.map((item) => (
@@ -78,12 +78,6 @@ export const Paths = {
 };
 
 const itemData = [
-  {
-    img: images.Bellman,
-    title: "Bellman",
-    path: Paths.ALGORITHM,
-    // path of bellman go to algotirthm now
-  },
   {
     img: images.BST,
     title: "BST",
