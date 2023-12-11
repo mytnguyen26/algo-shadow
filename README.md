@@ -63,14 +63,18 @@ npm run dev
 
 The client will start at local host
 
-#### 3. To start server-side app
-
-## Contribution
-Everyone is welcomed to contribute to this project. To start contribution, either Create an Issue, or Create a Pull Request. All new enhancements should be cloned from `dev`, and PR to `dev` before release. As features, enhancements, and bug fixes are ready for release, 
-
 ## Running Authentication Service
+Authentication service provides user authentication for Login/Logout. The user is required to obtain a valid login to be redirected to the `algorithm/` page
 
-### Front-End
+First, clone https://github.com/hicsail/authentication-service
+
+### 1. Front-End
+Change directory to where authentication-service is cloned to.
+
+```bash
+cd <PATH TO FOLDER>/authentication-service
+```
+
 1. create .env file in the client directory
 2. add the following to the .env file
 ```
@@ -83,7 +87,7 @@ VITE_GOOGLE_CLIENT_ID=
 3. install dependencies by running `npm install` in the client directory
 3. run `npm run dev` in the client directory
 
-### Back-End
+### 2. Back-End
 1. install PostgresSQL in your local machine
 2. create .env file in the server directory
 3. add the following to the .env file
@@ -124,3 +128,6 @@ mutation {
   }
 }
 ```
+
+## Contribution
+Everyone is welcomed to contribute to this project. To start contribution, either Create an Issue, or Create a Pull Request. All new enhancements should be cloned from `dev`, and PR to `dev` before release. As features, enhancements, and bug fixes are ready for release, 

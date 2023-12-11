@@ -1,3 +1,13 @@
+/**
+ * Calculate the actual run time of an operation, such as search, insert, or delete
+ * in BST or Heap, or find shortest path for Dijkstra
+ * @param {str} algorithm is the algorithm + operation name, such as createBST
+ * @param {*} input is the input to the function
+ * @param {*} func a callable, which is an operation passed from the page, such as search(),
+ * or delete()
+ * @param  {...any} args 
+ * @returns 
+ */
 export const AnalyzeRuntime = (algorithm, input, func, ...args) => {
   let totalTime = 0;
   const iterations = 10; // Repeat the operation 1000 times

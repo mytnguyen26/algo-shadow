@@ -32,7 +32,7 @@ let graph = null;
 function next() {
   if (step >= record.length) {
     //console.log(record[step-1].node)
-    DigraphRenderer.wordcolor(record[step - 1].node);
+    DigraphRenderer.setWordColor(record[step - 1].node);
     alert("Animation is end!");
   } else {
     let t = record[step];
@@ -112,7 +112,7 @@ const DijkstraPage = () => {
 
   const svgRef = useRef(null);
   useEffect(() => {
-    creategraph(data);
+    createGraph(data);
   }, []);
 
   function reset() {
@@ -120,7 +120,7 @@ const DijkstraPage = () => {
     DigraphRenderer.renderGraph(graph, svgRef);
   }
 
-  function creategraph(cdata) {
+  function createGraph(cdata) {
     step = 0;
     graph = new DijkstraConcreteStrategy();
 
@@ -140,7 +140,7 @@ const DijkstraPage = () => {
   const useHisInput = (input) => {
     // Assuming `createHeap` is a function that takes an input array to create a heap
     data = input;
-    creategraph(data);
+    createGraph(data);
   };
 
   function run() {
@@ -148,8 +148,8 @@ const DijkstraPage = () => {
     let d = graph.run("A", record);
     let endTime = performance.now(); // end the timer
 
-    DigraphRenderer.wordcolor("A");
-    DigraphRenderer.displaydistance(d);
+    DigraphRenderer.setWordColor("A");
+    DigraphRenderer.displayDistance(d);
 
     let formattedDistances = "";
 
@@ -168,7 +168,7 @@ const DijkstraPage = () => {
     });
   }
 
-  function validmatrix(valuename) {
+  function validMatrix(valuename) {
     let tdata = document.getElementById(valuename).value;
     // Split the input into rows based on line breaks
     const rows = tdata.trim().split("\n");
@@ -305,8 +305,8 @@ const DijkstraPage = () => {
                   id="csubmit"
                   onClick={() => {
                     try {
-                      let cdata = validmatrix("create");
-                      creategraph(cdata);
+                      let cdata = validMatrix("create");
+                      createGraph(cdata);
                     } catch (error) {
                       alert("Error: " + error.message);
                     }
@@ -328,7 +328,7 @@ const DijkstraPage = () => {
                   onClick={() => {
                     try {
                       let cdata = validateEdgeList("create");
-                      creategraph(cdata);
+                      createGraph(cdata);
                     } catch (error) {
                       alert("Error: " + error.message);
                     }
