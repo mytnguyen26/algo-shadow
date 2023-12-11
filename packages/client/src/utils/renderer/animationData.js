@@ -36,7 +36,7 @@ export class TreeAnimationData {
    * position of the node within the graph and SVG canvas
    * @param {Node} node the input node index or position
    * @param {*} width the current clientWidth captured in svg reference
-   * @returns
+   * @returns a number represent the x1-coordinate for svg Canvas
    */
   getx1(node, width, type) {
     if (type === "line" && node[this.positionReference] === 1) {
@@ -52,7 +52,8 @@ export class TreeAnimationData {
    * Calculate the x coordinate of input node relative to the
    * position of the input node within the graph and SVG canvas
    * @param {Node} node the input node index or position
-   * @param {*} my
+   * @param {number} my
+   * @param {str} type
    * @returns
    */
   gety1(node, my, type) {
@@ -65,8 +66,8 @@ export class TreeAnimationData {
   /**
    * Calculate the X2 coordinate for a svg Line attribute relative
    * to the position of the input node within the graph and SVG canvas
-   * @param {*} node
-   * @param {*} width
+   * @param {Node} node
+   * @param {number} width
    * @returns
    */
   getx2(node, width) {
@@ -83,8 +84,8 @@ export class TreeAnimationData {
   /**
    * Calculate the Y2 coordinate for a svg Line attribute relative
    * to the position of the input node within the graph and SVG canvas
-   * @param {*} node
-   * @param {*} my
+   * @param {Node} node
+   * @param {number} my
    * @returns
    */
   gety2(node, my) {
@@ -107,6 +108,7 @@ export class TreeAnimationData {
 
   /**
    * Insert new node to dataset
+   * @param {Node} item 
    */
   push(item) {
     this.dataset.push(item);
