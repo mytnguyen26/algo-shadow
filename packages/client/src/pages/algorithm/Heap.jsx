@@ -92,26 +92,23 @@ function HeapPage() {
       output: "Node Position " + insertedNodePosition,
       runtime: result.runtime,
     });
-
-    // addResult(result);
   }
 
   function deleteNodeFromHeap(i, ddata) {
     state = 1;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort
     empty(); // render graphs before removing node from heap
+    let startTime = performance.now(); // Start the timer
     deleteGraph = tDataset.dataset[tDataset.dataset.length - 1].index;
-    const result = AnalyzeRuntime("deleteNodeFromHeap", ddata, () => {
-      HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
-      record.push({
-        e1: 0,
-        e2: [
-          tDataset.dataset[tDataset.dataset.length - 1].index,
-          tDataset.dataset[i].index,
-        ],
-      });
-      return animationData.dataset;
+    HeapConcreteStrategy.delete(i + 1, animationData.dataset, record);
+    record.push({
+      e1: 0,
+      e2: [
+        tDataset.dataset[tDataset.dataset.length - 1].index,
+        tDataset.dataset[i].index,
+      ],
     });
+    let endTime = performance.now(); // End the timer
 
     data.splice(animationData.dataset[i].index - 1, 1); // delete 1 element from data
 
@@ -119,7 +116,7 @@ function HeapPage() {
       operation: "Delete node",
       input: ddata,
       output: "Delete Node inital position " + i,
-      runtime: result.runtime,
+      runtime: endTime - startTime,
     });
   }
 
