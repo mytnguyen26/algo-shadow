@@ -9,6 +9,20 @@ export class TreeAnimationData {
     this.record = [];
   }
 
+  /**
+   * transform input rawData from Array of Number, i.e. [1, 2, 3, 4]
+   * to an Array of Object. This array of object is used by the graph renderer,
+   * and manipulated by one of the algorithm-solver to determine where to place 
+   * the nodes and links on svg canvas.
+   * @param {*} data and array of number, for example:
+   * [1, 2, 3, 4]
+   * @returns an array of object of format
+   * [
+   *  {index: 1, value: 1, position: 1},
+   *  {index: 2, value: 2, position: 2},
+   *  ...
+   * ]
+   */
   dataTransform(data) {
     let dataset = [];
     for (let i = 0; i < data.length; ++i) {
