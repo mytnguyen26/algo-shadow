@@ -115,6 +115,17 @@ export class TreeAnimationData {
   }
 }
 
+/**
+ * Node object represents a node in a TreeBased Graph,
+ * such as BST or Heap. When a node object is instantiated, it
+ * position is automatically create, and value is from
+ * user input.
+ * For example, if user input is 1,2,3, 3 Nodes objects are created
+ * with the following attributes:
+ * Node: { index: 1, value: 1, position: 1 }
+ * Node: { index: 2, value: 2, position: 2 }
+ * Node: { index: 3, value: 3, position: 3 }
+ */
 export class Node {
   constructor(index, value) {
     this.index = index;
