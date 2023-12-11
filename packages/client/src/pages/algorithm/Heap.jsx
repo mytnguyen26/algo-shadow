@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
-import { AnalyzeRuntime } from "../../utils/algorithm-solver/analyzeRuntime.js";
+import { AnalyzeRuntime } from "../../utils/algorithm-solver/runtimeAnalysis.js";
 import { SaveInputToLocalStorage } from "./algo-component/SaveInputToLocalStorage.jsx";
 import HeapConcreteStrategy from "../../utils/algorithm-solver/heapSolver.js";
 import Common from "../../utils/renderer/common";
