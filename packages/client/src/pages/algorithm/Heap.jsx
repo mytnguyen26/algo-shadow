@@ -209,7 +209,7 @@ function HeapPage() {
             try {
               let ddata = Common.validOneData("delete");
               const index = Common.findInArray(ddata, animationData.dataset);
-              deleteNodeFromHeap(ddata, index);
+              deleteNodeFromHeap(index, ddata);
             } catch (error) {
               alert("Error: " + error.message);
             }
