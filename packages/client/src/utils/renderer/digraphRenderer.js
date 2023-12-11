@@ -76,14 +76,13 @@ class DigraphRenderer extends TreeGraphRenderer {
     matrixDiv.appendChild(table);
   }
 
-  static displaydistance(distance) {
+  static displayDistance(distance) {
     const matrixDiv = document.getElementById("distance");
     matrixDiv.innerHTML = "";
     const table = document.createElement("table");
     // Header row
     const headerRow = document.createElement("tr");
     for (let key of distance.keys()) {
-      //console.log(key)
       headerRow.appendChild(DigraphRenderer.createTableCell_(key));
     }
     table.appendChild(headerRow);
@@ -102,7 +101,7 @@ class DigraphRenderer extends TreeGraphRenderer {
     return cell;
   }
 
-  static wordcolor(node) {
+  static setWordColor(node) {
     const w = document
       .getElementById("c" + node)
       .getElementsByTagName("text")[0];
