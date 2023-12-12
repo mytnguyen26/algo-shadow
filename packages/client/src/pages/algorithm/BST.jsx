@@ -1,5 +1,5 @@
 /**
- * TODO
+ * This component renders Binary Search Tree Page at route /algorithm/bst
  */
 import React, { useEffect, useRef } from "react";
 import { Box, Stack, TextField, Typography } from "@mui/material";
@@ -23,6 +23,12 @@ let record = []; // this array saves all animation steps that needs to happen
 let step = 0;
 let tree = null;
 
+/**
+ * This function allows user to go back 1 animation step
+ * For example, if in `record` array, we have [1, 2,..], click "Back"
+ * would make the node at position 2 un-highlighted, and click "Next"
+ * again would make the node at position 1 un-highlighted
+ */
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -37,6 +43,9 @@ function back() {
   }
 }
 
+/**
+ * This function reset the graph on the UI the original state
+ */
 function reset() {
   step = 0;
   animationData.dataset.forEach((element) => {
@@ -46,16 +55,34 @@ function reset() {
   });
 }
 
+/**
+ * This function set the animation Binary Search Tree.
+ * After the user clicked preOrder, clicking "Next" 
+ * will have nodes on the UI change in color in the order that resembles
+ * an in-order traversal of the BST
+ */
 function inOrder() {
   reset();
   record = tree.inOrderTraverse();
 }
 
+/**
+ * This function set the animation Binary Search Tree.
+ * After the user clicked preOrder, clicking "Next" 
+ * will have nodes on the UI change in color in the order that resembles
+ * a pre-order traversal of the BST
+ */
 function preOrder() {
   reset();
   record = tree.preOrderTraverse();
 }
 
+/**
+ * This function set the animation Binary Search Tree.
+ * After the user clicked preOrder, clicking "Next" 
+ * will have nodes on the UI change in color in the order that resembles
+ * a post-order traversal of the BST
+ */
 function postOrder() {
   reset();
   record = tree.postOrderTraverse();
@@ -113,6 +140,12 @@ const BSTPage = () => {
     return values;
   }
 
+  /**
+   * This function allows user to go forward 1 animation step
+   * For example, if in `record` array, we have [1, 2,..], click "Next"
+   * would make the node at position 1 highlighted, and click "Next"
+   * again would make the node at position 2 highlighted
+   */
   function next() {
     if (step >= record.length) {
       TreeGraphRenderer.renderGraph(animationData, svgRef);
@@ -129,6 +162,9 @@ const BSTPage = () => {
     }
   }
 
+  /**
+   * This function renders a BST Graph on the UI
+   */
   function createBST() {
     record = [];
     const result = AnalyzeRuntime("createBST", data, () => {

@@ -1,3 +1,7 @@
+/**
+ * This component use experiment data retrieved from local storage
+ * and renders and Bar Chart in each /algorithm/* route
+ */
 import { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import * as d3 from "d3";

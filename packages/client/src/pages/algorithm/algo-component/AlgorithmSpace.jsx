@@ -1,3 +1,6 @@
+/**
+ * This component renders the canvas where the Graph Visualization will be in.
+ */
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 

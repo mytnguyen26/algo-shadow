@@ -8,7 +8,7 @@
  * if a reference to other TreeNode objects, which represents
  * left node and right node of the Binary Tree. From the Root of the tree,
  * we can navigate the tree using left node and right node
- * @param {TreeAnimationData} nodeData
+ * @param {Node} nodeData
  */
 class TreeNode {
   constructor(nodeData) {
@@ -75,8 +75,10 @@ class BSTConcreteStrategy {
   }
 
   /**
-   * Inorder iterates over all nodes（left root right）
-   * @returns
+   * Inorder iterates over all nodes（left root right).
+   * While traversing, the function get the node position
+   * from nodeData.position and save in an array
+   * @returns array of node positions. such as [2, 1, 3, 7]
    */
   inOrderTraverse() {
     let backs = [];
@@ -95,8 +97,10 @@ class BSTConcreteStrategy {
   }
 
   /**
-   * Preorder iterates over all nodes（root left right）
-   * @returns
+   * Preorder iterates over all nodes（root left right.
+   * While traversing, the function get the node position
+   * from nodeData.position and save in an array
+   * @returns array of node positions. such as [2, 1, 3, 7]
    */
   preOrderTraverse() {
     let backs = [];
@@ -115,8 +119,10 @@ class BSTConcreteStrategy {
   }
 
   /**
-   * Postorder iterates over all nodes（left right root
-   * @returns
+   * Postorder iterates over all nodes（left right root).
+   * While traversing, the function get the node position
+   * from nodeData.position and save in an array
+   * @returns array of node positions. such as [2, 1, 3, 7]
    */
   postOrderTraverse() {
     let backs = [];
@@ -260,9 +266,9 @@ class BSTConcreteStrategy {
    * - case 2: if inOrderSuccessorNode has right nodes,
    * then right node position = inOrderSuccessorNode position
    * Finally, switch inOrderSuccessorNode's position and deletingNode position
-   * @param {*} inOrderSuccessorNode is the successor node replacing the position of
+   * @param {TreeNode} inOrderSuccessorNode is the successor node replacing the position of
    * the `deleteNode`, found by delete() method
-   * @param {*} deleteNode is the node to be deleted
+   * @param {TreeNode} deleteNode is the node to be deleted
    * @returns
    */
   _updateSuccessorSubTreePositions(inOrderSuccessorNode, deleteNode) {
