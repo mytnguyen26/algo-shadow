@@ -17,14 +17,14 @@ const members = [
     role: "Product Manager​",
     bio: "I created the product roadmap, implemented developer workflow and ensure product quality.​",
     imageUrl: images.MY,
-    email: "",
+    email: "mytng@bu.edu",
   },
   {
     name: "Fengyun​",
     role: "UI/UX​",
     bio: "I created UI design, and implement our Web UI to make sure our customers have an seamless and comprehensive experience.",
     imageUrl: images.Fengyun,
-    email: "",
+    email: "fchen12@bu.edu",
   },
   {
     name: "Xinyue",
@@ -45,7 +45,7 @@ const members = [
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Heap and BST algorithms, ensuring their effective implementation and optimal performance.​",
     imageUrl: images.Yutong,
-    email: "",
+    email: "fyutong@bu.edu",
   },
 ];
 
