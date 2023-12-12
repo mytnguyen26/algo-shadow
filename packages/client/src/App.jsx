@@ -17,7 +17,7 @@ import HeapPage from "./pages/algorithm/Heap.jsx";
 function App() {
   return (
     <Router>
-      {/*<AuthProvider>*/}
+      <AuthProvider>
       <Routes>
         <Route path={Paths.HOME} element={<Layout />}>
           <Route index element={<Home />} />
@@ -36,7 +36,7 @@ function App() {
           <Route path={Paths.LOGIN} element={<AuthGuard />} />
         </Route>
       </Routes>
-      {/*</AuthProvider>*/}
+      </AuthProvider>
     </Router>
   );
 }

@@ -10,7 +10,7 @@ const Contact = ({ open, onClose }) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Contact Us</DialogTitle>
       <DialogContent>
-        <p>You can contact us at: example@email.com</p>
+        <p>You can contact us at: mytng@bu.edu</p>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Close</Button>
