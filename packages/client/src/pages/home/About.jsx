@@ -38,7 +38,7 @@ const members = [
     role: "Full Stack Engineer​​",
     bio: "I contributed to the development of the Hash and Bellman algorithms, ensuring their effective implementation and optimal performance.​",
     imageUrl: images.Junyi,
-    email: "",
+    email: "tobymjy@gmail.com",
   },
   {
     name: "Yutong",

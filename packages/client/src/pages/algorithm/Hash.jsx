@@ -1,9 +1,15 @@
 import React, { useState, useRef } from "react";
 import "../../assets/style/hash.table.style.css"
 import { djb2Hash, hashFunc } from "../../utils/algorithm-solver/hashTableSolver";
+import ResultsTable from "./algo-component/TableCreater.jsx";
+import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js";
+import { BarChart } from "./analyze-graph/BarChart.jsx";
+import useTableData from "./algo-component/useTableData.jsx";
+
 
 const MAX = 20;
 const HashTablePage = () => {
+  const { tableData, addTableRow } = useTableData("HashResults");
   const [cells, setCells] = useState(Array(MAX).fill(null));
   const [inputValue, setInputValue] = useState("");
   const [currentSize, setCurrentSize] = useState(0);
@@ -51,14 +57,18 @@ const HashTablePage = () => {
       return;
     }
 
+    let startTime = performance.now();
     let hashedValue = hashFunc(value, MAX);
+    let endTime = performance.now();
     let attempt = 1;
     while (cells[hashedValue] && attempt < MAX) {
       if (cells[hashedValue].deleted) {
         break;
       }
       await animateCell(hashedValue);
+      startTime = performance.now();
       hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
+      endTime = performance.now();
       attempt++;
     }
 
@@ -76,6 +86,12 @@ const HashTablePage = () => {
     setCells(newCells);
     setCurrentSize(currentSize + 1);
     setInputValue("");
+    addTableRow({
+      operation: "Insert new number",
+      input: value,
+      output: "Number Position " + hashedValue,
+      runtime:  endTime - startTime,
+    });
   };
 
   /**
@@ -90,6 +106,7 @@ const HashTablePage = () => {
       return;
     }
 
+    
     let hashedValue = hashFunc(value, MAX);
     let attempt = 1;
     while (cells[hashedValue] && attempt < MAX) {
@@ -99,12 +116,22 @@ const HashTablePage = () => {
         continue;
       }
 
+      let startTime = performance.now(); // Start the timer
       if (cells[hashedValue] && cells[hashedValue].value === value) {
+        let endTime = performance.now();
+        addTableRow({
+          operation: "Search number",
+          input: value,
+          output: "Number Position " + hashedValue,
+          runtime: endTime - startTime,
+        });
+
         await animateCell(hashedValue);
         alert("Value found!");
         setInputValue("");
         return;
       }
+
 
       hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
       attempt++;
@@ -112,6 +139,7 @@ const HashTablePage = () => {
 
     alert("Value not found!");
     setInputValue("");
+
   };
 
   /**
@@ -126,11 +154,15 @@ const HashTablePage = () => {
       return;
     }
 
+    let startTime = performance.now();
     let hashedValue = hashFunc(value, MAX);
+    let endTime = performance.now();
     let attempt = 1;
     while (cells[hashedValue] && attempt < MAX) {
       if (cells[hashedValue] && cells[hashedValue].deleted) {
+        startTime = performance.now();
         hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
+        endTime = performance.now();
         attempt++;
         continue;
       }
@@ -143,13 +175,18 @@ const HashTablePage = () => {
         setCurrentSize(currentSize - 1);
         alert("Value deleted!");
         setInputValue("");
+        addTableRow({
+          operation: "Delete number",
+          input: value,
+          output: "Number Position " + hashedValue,
+          runtime: endTime - startTime,
+        });
         return;
       }
 
       hashedValue = (hashFunc(value, MAX) + attempt * attempt) % MAX;
       attempt++;
     }
-
     alert("Value not found!");
     setInputValue("");
   };
@@ -179,6 +216,10 @@ const HashTablePage = () => {
       <button onClick={insert}>Insert</button>
       <button onClick={search}>Search</button>
       <button onClick={deleteValue}>Delete</button>
+      <div>
+          <ResultsTable tableData={tableData} />
+          <BarChart data={getBarchartData(tableData).reverse()} />
+      </div>
     </div>
   );
 };
