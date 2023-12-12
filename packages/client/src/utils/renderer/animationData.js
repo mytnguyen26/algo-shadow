@@ -10,18 +10,18 @@ export class TreeAnimationData {
   }
 
   /**
-   * transform input rawData from Array of Number, i.e. [1, 2, 3, 4]
+   * Transform input rawData from Array of Number, i.e. [1, 2, 3, 4]
    * to an Array of Object. This array of object is used by the graph renderer,
    * and manipulated by one of the algorithm-solver to determine where to place 
    * the nodes and links on svg canvas.
-   * @param {*} data and array of number, for example:
-   * [1, 2, 3, 4]
-   * @returns an array of object of format
+   * The function returns an array of object of format
    * [
    *  {index: 1, value: 1, position: 1},
    *  {index: 2, value: 2, position: 2},
    *  ...
    * ]
+   * @param {*} data and array of number, for example: [1, 2, 3, 4]
+   * @returns an array of object of format
    */
   dataTransform(data) {
     let dataset = [];
@@ -54,7 +54,7 @@ export class TreeAnimationData {
    * @param {Node} node the input node index or position
    * @param {number} my
    * @param {str} type
-   * @returns
+   * @returns a number
    */
   gety1(node, my, type) {
     if (type === "line" && node[this.positionReference] === 1) {
@@ -68,7 +68,7 @@ export class TreeAnimationData {
    * to the position of the input node within the graph and SVG canvas
    * @param {Node} node
    * @param {number} width
-   * @returns
+   * @returns a number
    */
   getx2(node, width) {
     let targetPosition = Math.floor(node[this.positionReference] / 2);
@@ -86,7 +86,7 @@ export class TreeAnimationData {
    * to the position of the input node within the graph and SVG canvas
    * @param {Node} node
    * @param {number} my
-   * @returns
+   * @returns a number
    */
   gety2(node, my) {
     if (node[this.positionReference] === 1) {
@@ -100,7 +100,7 @@ export class TreeAnimationData {
    * within the tree based on the position
    * For example: if position = 3, then depth = 1
    * @param {*} position is the position of the node in the tree
-   * @returns
+   * @returns a number
    */
   getDepth(position) {
     return Math.ceil(Math.log2(position + 1)) - 1;
@@ -108,7 +108,7 @@ export class TreeAnimationData {
 
   /**
    * Insert new node to dataset
-   * @param {Node} item 
+   * @param {Node} item the node to be inserted to the dataset
    */
   push(item) {
     this.dataset.push(item);

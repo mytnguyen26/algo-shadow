@@ -46,7 +46,7 @@ const Common = {
    * @param {number} xdata a data value of the node, such as 2 
    * @param {Array<Node>} dataset is the current array holding current data
    * of the Graph.
-   * @returns
+   * @returns index location of the node in the dataset array
    */
   findInArray(xdata, dataset) {
     for (var i = 0; i < dataset.length; i++) {
@@ -63,8 +63,8 @@ const Common = {
    * Then, the function determine what animation needs to happen based on the data. 
    * @param {number} step is the number represent the current step the user is at.
    * This number is always between 0 and <= the size of `record` array
-   * @param {Array} record the array of animation steps. For example:
-   * [1, 2, {e1: 0, e2: [3, 1]}].
+   * @param {Array} record the array of animation steps.
+   * For example: [1, 2, {e1: 0, e2: [3, 1]}].
    * The above example would result in an animation series like so:
    * change color of node position 1, change color of node position 2,
    * delete element at node position 3
@@ -92,8 +92,8 @@ const Common = {
    * Then, the function determine what animation needs to happen based on the data. 
    * @param {number} step is the number represent the current step the user is at.
    * This number is always between 0 and <= the size of `record` array
-   * @param {Array} record the array of animation steps. For example:
-   * [1, 2, {e1: 0, e2: [3, 1]}].
+   * @param {Array} record the array of animation steps.
+   * For example: [1, 2, {e1: 0, e2: [3, 1]}].
    * @param  {...any} restParams
    * @returns updated `step`
    */
