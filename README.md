@@ -9,30 +9,35 @@ Algo-shadow is an algorithm visualizer web application. With this application us
 ## Getting started
 Our project contains a front-end application and a server application. The project structure is as follow
 
+- `utils` should have all JavaScripts files
+- `pages` should have our React Components
+- `assets` should have our CSS Styles
+- `contants` should have our routes definitions
+
 ```
 ├── .github
 │   ├── workflows
 ├── documents
 ├── packages
 │   ├── clients
-│   │   ├── __tests__
+│   │   ├── tests
 │   │   ├── src
+│   │   │   ├── assets
+│   │   │   ├── constants
+│   │   │   ├── context
+│   │   │   ├── images
+│   │   │   ├── pages
+│   │   │   ├── utils
+│   │   │   ├── App.jsx
+│   │   │   ├── Main.jsx
+│   │   ├── coverage
 │   │   ├── package-lock.json
 │   │   ├── package.json
-│   ├── server
-│   │   ├── src
-│   │   │   ├── main
-│   │   │   ├── test
-│   │   ├── mvnw
-│   │   ├── pom.xml
-│   ├── model
-│   ├── index.js
 ├── dist (or build
 └── .gitignore
 ```
 
 Source code and artifacts related to the front-end would go in `./packages/clients`.  
-Source code and artifacts related the server would go in `./packages/server/`
 Github Action CI/CD configurations could be found in `./.github/workflows`
 
 ## Developer install
