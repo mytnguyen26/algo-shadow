@@ -1,3 +1,6 @@
+/**
+ * This component renders Dijkstra Page at route /algorithm/dijksra
+ */
 import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
@@ -26,9 +29,17 @@ let data = [
   [0, 3, 9, 0, 0],
   [7, 0, 6, 0, 0],
 ];
-let record = [];
+let record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 let step = 0;
 let graph = null;
+
+/**
+ * This function allows user to go forward 1 animation step
+ * For example, if in `record` array, we have [1, 2,..], click "Next"
+ * would make the node at position 1 highlighted, and click "Next"
+ * again would make the node at position 2 highlighted
+ */
 function next() {
   if (step >= record.length) {
     //console.log(record[step-1].node)
@@ -64,6 +75,12 @@ function next() {
   }
 }
 
+/**
+ * This function allows user to go back 1 animation step
+ * For example, if in `record` array, we have [1, 2,..], click "Back"
+ * would make the node at position 2 un-highlighted, and click "Next"
+ * again would make the node at position 1 un-highlighted
+ */
 function back() {
   if (step < 1) {
     alert("This is the first step!");
@@ -115,11 +132,18 @@ const DijkstraPage = () => {
     createGraph(data);
   }, []);
 
+  /**
+   * This function reset the graph on the UI the original state
+   */
   function reset() {
     step = 0;
     DigraphRenderer.renderGraph(graph, svgRef);
   }
 
+  /**
+   * This function creates a new DiGraph on the UI
+   * @param {*} cdata 
+   */
   function createGraph(cdata) {
     step = 0;
     graph = new DijkstraConcreteStrategy();
@@ -143,6 +167,12 @@ const DijkstraPage = () => {
     createGraph(data);
   };
 
+  /**
+   * This function call DijkstraConcreteStrategy to find shortest
+   * paths and weight from source node A to all other reachable nodes
+   * in the graph, and generate a `record` array with all the animation
+   * steps.
+   */
   function run() {
     let startTime = performance.now(); // Start the timer
     let d = graph.run("A", record);

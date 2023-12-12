@@ -1,3 +1,6 @@
+/**
+ * This component renders Heap Page at route /algorithm/heap
+ */
 import React, { useState, useEffect, useRef } from "react";
 import { AlgorithmSpace } from "./algo-component/AlgorithmSpace.jsx";
 import { AnalyzeRuntime } from "../../utils/algorithm-solver/runtimeAnalysis.js";
@@ -14,10 +17,11 @@ import { getBarchartData } from "../../utils/barchart-analyze/getBarchartData.js
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
-let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1];
+let data = [18, 4, 10, 13, 7, 9, 3, 2, 8, 1]; // this is just an example
 let animationData = null;
 let tDataset = null;
-let record = [];
+let record = []; // this array saves all animation steps that needs to happen
+// allow users to have next and back functionality
 let step = 0;
 let deleteGraph = -1;
 let totalLength = data.length;
@@ -33,6 +37,9 @@ function HeapPage() {
     reset();
   }
 
+  /**
+   * This function reset the graph on the UI the original state
+   */
   function reset() {
     step = 0;
     if (state === 0) TreeGraphRenderer.renderGraph(animationData, svgRef);
@@ -47,6 +54,10 @@ function HeapPage() {
     SaveInputToLocalStorage;
   }, []);
 
+  /**
+   * This function creates a new Tree Graph represents a Heap
+   * on the UI
+   */
   function createHeap() {
     animationData = new TreeAnimationData(data, "position");
     tDataset = new TreeAnimationData(data, "position");
@@ -69,6 +80,12 @@ function HeapPage() {
     });
   }
 
+  /**
+   * This function call HeapConcreteStrategy to add the node
+   * to the Graph, and generate a `record` array with all the animation
+   * steps.
+   * @param {number} idata the node value to be inserted. For example: 2
+   */
   function insertNewNodeToHeap(idata) {
     state = 1;
     data.push(Number(idata));
@@ -94,6 +111,13 @@ function HeapPage() {
     });
   }
 
+  /**
+   * This function call HeapConcreteStrategy to remove the node
+   * from the Graph, and generate a `record` array with all the animation
+   * steps.
+   * @param {number} i index location where the node is located in the dataset
+   * @param {number} ddata the node value to be deleted. For example: 2
+   */
   function deleteNodeFromHeap(i, ddata) {
     state = 1;
     tDataset.dataset = JSON.parse(JSON.stringify(animationData.dataset)); //save data before sort

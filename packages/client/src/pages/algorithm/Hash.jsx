@@ -1,3 +1,6 @@
+/**
+ * This component renders Hash Page at route /algorithm/hash
+ */
 import React, { useState, useRef } from "react";
 import "../../assets/style/hash.table.style.css"
 import { djb2Hash, hashFunc } from "../../utils/algorithm-solver/hashTableSolver";
@@ -17,8 +20,7 @@ const HashTablePage = () => {
   /**
    * A helper function to animate the cell if an element
    * is inserted, deleted, or selected from the hash table
-   * @param {*} index 
-   * @returns 
+   * @param {*} index the index location of the array to be animated
    */
   const animateCell = async (index) => {
     return new Promise((resolve) => {
@@ -35,7 +37,7 @@ const HashTablePage = () => {
 
   /**
    * Insert an element to the hash table.
-   * @returns 
+   * @returns None
    */
   const insert = async () => {
     const value = parseInt(inputValue);
@@ -96,7 +98,7 @@ const HashTablePage = () => {
 
   /**
    * Search for an element in the hash table.
-   * @returns 
+   * @returns None
    */
   const search = async () => {
     const value = parseInt(inputValue);
@@ -144,7 +146,7 @@ const HashTablePage = () => {
 
   /**
    * Delete an element from the hash table.
-   * @returns 
+   * @returns None
    */
   const deleteValue = async () => {
     const value = parseInt(inputValue);

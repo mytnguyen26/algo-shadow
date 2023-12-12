@@ -1,3 +1,8 @@
+/**
+ * This components renders the dropdown list on /algorithm/
+ * routes, allow user to navigate to all other /algorithm/ routes,
+ * such as /algorithm/bst or /algorithm/dijkstra
+ */
 import { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { Menu, Stack } from "@mui/material";
