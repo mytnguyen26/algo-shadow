@@ -112,7 +112,7 @@ PUBLIC_KEY_1=""
 ```
 4. run `npm install` in the server directory
 5. run `npm run prisma:generate` to initialize the database
-6. run `npm run prosma:migrate` to migrate the database
+6. run `npm run prisma:migrate` to migrate the database
 7. run `npm run dev` to start the server
 8. go to `http://localhost:3001/graphql` to access the graphql playground 
 9. add your first project by running the following mutation
